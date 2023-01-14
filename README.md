@@ -3,7 +3,7 @@
 
 Clone and initialize the repository:
 ```
-git clone --recurse-submodules -j8 https://github.com/upf-gti/CG2023Student.git
+git clone --recurse-submodules -j8 https://github.com/yuyanwang03/ComputerGraphics.git
 ```
 
 The framework provided is compatible with all operating systems.

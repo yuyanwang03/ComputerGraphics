@@ -9,6 +9,6 @@ int main(int argc, char **argv)
 
 	std::cout << "Starting loop..." << std::endl;
 	launchLoop(app);
-
+    
 	return 0;
 }
