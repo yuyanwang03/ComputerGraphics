@@ -293,6 +293,9 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
     Vector2 dir(dx/d, dy/d);
     // std::cout << "Code testing " << dir.x << " " << dir.y;
     for(int i = 0; i < d; ++i){
+        // Avoid x or y values out of dimension !!!! negative values
+        if (tempX>this->width) tempX = width;
+        if (tempY>this->height) tempY = height;
         this->SetPixel(floor(tempX), floor(tempY), c);
         tempX += dir.x;
         tempY += dir.y;
@@ -301,13 +304,13 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
 }
 
 void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
-    int dx, dy, inc_E, inc_NE, d, x, y;
+    int dx, dy, inc_E, inc_NE, d, x, y, orientationHandler(1);
     dx = x1-x0;
     dy = y1-y0;
-    // Draw conditions for octants 1, 5, 6, and 8
-    if (dx < 0) {return DrawLineBresenham(x1, y0, x0, y1, c);}
-    // Works fine untill here
-    if (dy < 0) {return DrawLineBresenham(x0, y1, x1, y0, c);}
+    // Change x0 and x1 for them to be increasing; that is, to have x1>x0
+    if (dx < 0) {return DrawLineBresenham(x1, y1, x0, y0, c);}
+    if (dy > dx) {return DrawLineBresenham(y0, x0, y1, x1, c);}
+    if (dy < 0) {orientationHandler = -1; dy *= orientationHandler;}
     inc_E = 2*dy;
     inc_NE = 2*(dy-dx);
     d = 2*dy - dx;
@@ -316,7 +319,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     this->SetPixel(x0, y0, c);
     while (x < x1){
         if (d <= 0) {d += inc_E;}
-        else {d += inc_NE; y++;}
+        else {d += inc_NE; y += orientationHandler;}
         x++;
         this->SetPixel(x, y, c);
     }
