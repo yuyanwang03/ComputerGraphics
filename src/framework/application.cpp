@@ -40,7 +40,7 @@ void Application::Render(void)
     framebuffer.Fill(Color::BLACK);
     framebuffer.DrawLineBresenham(centerx, centery, centerx + 200 * cos(time), centery + 200 * sin(time), Color::WHITE);
     
-    
+    /*
     // 1 octant correct
     framebuffer.DrawLineBresenham(200, 200, 400, 300, Color(244, 85, 128));
     framebuffer.DrawLineDDA(200, 200, 400, 300, Color(244, 85, 128));
@@ -56,22 +56,23 @@ void Application::Render(void)
     // 4 octant correct
     framebuffer.DrawLineBresenham(200, 200, 0, 300, Color(80, 85, 128));
     framebuffer.DrawLineDDA(200, 200, 0, 300, Color(80, 85, 128));
-    
+    */
+     
     // 2 octant incorrect
     framebuffer.DrawLineBresenham(200, 200, 300, 400, Color(80, 85, 10));
-    framebuffer.DrawLineDDA(200, 200, 300, 400, Color(80, 85, 10));
+    // framebuffer.DrawLineDDA(200, 200, 300, 400, Color(80, 85, 10));
     
     // 3 octant incorrect
     framebuffer.DrawLineBresenham(200, 200, 100, 400, Color(120, 85, 128));
-    framebuffer.DrawLineDDA(200, 200, 100, 400, Color(120, 85, 128));
+    // framebuffer.DrawLineDDA(200, 200, 100, 400, Color(120, 85, 128));
     
     // 5 octant incorrect
     framebuffer.DrawLineBresenham(200, 200, 100, 0, Color(50, 10, 128));
-    framebuffer.DrawLineDDA(200, 200, 100, 0, Color(50, 10, 128));
+    // framebuffer.DrawLineDDA(200, 200, 100, 0, Color(50, 10, 128));
     
     // 7 octant incorrect
     framebuffer.DrawLineBresenham(200, 200, 300, 0, Color(120, 200, 128));
-    framebuffer.DrawLineDDA(200, 200, 300, 0, Color(120, 200, 128));
+    // framebuffer.DrawLineDDA(200, 200, 300, 0, Color(120, 200, 128));
     
 	framebuffer.Render();
 }

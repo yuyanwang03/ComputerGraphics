@@ -291,7 +291,6 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
     float dx(x1-x0), dy(y1-y0), tempX(x0), tempY(y0);
     float d = (float) std::max(abs(dx), abs(dy)); // or add a line "using namespace std"
     Vector2 dir(dx/d, dy/d);
-    // std::cout << "Code testing " << dir.x << " " << dir.y;
     for(int i = 0; i < d; ++i){
         // Avoid x or y values out of dimension !!!! negative values
         if (tempX>this->width) tempX = width;
@@ -305,11 +304,16 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
 
 void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     int dx, dy, inc_E, inc_NE, d, x, y, orientationHandler(1);
+    bool reverse(false);
     dx = x1-x0;
     dy = y1-y0;
     // Change x0 and x1 for them to be increasing; that is, to have x1>x0
     if (dx < 0) {return DrawLineBresenham(x1, y1, x0, y0, c);}
-    if (dy > dx) {return DrawLineBresenham(y0, x0, y1, x1, c);}
+    if (abs(dy) > abs(dx)) {
+        dx = y1-y0;
+        dy = x1-x0;
+        reverse = true;
+    }
     if (dy < 0) {orientationHandler = -1; dy *= orientationHandler;}
     inc_E = 2*dy;
     inc_NE = 2*(dy-dx);
@@ -317,11 +321,20 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     x = x0;
     y = y0;
     this->SetPixel(x0, y0, c);
-    while (x < x1){
-        if (d <= 0) {d += inc_E;}
-        else {d += inc_NE; y += orientationHandler;}
-        x++;
-        this->SetPixel(x, y, c);
+    if (reverse){
+        while (y < y1){
+            if (d <= 0) {d += inc_E;}
+            else {d += inc_NE; x += orientationHandler;}
+            y++;
+            this->SetPixel(x, y, c);
+        }
+    }else{
+        while (x < x1){
+            if (d <= 0) {d += inc_E;}
+            else {d += inc_NE; y += orientationHandler;}
+            x++;
+            this->SetPixel(x, y, c);
+        }
     }
     return;
 }
