@@ -33,7 +33,12 @@ void Application::Init(void)
 void Application::Render(void)
 {
 	// ...
-
+    // Testing the code
+    // framebuffer.DrawLineDDA(50,70,300,450, Color(255, 70, 80));
+    int centerx = this->window_width / 2;
+    int centery = this->window_height / 2;
+    framebuffer.Fill(Color::BLACK);
+    framebuffer.DrawLineBresenham(centerx, centery, centerx + 200 * cos(time), centery + 200 * sin(time), Color::WHITE);
 	framebuffer.Render();
 }
 

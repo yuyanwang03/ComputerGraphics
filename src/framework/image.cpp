@@ -287,6 +287,42 @@ bool Image::SaveTGA(const char* filename)
 	return true;
 }
 
+void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
+    float dx(x1-x0), dy(y1-y0), tempX(x0), tempY(y0);
+    float d = (float) std::max(abs(dx), abs(dy)); // or add a line "using namespace std"
+    Vector2 dir(dx/d, dy/d);
+    // std::cout << "Code testing " << dir.x << " " << dir.y;
+    for(int i = 0; i < d; ++i){
+        this->SetPixel(floor(tempX), floor(tempY), c);
+        tempX += dir.x;
+        tempY += dir.y;
+    }
+    return;
+}
+
+void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
+    int dx, dy, inc_E, inc_NE, d, x, y;
+    dx = x1-x0;
+    dy = y1-y0;
+    // Draw conditions for octants 1, 5, 6, and 8
+    if (dx < 0) {return DrawLineBresenham(x1, y0, x0, y1, c);}
+    // Works fine untill here
+    if (dy < 0) {return DrawLineBresenham(x0, y1, x1, y0, c);}
+    inc_E = 2*dy;
+    inc_NE = 2*(dy-dx);
+    d = 2*dy - dx;
+    x = x0;
+    y = y0;
+    this->SetPixel(x0, y0, c);
+    while (x < x1){
+        if (d <= 0) {d += inc_E;}
+        else {d += inc_NE; y++;}
+        x++;
+        this->SetPixel(x, y, c);
+    }
+    return;
+}
+
 #ifndef IGNORE_LAMBDAS
 
 // You can apply and algorithm for two images and store the result in the first one
@@ -358,3 +394,4 @@ void FloatImage::Resize(unsigned int width, unsigned int height)
 	this->height = height;
 	pixels = new_pixels;
 }
+
