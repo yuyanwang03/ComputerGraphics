@@ -293,6 +293,7 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
     Vector2 dir(dx/d, dy/d);
     for(int i = 0; i < d; ++i){
         // Avoid x or y values out of dimension !!!! negative values
+        // Improve following code
         if (tempX>this->width) tempX = width;
         if (tempY>this->height) tempY = height;
         this->SetPixel(floor(tempX), floor(tempY), c);
@@ -304,27 +305,36 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
 
 void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     int dx, dy, inc_E, inc_NE, d, x, y;
+    // Create a boolean indicator to check if the line is in the 2, 3, 6 or 7 octants
     bool reverse = abs(y1-y0)>abs(x1-x0);
+    // If it is the case, we should swap the definitions of dx and dy
     dx = reverse ? y1-y0 : x1-x0;
     dy = reverse ? x1-x0 : y1-y0;
-    // Change x0 and x1 for them to be increasing; that is, to have x1>x0
+    // Change order of x0 and x1 for them to be increasing; that is, to have x1>x0
     if (dx < 0) {return DrawLineBresenham(x1, y1, x0, y0, c);}
+    // Having increasing x, see if the line has a positive or a negative slope; this is indicated with the orientationHandler
     int orientationHandler = (dy > 0) ? 1 : -1;
+    // Since we already take into account the vertical orientation, dy should take positive value
     dy *= orientationHandler;
     inc_E = 2*dy;
     inc_NE = 2*(dy-dx);
     d = 2*dy - dx;
     x = x0; y = y0;
     this->SetPixel(x0, y0, c);
+    // If the program is drawing in the 2, 3, 6 or 7 octants, it should make a loop with respect y; otherwise, with respect x
     if (reverse){
+        // Iterate respect y
         while (y < y1){
+            // Consider if it should decrease, increase or maintain the same x position
             if (d <= 0) {d += inc_E;}
             else {d += inc_NE; x += orientationHandler;}
             y++;
             this->SetPixel(x, y, c);
         }
     } else {
+        // Iterate respect x
         while (x < x1){
+            // Consider if it should decrease, increase or maintain the same y position
             if (d <= 0) {d += inc_E;}
             else {d += inc_NE; y += orientationHandler;}
             x++;
