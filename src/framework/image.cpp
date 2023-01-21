@@ -296,7 +296,7 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
         // Improve following code
         if (tempX>this->width) tempX = width;
         if (tempY>this->height) tempY = height;
-        this->SetPixel(floor(tempX), floor(tempY), c);
+        this->SetPixelSafe(floor(tempX), floor(tempY), c);
         tempX += dir.x;
         tempY += dir.y;
     }
@@ -329,7 +329,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
             if (d <= 0) {d += inc_E;}
             else {d += inc_NE; x += orientationHandler;}
             y++;
-            this->SetPixel(x, y, c);
+            this->SetPixelSafe(x, y, c);
         }
     } else {
         // Iterate respect x
@@ -338,7 +338,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
             if (d <= 0) {d += inc_E;}
             else {d += inc_NE; y += orientationHandler;}
             x++;
-            this->SetPixel(x, y, c);
+            this->SetPixelSafe(x, y, c);
         }
     }
     return;
