@@ -292,10 +292,7 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
     float d = (float) std::max(abs(dx), abs(dy)); // or add a line "using namespace std"
     Vector2 dir(dx/d, dy/d);
     for(int i = 0; i < d; ++i){
-        // Avoid x or y values out of dimension !!!! negative values
-        // Improve following code
-        if (tempX>this->width) tempX = width;
-        if (tempY>this->height) tempY = height;
+        // Avoid drawing out of the range of the windows
         this->SetPixelSafe(floor(tempX), floor(tempY), c);
         tempX += dir.x;
         tempY += dir.y;
