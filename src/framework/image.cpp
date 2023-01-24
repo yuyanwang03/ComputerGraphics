@@ -128,42 +128,60 @@ void Image::FlipY()
 
 bool Image::LoadPNG(const char* filename, bool flip_y)
 {
-	std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
+    std::string sfullPath = absResPath(filename);
+    std::ifstream file(sfullPath, std::ios::in | std::ios::binary | std::ios::ate);
 
-	// Get filesize
-	std::streamsize size = 0;
-	if (file.seekg(0, std::ios::end).good()) size = file.tellg();
-	if (file.seekg(0, std::ios::beg).good()) size -= file.tellg();
+    // Get filesize
+    std::streamsize size = 0;
+    if (file.seekg(0, std::ios::end).good()) size = file.tellg();
+    if (file.seekg(0, std::ios::beg).good()) size -= file.tellg();
 
-	if (!size)
-		return false;
+    if (!size)
+        return false;
 
-	std::vector<unsigned char> buffer;
+    std::vector<unsigned char> buffer;
 
-	// Read contents of the file into the vector
-	if (size > 0)
-	{
-		buffer.resize((size_t)size);
-		file.read((char*)(&buffer[0]), size);
-	}
-	else
-		buffer.clear();
+    // Read contents of the file into the vector
+    if (size > 0)
+    {
+        buffer.resize((size_t)size);
+        file.read((char*)(&buffer[0]), size);
+    }
+    else
+        buffer.clear();
 
-	std::vector<unsigned char> out_image;
+    std::vector<unsigned char> out_image;
 
-	if (decodePNG(out_image, width, height, buffer.empty() ? 0 : &buffer[0], (unsigned long)buffer.size(), true) != 0)
-		return false;
+    if (decodePNG(out_image, width, height, buffer.empty() ? 0 : &buffer[0], (unsigned long)buffer.size(), true) != 0)
+        return false;
 
-	size_t bufferSize = out_image.size();
-	pixels = new Color[bufferSize];
-	bytes_per_pixel = bufferSize / (width * height);
-	memcpy(pixels, &out_image[0], bufferSize);
+    size_t bufferSize = out_image.size();
+    unsigned int originalBytesPerPixel = (unsigned int)bufferSize / (width * height);
+    
+    // Force 3 channels
+    bytes_per_pixel = 3;
 
-	// Flip pixels in Y
-	if (flip_y)
-		FlipY();
+    if (originalBytesPerPixel == 3) {
+        pixels = new Color[bufferSize];
+        memcpy(pixels, &out_image[0], bufferSize);
+    }
+    else if (originalBytesPerPixel == 4) {
 
-	return true;
+        unsigned int newBufferSize = width * height * bytes_per_pixel;
+        pixels = new Color[newBufferSize];
+
+        unsigned int k = 0;
+        for (unsigned int i = 0; i < bufferSize; i += originalBytesPerPixel) {
+            pixels[k] = Color(out_image[i], out_image[i + 1], out_image[i + 2]);
+            k++;
+        }
+    }
+
+    // Flip pixels in Y
+    if (flip_y)
+        FlipY();
+
+    return true;
 }
 
 // Loads an image from a TGA file
@@ -358,10 +376,23 @@ void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
     for (int i=x; i<image.width; i++){
         for (int j=y; j<image.height; j++){
             this->SetPixelSafe(i, j, image.pixels[i*j]);
-            // std::cout << i << " " << j << " " << image.pixels[i*j].r << image.pixels[i*j].g << image.pixels[i*j].b << std::endl;
+            std::cout << i << " " << j << " " << image.pixels[i*j].r << image.pixels[i*j].g << image.pixels[i*j].b << std::endl;
         }
     }
     if (top) {this->FlipY();}
+    
+    
+    /*
+    Image toolbar{Image()};
+    int status = toolbar.LoadPNG("../../res/images/toolbar.png");
+    for (int i=x; i<toolbar.width; i++){
+        for (int j=y; j<toolbar.height; j++){
+            this->SetPixelSafe(i, j, toolbar.pixels[i*j]);
+            // std::cout << i << " " << j << " " << image.pixels[i*j].r << image.pixels[i*j].g << image.pixels[i*j].b << std::endl;
+        }
+    }
+     */
+    
     return;
 }
 

@@ -27,13 +27,12 @@ Application::~Application()
 void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
+    
     Image toolbar{Image()};
-    int status = toolbar.LoadPNG("../../res/images/toolbar.png");
-    std::cout << status << std::endl;
-    status = toolbar.LoadTGA("../../res/images/toolbar.png");
-    std::cout << status << std::endl;
-    this->framebuffer.DrawImagePixels(toolbar, 0, 0, false);
-    toolbar.Render();
+    int status = toolbar.LoadPNG("../res/images/toolbar.png");
+    std::cout << "load PNG: " << status << std::endl;
+    this->framebuffer.DrawImagePixels(toolbar, 0, 0, true);
+    
     this->framebuffer.Render();
 }
 
@@ -43,10 +42,12 @@ void Application::Render(void)
 	// ...
     // Testing the code
     
+    /*
     int centerx = this->window_width / 2;
     int centery = this->window_height / 2;
     framebuffer.Fill(Color::BLACK);
     framebuffer.DrawLineBresenham(centerx, centery, centerx + 200 * cos(time), centery + 200 * sin(time), Color::WHITE);
+    */
     
     /*
     // 1 octant correct
