@@ -379,6 +379,11 @@ void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
             this->SetPixelSafe(i, j, image.pixels[j*image.width + i]);
         }
     }
+    // Adding border lines
+    int margin(5),iconSize(50), numButtons(10);
+    for (unsigned int i =0; i<numButtons; i++){
+        this->DrawRect(margin+i*iconSize, margin, iconSize, iconSize, Color::GRAY);
+    }
     if (top) {this->FlipY();}
     return;
 }
