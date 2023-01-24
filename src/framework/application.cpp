@@ -5,23 +5,23 @@
 
 Application::Application(const char* caption, int width, int height)
 {
-	this->window = createWindow(caption, width, height);
+    this->window = createWindow(caption, width, height);
 
-	int w,h;
-	SDL_GetWindowSize(window,&w,&h);
+    int w,h;
+    SDL_GetWindowSize(window,&w,&h);
 
-	this->mouse_state = 0;
-	this->time = 0.f;
-	this->window_width = w;
-	this->window_height = h;
-	this->keystate = SDL_GetKeyboardState(nullptr);
+    this->mouse_state = 0;
+    this->time = 0.f;
+    this->window_width = w;
+    this->window_height = h;
+    this->keystate = SDL_GetKeyboardState(nullptr);
 
-	this->framebuffer.Resize(w, h);
+    this->framebuffer.Resize(w, h);
 }
 
 Application::~Application()
 {
-	delete keystate;
+    SDL_DestroyWindow(window);
 }
 
 void Application::Init(void)

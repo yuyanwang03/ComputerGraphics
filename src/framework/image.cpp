@@ -287,6 +287,19 @@ bool Image::SaveTGA(const char* filename)
 	return true;
 }
 
+void Image::DrawRect(int x, int y, int w, int h, const Color& c)
+{
+    for (int i = 0; i < w; ++i) {
+        SetPixel(x + i, y, c);
+        SetPixel(x + i, y + h, c);
+    }
+
+    for (int j = 0; j < h; ++j) {
+        SetPixel(x, y + j, c);
+        SetPixel(x + w, y + j, c);
+    }
+}
+
 void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c){
     float dx(x1-x0), dy(y1-y0), tempX(x0), tempY(y0);
     float d = (float) std::max(abs(dx), abs(dy)); // or add a line "using namespace std"
@@ -317,7 +330,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     inc_NE = 2*(dy-dx);
     d = 2*dy - dx;
     x = x0; y = y0;
-    this->SetPixel(x0, y0, c);
+    this->SetPixelSafe(x0, y0, c);
     // If the program is drawing in the 2, 3, 6 or 7 octants, it should make a loop with respect y; otherwise, with respect x
     if (reverse){
         // Iterate respect y
