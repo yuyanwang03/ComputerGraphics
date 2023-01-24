@@ -136,6 +136,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
                 case purple: {mouse_color = Color::PURPLE; break;}
                 case sky_blue: {mouse_color = Color::CYAN; break;}
                 case white: {mouse_color = Color::WHITE; break;}
+                default: {break;}
             }
         }
 	}
@@ -151,14 +152,26 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
+    std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
     if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
         // Avoid drawing on top of the toolbar
-        std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
         if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
             this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
             mouse_prev.set(mouse_position.x, mouse_position.y);
         }
     }
+    /*
+    // draw hover effect
+    if (mouse_position.y < bound.first || mouse_position.y > bound.second){
+        int buttonId = std::ceil(mouse_position.x/50);
+        if (buttonId<=10) {
+            // Adding border lines
+            int margin(5),iconSize(50), numButtons(10);
+            this->framebuffer.DrawRect(margin+(buttonId-1)*iconSize, this->framebuffer.height-margin-iconSize, iconSize, iconSize, Color::WHITE);
+        }
+    }
+     */
+    
 }
 
 void Application::OnFileChanged(const char* filename)
