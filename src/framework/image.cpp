@@ -375,24 +375,10 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
     for (int i=x; i<image.width; i++){
         for (int j=y; j<image.height; j++){
-            this->SetPixelSafe(i, j, image.pixels[i*j]);
-            std::cout << i << " " << j << " " << image.pixels[i*j].r << image.pixels[i*j].g << image.pixels[i*j].b << std::endl;
+            this->SetPixelSafe(i, j, image.pixels[j*image.width + i]);
         }
     }
     if (top) {this->FlipY();}
-    
-    
-    /*
-    Image toolbar{Image()};
-    int status = toolbar.LoadPNG("../../res/images/toolbar.png");
-    for (int i=x; i<toolbar.width; i++){
-        for (int j=y; j<toolbar.height; j++){
-            this->SetPixelSafe(i, j, toolbar.pixels[i*j]);
-            // std::cout << i << " " << j << " " << image.pixels[i*j].r << image.pixels[i*j].g << image.pixels[i*j].b << std::endl;
-        }
-    }
-     */
-    
     return;
 }
 
