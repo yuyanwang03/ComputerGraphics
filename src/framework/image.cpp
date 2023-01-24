@@ -112,18 +112,18 @@ Image Image::GetArea(unsigned int start_x, unsigned int start_y, unsigned int wi
 
 void Image::FlipY()
 {
-	int row_size = bytes_per_pixel * width;
-	Uint8* temp_row = new Uint8[row_size];
+    int row_size = bytes_per_pixel * width;
+    Uint8* temp_row = new Uint8[row_size];
 #pragma omp simd
-	for (int y = 0; y < height * 0.5; y += 1)
-	{
-		Uint8* pos = (Uint8*)pixels + y * row_size;
-		memcpy(temp_row, pos, row_size);
-		Uint8* pos2 = (Uint8*)pixels + (height - y - 1) * row_size;
-		memcpy(pos, pos2, row_size);
-		memcpy(pos2, temp_row, row_size);
-	}
-	delete[] temp_row;
+    for (int y = 0; y < height * 0.5; y += 1)
+    {
+        Uint8* pos = (Uint8*)pixels + y * row_size;
+        memcpy(temp_row, pos, row_size);
+        Uint8* pos2 = (Uint8*)pixels + (height - y - 1) * row_size;
+        memcpy(pos, pos2, row_size);
+        memcpy(pos2, temp_row, row_size);
+    }
+    delete[] temp_row;
 }
 
 bool Image::LoadPNG(const char* filename, bool flip_y)
@@ -269,41 +269,44 @@ bool Image::LoadTGA(const char* filename, bool flip_y)
 // Saves the image to a TGA file
 bool Image::SaveTGA(const char* filename)
 {
-	unsigned char TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    unsigned char TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-	FILE *file = fopen(filename, "wb");
-	if ( file == NULL )
-	{
-		perror("Failed to open file: ");
-		return false;
-	}
+    std::string fullPath = absResPath(filename);
+    FILE *file = fopen(fullPath.c_str(), "wb");
+    if ( file == NULL )
+    {
+        perror("Failed to open file: ");
+        return false;
+    }
 
-	unsigned short header_short[3];
-	header_short[0] = width;
-	header_short[1] = height;
-	unsigned char* header = (unsigned char*)header_short;
-	header[4] = 24;
-	header[5] = 0;
+    unsigned short header_short[3];
+    header_short[0] = width;
+    header_short[1] = height;
+    unsigned char* header = (unsigned char*)header_short;
+    header[4] = 24;
+    header[5] = 0;
 
-	fwrite(TGAheader, 1, sizeof(TGAheader), file);
-	fwrite(header, 1, 6, file);
+    fwrite(TGAheader, 1, sizeof(TGAheader), file);
+    fwrite(header, 1, 6, file);
 
-	// Convert pixels to unsigned char
-	unsigned char* bytes = new unsigned char[width*height*3];
-	for(unsigned int y = 0; y < height; ++y)
-		for(unsigned int x = 0; x < width; ++x)
-		{
-			Color c = pixels[(height-y-1)*width+x];
-			unsigned int pos = (y*width+x)*3;
-			bytes[pos+2] = c.r;
-			bytes[pos+1] = c.g;
-			bytes[pos] = c.b;
-		}
+    // Convert pixels to unsigned char
+    unsigned char* bytes = new unsigned char[width*height*3];
+    for(unsigned int y = 0; y < height; ++y)
+        for(unsigned int x = 0; x < width; ++x)
+        {
+            Color c = pixels[y*width+x];
+            unsigned int pos = (y*width+x)*3;
+            bytes[pos+2] = c.r;
+            bytes[pos+1] = c.g;
+            bytes[pos] = c.b;
+        }
 
-	fwrite(bytes, 1, width*height*3, file);
-	fclose(file);
-	return true;
+    fwrite(bytes, 1, width*height*3, file);
+    fclose(file);
+
+    return true;
 }
+
 
 void Image::DrawRect(int x, int y, int w, int h, const Color& c)
 {
