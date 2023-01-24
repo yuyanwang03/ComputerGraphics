@@ -27,6 +27,14 @@ Application::~Application()
 void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
+    Image toolbar{Image()};
+    int status = toolbar.LoadPNG("../../res/images/toolbar.png");
+    std::cout << status << std::endl;
+    status = toolbar.LoadTGA("../../res/images/toolbar.png");
+    std::cout << status << std::endl;
+    this->framebuffer.DrawImagePixels(toolbar, 0, 0, false);
+    toolbar.Render();
+    this->framebuffer.Render();
 }
 
 // Render one frame

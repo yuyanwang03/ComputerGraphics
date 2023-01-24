@@ -355,6 +355,13 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 }
 
 void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
+    for (int i=x; i<image.width; i++){
+        for (int j=y; j<image.height; j++){
+            this->SetPixelSafe(i, j, image.pixels[i*j]);
+            // std::cout << i << " " << j << " " << image.pixels[i*j].r << image.pixels[i*j].g << image.pixels[i*j].b << std::endl;
+        }
+    }
+    if (top) {this->FlipY();}
     return;
 }
 
