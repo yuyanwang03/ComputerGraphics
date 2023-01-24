@@ -354,6 +354,10 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     return;
 }
 
+void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
+    return;
+}
+
 #ifndef IGNORE_LAMBDAS
 
 // You can apply and algorithm for two images and store the result in the first one

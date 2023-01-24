@@ -77,9 +77,11 @@ public:
 	bool LoadPNG(const char* filename, bool flip_y = false);
 	bool LoadTGA(const char* filename, bool flip_y = false);
 	bool SaveTGA(const char* filename);
+    
+    void DrawRect(int x, int y, int w, int h, const Color& c);
     void DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c);
     void DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c);
-    void DrawRect(int x, int y, int w, int h, const Color& c);
+    void DrawImagePixels(const Image& image, int x, int y, bool top);
 
 	// Used to easy code
 	#ifndef IGNORE_LAMBDAS
