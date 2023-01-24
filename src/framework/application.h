@@ -4,6 +4,7 @@
 
 #pragma once
 
+
 #include "main/includes.h"
 #include "framework.h"
 #include "image.h"
@@ -25,6 +26,7 @@ public:
 	int window_height;
     // Set a attibute to keep track of the mouse color
     Color mouse_color;
+    bool toolbar_top;
 
 	float time;
 
@@ -33,6 +35,7 @@ public:
 	int mouse_state; // Tells which buttons are pressed
 	Vector2 mouse_position; // Last mouse position
 	Vector2 mouse_delta; // Mouse movement in the last frame
+    Vector2 mouse_prev;
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);

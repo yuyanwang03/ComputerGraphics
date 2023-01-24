@@ -10,6 +10,7 @@ Application::Application(const char* caption, int width, int height)
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
 
+    this->toolbar_top = true;
     this->mouse_state = 0;
     // Set default mouse color to white
     this->mouse_color = Color(255, 255, 255);
@@ -34,7 +35,7 @@ void Application::Init(void)
     Image toolbar{Image()};
     int status = toolbar.LoadPNG("../res/images/toolbar.png");
     // Status check
-    if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, false);
+    if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
     else std::cout << "There has been some error loading the toolbar" << std::endl;
     
 }
@@ -108,7 +109,8 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = left_click;
-        std::cout << "mouse state: "<< mouse_state<<std::endl;
+        mouse_prev.set(mouse_position.x, mouse_position.y);
+        // std::cout << "mouse state: "<< mouse_state<<std::endl;
 	}
 }
 
@@ -116,14 +118,19 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = default_free;
-        std::cout << "mouse state: "<< mouse_state<<std::endl;
+        // std::cout << "mouse state: "<< mouse_state<<std::endl;
 	}
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
     if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
-        this->framebuffer.SetPixelSafe(mouse_position.x, mouse_position.y, mouse_color);
+        // Avoid drawing on top of the toolbar
+        std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+        if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+            this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
+            mouse_prev.set(mouse_position.x, mouse_position.y);
+        }
     }
 }
 
