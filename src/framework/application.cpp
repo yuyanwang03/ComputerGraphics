@@ -28,12 +28,13 @@ void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
     
+    // Adding the toolbar to the framebuffer
     Image toolbar{Image()};
     int status = toolbar.LoadPNG("../res/images/toolbar.png");
-    std::cout << "load PNG: " << status << std::endl;
-    this->framebuffer.DrawImagePixels(toolbar, 0, 0, true);
+    // status check
+    if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, true);
+    else std::cout << "There has been some error loading the toolbar" << std::endl;
     
-    this->framebuffer.Render();
 }
 
 // Render one frame

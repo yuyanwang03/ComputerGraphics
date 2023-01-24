@@ -373,6 +373,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 }
 
 void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
+    // Iterate through the pixels and draw these with its colors into their corresponding position
     for (int i=x; i<image.width; i++){
         for (int j=y; j<image.height; j++){
             this->SetPixelSafe(i, j, image.pixels[j*image.width + i]);
