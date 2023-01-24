@@ -11,6 +11,8 @@ Application::Application(const char* caption, int width, int height)
     SDL_GetWindowSize(window,&w,&h);
 
     this->mouse_state = 0;
+    // Set default mouse color to white
+    this->mouse_color = Color(255, 255, 255);
     this->time = 0.f;
     this->window_width = w;
     this->window_height = h;
@@ -105,20 +107,24 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
-
+        mouse_state = left_click;
+        std::cout << "mouse state: "<< mouse_state<<std::endl;
 	}
 }
 
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
-
+        mouse_state = default_free;
+        std::cout << "mouse state: "<< mouse_state<<std::endl;
 	}
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-	
+    if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
+        this->framebuffer.SetPixelSafe(mouse_position.x, mouse_position.y, mouse_color);
+    }
 }
 
 void Application::OnFileChanged(const char* filename)

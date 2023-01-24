@@ -8,6 +8,12 @@
 #include "framework.h"
 #include "image.h"
 
+enum mouse_state{
+    default_free = 0,
+    left_click = 1,
+    right_click = 2
+};
+
 class Application
 {
 public:
@@ -17,6 +23,8 @@ public:
 	SDL_Window* window;
 	int window_width;
 	int window_height;
+    // Set a attibute to keep track of the mouse color
+    Color mouse_color;
 
 	float time;
 
