@@ -20,6 +20,7 @@ Application::Application(const char* caption, int width, int height)
     this->keystate = SDL_GetKeyboardState(nullptr);
 
     this->framebuffer.Resize(w, h);
+    this->empty = Image(this->framebuffer);
 }
 
 Application::~Application()
@@ -109,8 +110,34 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = left_click;
-        mouse_prev.set(mouse_position.x, mouse_position.y);
-        // std::cout << "mouse state: "<< mouse_state<<std::endl;
+        std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+        if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
+        else {
+            int buttonId = std::ceil(mouse_position.x/50);
+            switch(buttonId){
+                case create:
+                    {
+                        this->framebuffer = Image(this->empty);
+                        this->Init();
+                        break;
+                    }
+                case save:
+                    {
+                        char tgaFileName[20] = "SavedDocument.tga";
+                        if (this->framebuffer.SaveTGA(tgaFileName)) {std::cout << "TGA file sucessfully saved as " << tgaFileName << std:: endl; }
+                        else {std::cout << "Error saving TGA file" << std::endl;}
+                        break;
+                    }
+                case black: {mouse_color = Color::BLACK; break;}
+                case red: {mouse_color = Color::RED; break;}
+                case green: {mouse_color = Color::GREEN; break;}
+                case navy_blue: {mouse_color = Color::BLUE; break;}
+                case yellow: {mouse_color = Color::YELLOW; break;}
+                case purple: {mouse_color = Color::PURPLE; break;}
+                case sky_blue: {mouse_color = Color::CYAN; break;}
+                case white: {mouse_color = Color::WHITE; break;}
+            }
+        }
 	}
 }
 

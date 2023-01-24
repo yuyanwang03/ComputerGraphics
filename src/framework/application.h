@@ -15,6 +15,19 @@ enum mouse_state{
     right_click = 2
 };
 
+enum buttonId{
+    create = 1,
+    save = 2,
+    black = 3,
+    red = 4,
+    green = 5,
+    navy_blue = 6,
+    yellow = 7,
+    purple = 8,
+    sky_blue = 9,
+    white = 10
+};
+
 class Application
 {
 public:
@@ -26,6 +39,7 @@ public:
 	int window_height;
     // Set a attibute to keep track of the mouse color
     Color mouse_color;
+    Image empty;
     bool toolbar_top;
 
 	float time;
