@@ -49,6 +49,7 @@ void Application::Update(float seconds_elapsed)
 
 }
 
+// Loads the toolbar to the framebuffer
 bool Application::LoadToolbar(void){
     Image toolbar{Image()};
     int status = toolbar.LoadPNG("../res/images/toolbar.png");
@@ -99,7 +100,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         {
             std::cout << "Section 3.1" << std::endl;
             currentSection = section3_1;
-            this->framebuffer = Image(this->empty);
             mouse_prev.set(-1, -1);
             break;
         }
@@ -107,7 +107,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         {
             std::cout << "Section 3.2" << std::endl;
             currentSection = section3_2;
-            this->framebuffer = Image(this->empty);
             mouse_prev.set(-1, -1);
             break;
         }
@@ -115,7 +114,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         {
             std::cout << "Section 3.3" << std::endl;
             currentSection = section3_3;
-            this->framebuffer = Image(this->empty);
             mouse_prev.set(-1, -1);
             break;
         }
@@ -123,9 +121,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         {
             std::cout << "Section 3.4" << std::endl;
             currentSection = section3_4;
-            this->framebuffer = Image(this->empty);
             mouse_prev.set(-1, -1);
-            this->has_toolbar = false;
             break;
         }
         case SDLK_5: // key 5, execute section 3.5
@@ -133,10 +129,9 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             std::cout << "Section 3.5" << std::endl;
             currentSection = section3_5;
             this->framebuffer = Image(this->empty);
-            mouse_prev.set(-1, -1);
             break;
         }
-        case SDLK_t:
+        case SDLK_t: // t meaning top
         {
             if (this->currentSection == section3_4) {
                 this->toolbar_top = true;
@@ -147,7 +142,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             }
             break;
         }
-        case SDLK_b:
+        case SDLK_b: // b meaning bottom
         {
             if (this->currentSection == section3_4) {
                 this->toolbar_top = false;
@@ -157,6 +152,13 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
                 has_toolbar = this->LoadToolbar();
             }
             break;
+        }
+        case SDLK_c: // c meaning clean the framebuffer/ clean the windows
+        {
+            if (currentSection==section3_4 || currentSection==section3_5) {break;}
+            this->framebuffer = Image(this->empty);
+            mouse_prev.set(-1, -1);
+            this->has_toolbar = false;
         }
 	}
 }
@@ -169,6 +171,14 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
         {
             case section3_1:
             {
+                if (has_toolbar) {
+                    std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+                    if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+                        int buttonId = std::floor(mouse_position.x/50)+1;
+                        this->ProceedToolbarFunction(buttonId);
+                        break;
+                    }
+                }
                 if (mouse_prev.x == -1 || mouse_prev.y == -1) {mouse_prev.set(mouse_position.x, mouse_position.y);}
                 else{
                     this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
@@ -178,6 +188,14 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
             }
             case section3_2:
             {
+                if (has_toolbar) {
+                    std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+                    if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+                        int buttonId = std::floor(mouse_position.x/50)+1;
+                        this->ProceedToolbarFunction(buttonId);
+                        break;
+                    }
+                }
                 if (mouse_prev.x == -1 || mouse_prev.y == -1) {mouse_prev.set(mouse_position.x, mouse_position.y);}
                 else{
                     this->framebuffer.DrawLineBresenham(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
@@ -192,13 +210,14 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
             }
             case section3_4:
             {
-                if (!has_toolbar) {break;}
-                std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
-                if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
-                else {
-                    int buttonId = std::floor(mouse_position.x/50)+1;
-                    this->ProceedToolbarFunction(buttonId);
-                }
+                if (has_toolbar) {
+                    std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+                    if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
+                    else {
+                        int buttonId = std::floor(mouse_position.x/50)+1;
+                        this->ProceedToolbarFunction(buttonId);
+                    }
+                } else {mouse_prev.set(mouse_position.x, mouse_position.y);}
             }
             case section3_5:
             {
@@ -219,11 +238,15 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-    if (currentSection==section3_4 && has_toolbar){
-        std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
-        if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
-            // Avoid drawing on top of the toolbar
-            if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+    if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
+        if (currentSection==section3_4){
+            if (has_toolbar){
+                std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+                if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+                    this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
+                    mouse_prev.set(mouse_position.x, mouse_position.y);
+                }
+            } else{
                 this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
                 mouse_prev.set(mouse_position.x, mouse_position.y);
             }
