@@ -10,19 +10,20 @@ Application::Application(const char* caption, int width, int height)
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
 
-    this->toolbar_top = false;
-    this->has_toolbar = false;
-    this->currentSection = section3_1;
-    this->mouse_prev.set(-1,-1);
-    this->mouse_state = 0;
-    // Set default mouse color to white
-    this->mouse_color = Color(255, 255, 255);
+    this->has_toolbar = false; // Application initializes without having a toolbar
+    this->toolbar_top = false; // Setting default value for the toolbar_top
+    this->currentSection = section3_1; // Application initializes itself in section3.1, that is, allowing user to draw straight lines with DDA method
+    this->mouse_prev.set(-1,-1); // Set the mouse_prev position to (-1,-1) to indicate that it has no record stored in it
+    this->mouse_state = default_free; // Set the mouse_state to default_free, indicating that the user is not clicking on the mouse
+    this->mouse_color = Color(255, 255, 255); // Set default mouse color to white
+    
     this->time = 0.f;
     this->window_width = w;
     this->window_height = h;
     this->keystate = SDL_GetKeyboardState(nullptr);
 
     this->framebuffer.Resize(w, h);
+    // Create a copy of the starting framebuffer
     this->empty = Image(this->framebuffer);
 }
 
@@ -49,7 +50,7 @@ void Application::Update(float seconds_elapsed)
 
 }
 
-// Loads the toolbar to the framebuffer
+// Loads the toolbar to the framebuffer, return true if success, false otherwise
 bool Application::LoadToolbar(void){
     Image toolbar{Image()};
     int status = toolbar.LoadPNG("../res/images/toolbar.png");
@@ -170,6 +171,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
         {
             case section3_1:
             {
+                // Prohibit the user to draw on the toolbar if the program has one && Proceed the toolbar corresponding funcionality if pressed on its icons
                 if (has_toolbar) {
                     std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
                     if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
@@ -187,6 +189,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
             }
             case section3_2:
             {
+                // Prohibit the user to draw on the toolbar if the program has one && Proceed the toolbar corresponding funcionality if pressed on its icons
                 if (has_toolbar) {
                     std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
                     if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
@@ -231,7 +234,6 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = default_free;
-        // std::cout << "mouse state: "<< mouse_state<<std::endl;
 	}
 }
 
@@ -239,6 +241,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
     if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
         if (currentSection==section3_4){
+            // Prohibit the user to draw on the toolbar
             if (has_toolbar){
                 std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
                 if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
