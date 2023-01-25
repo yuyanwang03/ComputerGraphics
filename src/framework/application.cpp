@@ -171,7 +171,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
         {
             case section3_1:
             {
-                // Prohibit the user to draw on the toolbar if the program has one && Proceed the toolbar corresponding funcionality if pressed on its icons
+                // Prevent the user from drawing on the toolbar if the program has one && proceed the toolbar corresponding funcionality if pressed on its icons
                 if (has_toolbar) {
                     std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
                     if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
@@ -189,7 +189,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
             }
             case section3_2:
             {
-                // Prohibit the user to draw on the toolbar if the program has one && Proceed the toolbar corresponding funcionality if pressed on its icons
+                // Prevent the user from drawing on the toolbar if the program has one && proceed the toolbar corresponding funcionality if pressed on its icons
                 if (has_toolbar) {
                     std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
                     if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
@@ -241,7 +241,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
     if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
         if (currentSection==section3_4){
-            // Prohibit the user to draw on the toolbar
+            // Prevent the user to draw on the toolbar
             if (has_toolbar){
                 std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
                 if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
