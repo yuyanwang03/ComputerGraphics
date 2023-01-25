@@ -49,27 +49,33 @@ void Application::Update(float seconds_elapsed)
 
 }
 
+bool Application::LoadToolbar(void){
+    Image toolbar{Image()};
+    int status = toolbar.LoadPNG("../res/images/toolbar.png");
+    // Status check
+    if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, this->toolbar_top); return true;}
+    return false;
+}
+
+// Gets the ID of the button and proceeds a change (if the button exists) through the application
 void Application::ProceedToolbarFunction(int ButtonID){
     switch(ButtonID){
-        case create:
+        case create: // Create a new file; that is, setting the current framebuffer to empty
         {
             this->has_toolbar = false;
             this->framebuffer = Image(this->empty);
             // Adding the toolbar to the framebuffer
-            Image toolbar{Image()};
-            int status = toolbar.LoadPNG("../res/images/toolbar.png");
-            // Status check
-            if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top); has_toolbar = true;}
-            else std::cout << "There has been some error loading the toolbar" << std::endl;
+            has_toolbar = this->LoadToolbar();
             break;
         }
-        case save:
+        case save: // Save the file (drawing) with name "SavedDocument.tga" locally
         {
             char tgaFileName[20] = "SavedDocument.tga";
             if (this->framebuffer.SaveTGA(tgaFileName)) {std::cout << "TGA file sucessfully saved as " << tgaFileName << std:: endl; }
             else {std::cout << "Error saving TGA file" << std::endl;}
             break;
         }
+        // Change current mouse_color
         case black: {mouse_color = Color::BLACK; break;}
         case red: {mouse_color = Color::RED; break;}
         case green: {mouse_color = Color::GREEN; break;}
@@ -137,11 +143,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
                 // Clean the frame buffer
                 this->framebuffer = Image(this->empty);
                 // Adding the toolbar to the framebuffer
-                Image toolbar{Image()};
-                int status = toolbar.LoadPNG("../res/images/toolbar.png");
-                // Status check
-                if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top); has_toolbar=true;}
-                else std::cout << "There has been some error loading the toolbar" << std::endl;
+                has_toolbar = this->LoadToolbar();
             }
             break;
         }
@@ -152,11 +154,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
                 // Clean the frame buffer
                 this->framebuffer = Image(this->empty);
                 // Adding the toolbar to the framebuffer
-                Image toolbar{Image()};
-                int status = toolbar.LoadPNG("../res/images/toolbar.png");
-                // Status check
-                if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top); has_toolbar=true;}
-                else std::cout << "There has been some error loading the toolbar" << std::endl;
+                has_toolbar = this->LoadToolbar();
             }
             break;
         }

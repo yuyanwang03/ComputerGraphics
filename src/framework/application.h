@@ -61,6 +61,7 @@ public:
 	Vector2 mouse_delta; // Mouse movement in the last frame
     Vector2 mouse_prev;
 
+    bool LoadToolbar(void);
     void ProceedToolbarFunction(int ButtonID);
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
