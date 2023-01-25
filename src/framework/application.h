@@ -49,6 +49,7 @@ public:
     Color mouse_color;
     Image empty;
     bool toolbar_top;
+    bool has_toolbar;
     int currentSection;
     
 	float time;

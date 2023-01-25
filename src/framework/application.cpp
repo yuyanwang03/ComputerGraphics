@@ -11,6 +11,7 @@ Application::Application(const char* caption, int width, int height)
     SDL_GetWindowSize(window,&w,&h);
 
     this->toolbar_top = false;
+    this->has_toolbar = false;
     this->currentSection = section3_1;
     this->mouse_state = 0;
     // Set default mouse color to white
@@ -136,7 +137,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
                 Image toolbar{Image()};
                 int status = toolbar.LoadPNG("../res/images/toolbar.png");
                 // Status check
-                if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
+                if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top); has_toolbar=true;}
                 else std::cout << "There has been some error loading the toolbar" << std::endl;
             }
             break;
@@ -151,7 +152,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
                 Image toolbar{Image()};
                 int status = toolbar.LoadPNG("../res/images/toolbar.png");
                 // Status check
-                if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
+                if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top); has_toolbar=true;}
                 else std::cout << "There has been some error loading the toolbar" << std::endl;
             }
             break;
@@ -163,7 +164,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = left_click;
-        if (currentSection==section3_3){
+        if (currentSection==section3_3 && has_toolbar){
             std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
             if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
             else {
@@ -171,12 +172,13 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
                 switch(buttonId){
                     case create:
                     {
+                        this->has_toolbar = false;
                         this->framebuffer = Image(this->empty);
                         // Adding the toolbar to the framebuffer
                         Image toolbar{Image()};
                         int status = toolbar.LoadPNG("../res/images/toolbar.png");
                         // Status check
-                        if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
+                        if (status) {this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top); has_toolbar = true;}
                         else std::cout << "There has been some error loading the toolbar" << std::endl;
                         break;
                     }
@@ -212,7 +214,7 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-    if (currentSection==section3_3){
+    if (currentSection==section3_3 && has_toolbar){
         std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
         if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
             // Avoid drawing on top of the toolbar
