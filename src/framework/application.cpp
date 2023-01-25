@@ -113,7 +113,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
         std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
         if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
         else {
-            int buttonId = std::ceil(mouse_position.x/50);
+            int buttonId = std::floor(mouse_position.x/50)+1;
             switch(buttonId){
                 case create:
                     {
@@ -163,14 +163,14 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
     /*
     // draw hover effect
     if (mouse_position.y < bound.first || mouse_position.y > bound.second){
-        int buttonId = std::ceil(mouse_position.x/50);
+        int buttonId = std::floor(mouse_position.x/50)+1;
         if (buttonId<=10) {
             // Adding border lines
             int margin(5),iconSize(50), numButtons(10);
             this->framebuffer.DrawRect(margin+(buttonId-1)*iconSize, this->framebuffer.height-margin-iconSize, iconSize, iconSize, Color::WHITE);
         }
     }
-     */
+    */
     
 }
 
