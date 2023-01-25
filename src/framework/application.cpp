@@ -155,7 +155,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         }
         case SDLK_c: // c meaning clean the framebuffer/ clean the windows
         {
-            if (currentSection==section3_4 || currentSection==section3_5) {break;}
             this->framebuffer = Image(this->empty);
             mouse_prev.set(-1, -1);
             this->has_toolbar = false;
