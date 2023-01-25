@@ -224,18 +224,6 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
             }
         }
     }
-    /*
-    // draw hover effect
-    if (mouse_position.y < bound.first || mouse_position.y > bound.second){
-        int buttonId = std::floor(mouse_position.x/50)+1;
-        if (buttonId<=10) {
-            // Adding border lines
-            int margin(5),iconSize(50), numButtons(10);
-            this->framebuffer.DrawRect(margin+(buttonId-1)*iconSize, this->framebuffer.height-margin-iconSize, iconSize, iconSize, Color::WHITE);
-        }
-    }
-    */
-    
 }
 
 void Application::OnFileChanged(const char* filename)
