@@ -28,6 +28,14 @@ enum buttonId{
     white = 10
 };
 
+enum workingSection{
+    section3_1 = 1,
+    section3_2 = 2,
+    section3_3 = 3,
+    section3_4 = 4,
+    section3_5 = 5
+};
+
 class Application
 {
 public:
@@ -41,7 +49,8 @@ public:
     Color mouse_color;
     Image empty;
     bool toolbar_top;
-
+    int currentSection;
+    
 	float time;
 
 	// Input

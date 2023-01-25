@@ -10,7 +10,8 @@ Application::Application(const char* caption, int width, int height)
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
 
-    this->toolbar_top = true;
+    this->toolbar_top = false;
+    this->currentSection = section3_1;
     this->mouse_state = 0;
     // Set default mouse color to white
     this->mouse_color = Color(255, 255, 255);
@@ -31,14 +32,6 @@ Application::~Application()
 void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
-    
-    // Adding the toolbar to the framebuffer
-    Image toolbar{Image()};
-    int status = toolbar.LoadPNG("../res/images/toolbar.png");
-    // Status check
-    if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
-    else std::cout << "There has been some error loading the toolbar" << std::endl;
-    
 }
 
 // Render one frame
@@ -102,7 +95,67 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 {
 	// KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
 	switch(event.keysym.sym) {
-		case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
+        case SDLK_ESCAPE: {exit(0); break;} // ESC key, kill the app
+        case SDLK_1:
+        {
+            std::cout << "Section 3.1" << std::endl;
+            currentSection = section3_1;
+            break; // 1 key, execute section 3.1
+        }
+        case SDLK_2:
+        {
+            std::cout << "Section 3.2" << std::endl;
+            currentSection = section3_2;
+            break;
+        }
+        case SDLK_3:
+        {
+            std::cout << "Section 3.3" << std::endl;
+            currentSection = section3_3;
+            break;
+        }
+        case SDLK_4:
+        {
+            std::cout << "Section 3.4" << std::endl;
+            currentSection = section3_4;
+            break;
+        }
+        case SDLK_5:
+        {
+            std::cout << "Section 3.5" << std::endl;
+            currentSection = section3_5;
+            break;
+        }
+        case SDLK_t:
+        {
+            if (this->currentSection == section3_3) {
+                this->toolbar_top = true;
+                // Clean the frame buffer
+                this->framebuffer = Image(this->empty);
+                // Adding the toolbar to the framebuffer
+                Image toolbar{Image()};
+                int status = toolbar.LoadPNG("../res/images/toolbar.png");
+                // Status check
+                if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
+                else std::cout << "There has been some error loading the toolbar" << std::endl;
+            }
+            break;
+        }
+        case SDLK_b:
+        {
+            if (this->currentSection == section3_3) {
+                this->toolbar_top = false;
+                // Clean the frame buffer
+                this->framebuffer = Image(this->empty);
+                // Adding the toolbar to the framebuffer
+                Image toolbar{Image()};
+                int status = toolbar.LoadPNG("../res/images/toolbar.png");
+                // Status check
+                if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
+                else std::cout << "There has been some error loading the toolbar" << std::endl;
+            }
+            break;
+        }
 	}
 }
 
@@ -110,33 +163,40 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = left_click;
-        std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
-        if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
-        else {
-            int buttonId = std::floor(mouse_position.x/50)+1;
-            switch(buttonId){
-                case create:
+        if (currentSection==section3_3){
+            std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+            if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {mouse_prev.set(mouse_position.x, mouse_position.y);}
+            else {
+                int buttonId = std::floor(mouse_position.x/50)+1;
+                switch(buttonId){
+                    case create:
                     {
                         this->framebuffer = Image(this->empty);
-                        this->Init();
+                        // Adding the toolbar to the framebuffer
+                        Image toolbar{Image()};
+                        int status = toolbar.LoadPNG("../res/images/toolbar.png");
+                        // Status check
+                        if (status) this->framebuffer.DrawImagePixels(toolbar, 0, 0, toolbar_top);
+                        else std::cout << "There has been some error loading the toolbar" << std::endl;
                         break;
                     }
-                case save:
+                    case save:
                     {
                         char tgaFileName[20] = "SavedDocument.tga";
                         if (this->framebuffer.SaveTGA(tgaFileName)) {std::cout << "TGA file sucessfully saved as " << tgaFileName << std:: endl; }
                         else {std::cout << "Error saving TGA file" << std::endl;}
                         break;
                     }
-                case black: {mouse_color = Color::BLACK; break;}
-                case red: {mouse_color = Color::RED; break;}
-                case green: {mouse_color = Color::GREEN; break;}
-                case navy_blue: {mouse_color = Color::BLUE; break;}
-                case yellow: {mouse_color = Color::YELLOW; break;}
-                case purple: {mouse_color = Color::PURPLE; break;}
-                case sky_blue: {mouse_color = Color::CYAN; break;}
-                case white: {mouse_color = Color::WHITE; break;}
-                default: {break;}
+                    case black: {mouse_color = Color::BLACK; break;}
+                    case red: {mouse_color = Color::RED; break;}
+                    case green: {mouse_color = Color::GREEN; break;}
+                    case navy_blue: {mouse_color = Color::BLUE; break;}
+                    case yellow: {mouse_color = Color::YELLOW; break;}
+                    case purple: {mouse_color = Color::PURPLE; break;}
+                    case sky_blue: {mouse_color = Color::CYAN; break;}
+                    case white: {mouse_color = Color::WHITE; break;}
+                    default: {break;}
+                }
             }
         }
 	}
@@ -152,12 +212,14 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-    std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
-    if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
-        // Avoid drawing on top of the toolbar
-        if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
-            this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
-            mouse_prev.set(mouse_position.x, mouse_position.y);
+    if (currentSection==section3_3){
+        std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+        if (mouse_state == left_click && event.button == SDL_BUTTON_LEFT){
+            // Avoid drawing on top of the toolbar
+            if (!(mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+                this->framebuffer.DrawLineDDA(mouse_prev.x, mouse_prev.y, mouse_position.x, mouse_position.y, mouse_color);
+                mouse_prev.set(mouse_position.x, mouse_position.y);
+            }
         }
     }
     /*
