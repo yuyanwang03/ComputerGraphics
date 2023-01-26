@@ -92,7 +92,7 @@ public:
                 particles[i].position.set(rand()%app->window_width, rand()%app->window_height);
                 particles[i].direction = Vector2(1, 0);
                 particles[i].color.Random();
-                particles[i].size = 2;
+                particles[i].size = 1 + rand()%6;
                 particles[i].velocity = 30 + rand()%60;
             }
         }
@@ -106,7 +106,7 @@ public:
         void Render(){
             app->framebuffer.Fill(Color::BLACK);
             for (int i=0; i<numParticles; i++){
-                app->framebuffer.SetPixelSafe(particles[i].position.x, particles[i].position.y, particles[i].color);
+                app->framebuffer.DrawCircle(particles[i].position.x, particles[i].position.y, particles[i].size, particles[i].color, true);
             }
         }
     };

@@ -395,8 +395,8 @@ void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
         this->SetPixelSafe(x0 + y, y0 - x, c);
         this->SetPixelSafe(x0 - y, y0 - x, c);
         if (fill) {
-            for (int i = x0 - x; i <= x0 + x; i++) { SetPixel(i, y0 + y, c); SetPixel(i, y0 - y, c);}
-            for (int i = x0 - y; i <= x0 + y; i++) { SetPixel(i, y0 + x, c); SetPixel(i, y0 - x, c);}
+            for (int i = x0 - x; i <= x0 + x; i++) { SetPixelSafe(i, y0 + y, c); SetPixelSafe(i, y0 - y, c);}
+            for (int i = x0 - y; i <= x0 + y; i++) { SetPixelSafe(i, y0 + x, c); SetPixelSafe(i, y0 - x, c);}
         }
     }
     return;
