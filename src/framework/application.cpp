@@ -10,6 +10,7 @@ Application::Application(const char* caption, int width, int height) : animation
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
 
+    this->circleFill = false;
     this->has_toolbar = false; // Application initializes without having a toolbar
     this->toolbar_top = false; // Setting default value for the toolbar_top
     this->currentSection = section3_1; // Application initializes itself in section3.1, that is, allowing user to draw straight lines with DDA method
@@ -124,7 +125,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             if (currentSection == section3_5) {this->SetToDefault();}
             currentSection = section3_3;
             mouse_prev.set(-1, -1);
-            framebuffer.DrawCircle(400, 400, 50, Color::RED, true);
             break;
         }
         case SDLK_4: // key 4, execute section 3.4
@@ -144,6 +144,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             animation.Render();
             break;
         }
+        case SDLK_f: {if(this->currentSection==section3_3) this->circleFill=true; break;}
+        case SDLK_u: {if(this->currentSection==section3_3) this->circleFill=false; break;}
         case SDLK_t: // t meaning top
         {
             if (this->currentSection == section3_4) {
@@ -214,7 +216,20 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
             }
             case section3_3:
             {
-                // To fill
+                // Prevent the user from drawing on the toolbar if the program has one && proceed the toolbar corresponding funcionality if pressed on its icons
+                if (has_toolbar) {
+                    std::pair<int, int> bound = toolbar_top ? std::make_pair(0, this->framebuffer.height-64) : std::make_pair(64, this->framebuffer.height);
+                    if ((mouse_position.y < bound.first || mouse_position.y > bound.second)) {
+                        int buttonId = std::floor(mouse_position.x/50)+1;
+                        this->ProceedToolbarFunction(buttonId);
+                        break;
+                    }
+                }
+                if (mouse_prev.x == -1 || mouse_prev.y == -1) {mouse_prev.set(mouse_position.x, mouse_position.y);}
+                else{
+                    this->framebuffer.DrawCircle(mouse_prev.x, mouse_prev.y, mouse_prev.Distance(mouse_position), mouse_color, circleFill);
+                    mouse_prev.set(-1, -1);
+                }
                 break;
             }
             case section3_4:

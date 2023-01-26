@@ -47,6 +47,7 @@ public:
 	int window_height;
     // Set a attibute to keep track of the mouse color
     Color mouse_color;
+    bool circleFill;
     bool toolbar_top;
     bool has_toolbar;
     int currentSection;
