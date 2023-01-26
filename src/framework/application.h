@@ -89,19 +89,19 @@ public:
         void Init(int n) {
             numParticles = n; particles = new Particle[numParticles];
             for (int i=0; i<numParticles; i++){
-                particles[i].position.Random((std::min(app->window_width, app->window_height)));
+                particles[i].position.set(rand()%app->window_width, rand()%app->window_height);
                 particles[i].direction = Vector2(1, 0);
                 particles[i].color.Random();
                 particles[i].size = 2;
-                particles[i].velocity = 1 + rand()%4;
+                particles[i].velocity = 30 + rand()%60;
             }
         }
         void Update(float t) {
             for (int i=0; i<numParticles; i++){
                 particles[i].position.x += particles[i].direction.x * particles[i].velocity * t;
-                particles[i].position.set(particles[i].position.x+ particles[i].direction.x*t, particles[i].position.y+ particles[i].direction.y*t);
-                if (particles[i].position.x <0) particles[i].position.Random((std::min(app->window_width, app->window_height)/2));
+                if (particles[i].position.x > app->window_width || particles[i].position.y > app->window_height) {particles[i].position.set(1, rand()%app->window_height);}
             }
+            this->Render();
         }
         void Render(){
             app->framebuffer.Fill(Color::BLACK);
