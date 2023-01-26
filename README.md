@@ -59,6 +59,8 @@ The user will have ilimited times to click on 'b' or 't', that is, being able to
 
 The program will react to this character type no matter the current section it is working on. This will erase all the modifications done by the user to the windows (drawing on it or loading a toolbar). Its functionality is similar to the first button of the toolbar but the difference is that this clean can be done in any time and that it erases the toolbar.
 
+However, it will not clean the animation displayed if the user is in the section3_5.
+
 ### **Key "esc"**
 
 The windows created when running the program will be closed; that is equivalent to the end of execution.
