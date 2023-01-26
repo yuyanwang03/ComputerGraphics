@@ -3,7 +3,7 @@
 #include "shader.h"
 #include "utils.h" 
 
-Application::Application(const char* caption, int width, int height)
+Application::Application(const char* caption, int width, int height) : animation(this)
 {
     this->window = createWindow(caption, width, height);
 
@@ -47,7 +47,7 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-
+    // if (currentSection == section3_5) {this->animation.Update(seconds_elapsed);}
 }
 
 // Loads the toolbar to the framebuffer, return true if success, false otherwise
@@ -91,6 +91,13 @@ void Application::ProceedToolbarFunction(int ButtonID){
     return;
 }
 
+void Application::SetToDefault(void){
+    this->framebuffer = Image(this->empty);
+    mouse_prev.set(-1, -1);
+    this->has_toolbar = false;
+    return;
+}
+
 //keyboard press event 
 void Application::OnKeyPressed( SDL_KeyboardEvent event )
 {
@@ -100,6 +107,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_1: // key 1, execute section 3.1
         {
             std::cout << "Section 3.1" << std::endl;
+            if (currentSection == section3_5) {this->SetToDefault();}
             currentSection = section3_1;
             mouse_prev.set(-1, -1);
             break;
@@ -107,6 +115,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_2: // key 2, execute section 3.2
         {
             std::cout << "Section 3.2" << std::endl;
+            if (currentSection == section3_5) {this->SetToDefault();}
             currentSection = section3_2;
             mouse_prev.set(-1, -1);
             break;
@@ -114,6 +123,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_3: // key 3, execute section 3.3
         {
             std::cout << "Section 3.3" << std::endl;
+            if (currentSection == section3_5) {this->SetToDefault();}
             currentSection = section3_3;
             mouse_prev.set(-1, -1);
             break;
@@ -121,6 +131,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_4: // key 4, execute section 3.4
         {
             std::cout << "Section 3.4" << std::endl;
+            if (currentSection == section3_5) {this->SetToDefault();}
             currentSection = section3_4;
             mouse_prev.set(-1, -1);
             break;
@@ -130,6 +141,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             std::cout << "Section 3.5" << std::endl;
             currentSection = section3_5;
             this->framebuffer = Image(this->empty);
+            animation.Init(300);
+            animation.Render();
             break;
         }
         case SDLK_t: // t meaning top
@@ -154,12 +167,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             }
             break;
         }
-        case SDLK_c: // c meaning clean the framebuffer/ clean the windows
-        {
-            this->framebuffer = Image(this->empty);
-            mouse_prev.set(-1, -1);
-            this->has_toolbar = false;
-        }
+        case SDLK_c: {this->SetToDefault();}
 	}
 }
 
@@ -223,7 +231,6 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
             }
             case section3_5:
             {
-                // To fill
                 break;
             }
         }

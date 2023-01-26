@@ -63,6 +63,7 @@ public:
 
     bool LoadToolbar(void);
     void ProceedToolbarFunction(int ButtonID);
+    void SetToDefault(void);
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
 	void OnMouseButtonUp(SDL_MouseButtonEvent event);
@@ -71,7 +72,46 @@ public:
 
 	// CPU Global framebuffer
 	Image framebuffer;
-
+    
+    struct Particle{
+        Vector2 position;
+        Vector2 direction;
+        int size;
+        float velocity;
+        Color color;
+    };
+    
+    class ParticleSystem{
+        int numParticles;
+        Particle* particles;
+        Application* app;
+        public:
+        ParticleSystem(Application* a) {app = a;}
+        void Init(int n) {
+            numParticles = n; particles = new Particle[numParticles];
+            for (int i=0; i<numParticles; i++){
+                particles[i].position.Random((std::min(app->window_width, app->window_height)));
+                particles[i].direction = Vector2(1, 0);
+                particles[i].color.Random();
+                particles[i].size = 2;
+                particles[i].velocity = 1 + rand()%4;
+            }
+        }
+        void Update(float t) {
+            for (int i=0; i<numParticles; i++){
+                particles[i].position.set(particles[i].position.x+ particles[i].direction.x*t, particles[i].position.y+ particles[i].direction.y*t);
+                if (particles[i].position.x <0) particles[i].position.Random((std::min(app->window_width, app->window_height)/2));
+            }
+        }
+        void Render(){
+            for (int i=0; i<numParticles; i++){
+                app->framebuffer.SetPixelSafe(particles[i].position.x, particles[i].position.y, particles[i].color);
+            }
+        }
+    };
+    
+    ParticleSystem animation;
+    
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
 	~Application();
