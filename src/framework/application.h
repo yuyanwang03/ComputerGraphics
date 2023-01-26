@@ -47,7 +47,6 @@ public:
 	int window_height;
     // Set a attibute to keep track of the mouse color
     Color mouse_color;
-    Image empty;
     bool toolbar_top;
     bool has_toolbar;
     int currentSection;
@@ -99,11 +98,13 @@ public:
         }
         void Update(float t) {
             for (int i=0; i<numParticles; i++){
+                particles[i].position.x += particles[i].direction.x * particles[i].velocity * t;
                 particles[i].position.set(particles[i].position.x+ particles[i].direction.x*t, particles[i].position.y+ particles[i].direction.y*t);
                 if (particles[i].position.x <0) particles[i].position.Random((std::min(app->window_width, app->window_height)/2));
             }
         }
         void Render(){
+            app->framebuffer.Fill(Color::BLACK);
             for (int i=0; i<numParticles; i++){
                 app->framebuffer.SetPixelSafe(particles[i].position.x, particles[i].position.y, particles[i].color);
             }

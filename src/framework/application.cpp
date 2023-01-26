@@ -23,8 +23,6 @@ Application::Application(const char* caption, int width, int height) : animation
     this->keystate = SDL_GetKeyboardState(nullptr);
 
     this->framebuffer.Resize(w, h);
-    // Create a copy of the starting framebuffer
-    this->empty = Image(this->framebuffer);
 }
 
 Application::~Application()
@@ -47,7 +45,7 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    // if (currentSection == section3_5) {this->animation.Update(seconds_elapsed);}
+    if (currentSection == section3_5) {this->animation.Update(seconds_elapsed);}
 }
 
 // Loads the toolbar to the framebuffer, return true if success, false otherwise
@@ -62,10 +60,10 @@ bool Application::LoadToolbar(void){
 // Gets the ID of the button and proceeds a change (if the button exists) through the application
 void Application::ProceedToolbarFunction(int ButtonID){
     switch(ButtonID){
-        case create: // Create a new file; that is, setting the current framebuffer to empty
+        case create: // Create a new file; that is, setting fill the current framebuffer black
         {
             this->has_toolbar = false;
-            this->framebuffer = Image(this->empty);
+            this->framebuffer.Fill(Color::BLACK);
             // Adding the toolbar to the framebuffer
             has_toolbar = this->LoadToolbar();
             break;
@@ -92,7 +90,7 @@ void Application::ProceedToolbarFunction(int ButtonID){
 }
 
 void Application::SetToDefault(void){
-    this->framebuffer = Image(this->empty);
+    this->framebuffer.Fill(Color::BLACK);
     mouse_prev.set(-1, -1);
     this->has_toolbar = false;
     return;
@@ -140,7 +138,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         {
             std::cout << "Section 3.5" << std::endl;
             currentSection = section3_5;
-            this->framebuffer = Image(this->empty);
+            this->framebuffer.Fill(Color::BLACK);
             animation.Init(300);
             animation.Render();
             break;
@@ -150,7 +148,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             if (this->currentSection == section3_4) {
                 this->toolbar_top = true;
                 // Clean the frame buffer
-                this->framebuffer = Image(this->empty);
+                this->framebuffer.Fill(Color::BLACK);
                 // Adding the toolbar to the framebuffer
                 has_toolbar = this->LoadToolbar();
             }
@@ -161,7 +159,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             if (this->currentSection == section3_4) {
                 this->toolbar_top = false;
                 // Clean the frame buffer
-                this->framebuffer = Image(this->empty);
+                this->framebuffer.Fill(Color::BLACK);
                 // Adding the toolbar to the framebuffer
                 has_toolbar = this->LoadToolbar();
             }
