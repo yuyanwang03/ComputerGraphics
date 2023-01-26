@@ -1,5 +1,7 @@
 #  Lab description
 
+Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/yuyanwang03/ComputerGraphics)
+
 | Student name | Student NIA | Student email |
 | --- | --- | --- |
 | Ivan Hernández Gómez | 253616 | ivan.hernandez04@estudiant.upf.edu |
