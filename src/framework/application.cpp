@@ -243,10 +243,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
                     }
                 } else {mouse_prev.set(mouse_position.x, mouse_position.y);}
             }
-            case section3_5:
-            {
-                break;
-            }
+            case section3_5: { break; }
         }
 	}
 }

@@ -376,7 +376,6 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 }
 
 void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
-    std::cout << "drawcircle fill" << fill<< std::endl;
     int x(0), y(r), v(1-r);
     this->SetPixelSafe(x0, y0+y, c);
     while (y>=x){
