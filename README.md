@@ -81,6 +81,5 @@ However, it will not clean the animation displayed if the user is in the section
 
 The windows created when running the program will be closed; that is equivalent to the end of execution.
 
--------------------
-
-List of keys that will work in this program: 'esc', 'c', 'f', 'u', 't', 'b', '1', '2', '3', '4' and '5'.
+> #### Résumé
+> List of keys that will work in this program: 'esc', 'c', 'f', 'u', 't', 'b', '1', '2', '3', '4' and '5'.
