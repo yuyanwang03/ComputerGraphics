@@ -81,6 +81,7 @@ public:
     void DrawRect(int x, int y, int w, int h, const Color& c);
     void DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c);
     void DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c);
+    void DrawCircle(int x0, int y0, int r, const Color &c, bool fill);
     void DrawImagePixels(const Image& image, int x, int y, bool top);
 
 	// Used to easy code

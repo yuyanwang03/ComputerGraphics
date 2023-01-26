@@ -124,6 +124,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             if (currentSection == section3_5) {this->SetToDefault();}
             currentSection = section3_3;
             mouse_prev.set(-1, -1);
+            framebuffer.DrawCircle(400, 400, 50, Color::RED, true);
             break;
         }
         case SDLK_4: // key 4, execute section 3.4

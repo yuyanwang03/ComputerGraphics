@@ -375,6 +375,31 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     return;
 }
 
+void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
+    int x(0), y(r), d(3-2*r);
+    while (y >= x) {
+        // Plot the points of the circle
+        this->SetPixelSafe(x0 + x, y0 + y, c);
+        this->SetPixelSafe(x0 - x, y0 + y, c);
+        this->SetPixelSafe(x0 + x, y0 - y, c);
+        this->SetPixelSafe(x0 - x, y0 - y, c);
+        this->SetPixelSafe(x0 + y, y0 + x, c);
+        this->SetPixelSafe(x0 - y, y0 + x, c);
+        this->SetPixelSafe(x0 + y, y0 - x, c);
+        this->SetPixelSafe(x0 - y, y0 - x, c);
+        
+        // Fill in the circle if the fill parameter is true
+        if (fill) {
+            for (int i = x0 - x; i <= x0 + x; i++) { SetPixel(i, y0 + y, c); SetPixel(i, y0 - y, c);}
+            for (int i = x0 - y; i <= x0 + y; i++) { SetPixel(i, y0 + x, c); SetPixel(i, y0 - x, c);}
+        }
+        // Update the value of d, x, and y
+        if (d < 0) {d = d + 4 * x + 6;}
+        else {d = d + 4 * (x - y) + 10; y--;}
+    }
+    return;
+}
+
 void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
     // Iterate through the pixels and draw these with its colors into their corresponding position
     for (int i=x; i<image.width; i++){
