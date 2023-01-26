@@ -23,7 +23,11 @@ Same definition as for the previous section but instead of using DDA, the progra
 
 ### **Key number 3 (SDLK_3)**
 
+The program will allow the user draw circles on the windows; this can be done with 2 left-mouse-click on any part that belongs to the windows and that does not belong to the toolbar (if there is a toolbar).
 
+Within this section, that is, every time the user types on keyboard number 3 and does not type on any other number from 1 and 5, the user can choose to draw a filled/unfilled circle. The program is set to be drawing unfilled circles; but the user can modify this by typing 'f' if he/she wants the circle to be drawn filles or 'u' if unfilled. 
+
+The user has ilimited times to switch between these two modes.
 
 ### **Key number 4 (SDLK_4)**
 
@@ -54,6 +58,10 @@ The user will have ilimited times to click on 'b' or 't', that is, being able to
 > * Change painting color to white
 
 ### **Key number 5 (SDLK_5)**
+
+After the user types 5, the windows will show an animation that consists of particles moving from the left side to the right side of the windows.
+
+Keep in mind that the toolbar will not exist in this section, and that the user is not allowed to draw on the windows. What's more, the key character 'c' will not clean the animation
 
 ### **Key character 'c'**
 
