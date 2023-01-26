@@ -81,9 +81,12 @@ However, it will not clean the animation displayed if the user is in the section
 
 The windows created when running the program will be closed; that is equivalent to the end of execution.
 
+> #### Résumé
+> List of keys that will work in this program: 'esc', 'c', 'f', 'u', 't', 'b', '1', '2', '3', '4' and '5'.
+
 ### Remarks
 
-If there are some file path issues in your computer (which does not happen in our case), please change the path inside the following function manually.
+If there are some file path issues in your computer (which does not happen in our case), please change the path inside the following function manually:
 
 ```c++
 bool Application::LoadToolbar(void){
@@ -95,6 +98,3 @@ bool Application::LoadToolbar(void){
 ```
 
 This code has not been tested for windows resize. Hence, it can have some problems with the animated version's particles position and the toolbar position if the user modifies the windows size. This is because their positions are not set to be relative/proportional to the windows size.
-
-> #### Résumé
-> List of keys that will work in this program: 'esc', 'c', 'f', 'u', 't', 'b', '1', '2', '3', '4' and '5'.
