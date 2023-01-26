@@ -377,7 +377,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 
 void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
     int x(0), y(r), v(1-r);
-    this->SetPixelSafe(x0+x, y0+y, c);
+    this->SetPixelSafe(x0, y0+y, c);
     while (y>=x){
         if (v<0){
             v = v + 2*x + 3;
@@ -395,10 +395,12 @@ void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
         this->SetPixelSafe(x0 + y, y0 - x, c);
         this->SetPixelSafe(x0 - y, y0 - x, c);
         if (fill) {
-            for (int i = x0 - x; i <= x0 + x; i++) { SetPixelSafe(i, y0 + y, c); SetPixelSafe(i, y0 - y, c);}
-            for (int i = x0 - y; i <= x0 + y; i++) { SetPixelSafe(i, y0 + x, c); SetPixelSafe(i, y0 - x, c);}
+            for (int i = x0 - x; i <= x0 + x; i++) { SetPixelSafe(i, y0 + y, c); SetPixelSafe(i, y0 - y, c); SetPixelSafe(i, y0, c);}
+            for (int i = x0 - y; i <= x0 + y; i++) { SetPixelSafe(i, y0 + x, c); SetPixelSafe(i, y0 - x, c); SetPixelSafe(i, y0, c);}
         }
     }
+    this->SetPixelSafe(x0+r, y0, c);
+    this->SetPixelSafe(x0-r, y0, c);
     return;
 }
 
