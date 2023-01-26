@@ -17,9 +17,13 @@ Following we will explain what happens when the user types/presses the above men
 
 The program will allow the user to draw straight lines inside the application windows. As the assignment demands, these lines will be generated with the DDA method. The lines will be drawn from 2 points given by the user using the mouse left-clicks.
 
+If there has been loaded a toolbar, the user will not be allowed to draw on top of the toolbar.
+
 ### **Key number 2 (SDLK_2)**
 
 Same definition as for the previous section but instead of using DDA, the program will use the bresenham method.
+
+If there has been loaded a toolbar, the user will not be allowed to draw on top of the toolbar.
 
 ### **Key number 3 (SDLK_3)**
 
@@ -56,6 +60,8 @@ The user will have ilimited times to click on 'b' or 't', that is, being able to
 > * Change painting color to purple
 > * Change painting color to cyan
 > * Change painting color to white
+
+After loading the toolbar, the user can switch between previous sections (section3_1, section3_2, section3_3 and section3_4) to draw lines, circles or whatever. These switches will not erase/delete the loaded toolbar. If the user somehow wants the toolbar deleted, he/she can press the 'c' (clear) button.
 
 ### **Key number 5 (SDLK_5)**
 
