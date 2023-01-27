@@ -7,7 +7,7 @@ Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/y
 | Ivan Hernández Gómez | 253616 | ivan.hernandez04@estudiant.upf.edu |
 | Yuyan Wang | 254745 | yuyan.wang01@estudiant.upf.edu |
 
-## La 1
+## Lab 1
 
 Just after running the program, it will only react to keyboard types of "esc" (to exit the program), 'c' (to clear the windows) and numbers '1', '2', '3', '4' and '5'. Each of the numbers corresponds to an assignment section (section3.1, section3.2, section3.3, section3.4 and section3.5 respectively).
 
