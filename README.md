@@ -7,9 +7,13 @@ Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/y
 | Ivan Hernández Gómez | 253616 | ivan.hernandez04@estudiant.upf.edu |
 | Yuyan Wang | 254745 | yuyan.wang01@estudiant.upf.edu |
 
+**Each lab will have assigned a different branch. You can access to the code (and the description) of every lab in their corresponding branches.**
+
+If you get lost somehow, just go back to the main branch, there will be direct links to access the code of each lab.
+
 ## Lab 1 *
 
-Access the Lab1 branch code: [Lab1 branch](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab1)
+Access the Lab 1 Branch in Github: [GitHub Lab 1](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab1)
 
 Just after running the program, it will only react to keyboard types of "esc" (to exit the program), 'c' (to clear the windows) and numbers '1', '2', '3', '4' and '5'. Each of the numbers corresponds to an assignment section (section3.1, section3.2, section3.3, section3.4 and section3.5 respectively).
 
