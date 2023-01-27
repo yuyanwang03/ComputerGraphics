@@ -7,7 +7,7 @@ Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/y
 | Ivan Hernández Gómez | 253616 | ivan.hernandez04@estudiant.upf.edu |
 | Yuyan Wang | 254745 | yuyan.wang01@estudiant.upf.edu |
 
-## Lab1
+## La 1
 
 Just after running the program, it will only react to keyboard types of "esc" (to exit the program), 'c' (to clear the windows) and numbers '1', '2', '3', '4' and '5'. Each of the numbers corresponds to an assignment section (section3.1, section3.2, section3.3, section3.4 and section3.5 respectively).
 
@@ -29,7 +29,7 @@ If there has been loaded a toolbar, the user will not be allowed to draw on top 
 
 ### **Key number 3 (SDLK_3)**
 
-The program will allow the user draw circles on the windows; this can be done with 2 left-mouse-click on any part that belongs to the windows and that does not belong to the toolbar (if there is a toolbar).
+The program will allow the user draw circles on the windows; this can be done with 2 left-mouse-click on any part that belongs to the windows and that does not belong to the toolbar (if there is a toolbar). The former will refer to the circle center and the latter will be the radius of the circle.
 
 Within this section, that is, every time the user types on keyboard number 3 and does not type on any other number from 1 and 5, the user can choose to draw a filled/unfilled circle. The program is set to be drawing unfilled circles; but the user can modify this by typing 'f' key if he/she wants the circle to be drawn filled or 'u' key if unfilled. 
 
@@ -98,3 +98,5 @@ bool Application::LoadToolbar(void){
 ```
 
 This code has not been tested for windows resize. Hence, it can have some problems with the animated version's particles position and the toolbar position if the user modifies the windows size. This is because their positions are not set to be relative/proportional to the windows size.
+
+We are also aware that in section3_3, if the first left click is close enough to the toolbar and the second click is far enough, the user will draw on the toolbar. This is related to the fact that the toolbar has ben set to be a part of the framebuffer but not as another component of the application. But, even if the toolbar has been overwritten, the user can still access to the toolbar funcionalities by clicking at the location where the toolbar buttons are supposed to be. If it gets messy, we recomend the user to make use of the key 'c' and start over again.

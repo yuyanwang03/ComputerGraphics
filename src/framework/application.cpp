@@ -168,7 +168,17 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             }
             break;
         }
-        case SDLK_c: {this->SetToDefault();}
+        case SDLK_c: {this->SetToDefault(); break;}
+        case SDLK_LEFT:
+        {
+            if (currentSection==section3_5) {this->animation.ChangeDirection(false);}
+            break;
+        }
+        case SDLK_RIGHT:
+        {
+            if (currentSection==section3_5) {this->animation.ChangeDirection(true);}
+            break;
+        }
 	}
 }
 
