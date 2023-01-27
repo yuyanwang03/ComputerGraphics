@@ -69,6 +69,8 @@ After loading the toolbar, the user can switch between previous sections (sectio
 
 After the user types 5, the windows will show an animation that consists of particles moving from the left side to the right side of the windows.
 
+User can use the keys "Left" (Left arrow key) and "Right" (Right arrow key) to manage the direction of the particles. The program is set by default to have particles moving to the right, but the user can use the "Left" key to make them move towards the left. This switch of direction can be done as many times as the user wants.
+
 Keep in mind that the toolbar will not exist in this section, and that the user is not allowed to draw on the windows. What's more, the key character 'c' will not clean the animation
 
 ### **Key character 'c'**
@@ -82,7 +84,7 @@ However, it will not clean the animation displayed if the user is in the section
 The windows created when running the program will be closed; that is equivalent to the end of execution.
 
 > #### Résumé
-> List of keys that will work in this program: 'esc', 'c', 'f', 'u', 't', 'b', '1', '2', '3', '4' and '5'.
+> List of keys that will work in this program: 'esc', 'c', 'f', 'u', 't', 'b', '1', '2', '3', '4', '5', "Left" (the Left arrow key (navigation keypad)) and "Right" (the Right arrow key (navigation keypad)).
 
 ### Remarks
 
