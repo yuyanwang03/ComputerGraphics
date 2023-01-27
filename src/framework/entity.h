@@ -1,12 +1,10 @@
-//
-//  entity.h
-//  ComputerGraphics
-//
-//  Created by Yuyan Wang on 27/1/23.
-//
 
-#ifndef entity_h
+#ifndef entity_h // Or put #pragma once
 #define entity_h
 
+class Entity {
+    // Matrix
+    // Mesh
+};
 
 #endif /* entity_h */
