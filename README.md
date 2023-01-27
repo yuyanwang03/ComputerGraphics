@@ -7,7 +7,7 @@ Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/y
 | Ivan Hernández Gómez | 253616 | ivan.hernandez04@estudiant.upf.edu |
 | Yuyan Wang | 254745 | yuyan.wang01@estudiant.upf.edu |
 
-## Lab 1
+## Lab 1 *
 
 Access the Lab1 branch code: [Lab1 branch](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab1)
 
