@@ -1,4 +1,4 @@
-#  Lab description
+#  Lab description *
 
 Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/yuyanwang03/ComputerGraphics)
 
