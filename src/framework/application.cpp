@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "shader.h"
 #include "utils.h"
+#include "entity.h"
 
 Application::Application(const char* caption, int width, int height)
 {
@@ -27,6 +28,7 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
+    Entity temp{Entity()};
 }
 
 // Render one frame

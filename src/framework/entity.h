@@ -15,12 +15,17 @@ public:
     // Constructors
     Entity();
     Entity(Matrix44 matx, Mesh msh);
+    Entity(Matrix44 matx);
+    Entity(Mesh msh);
     Entity(const Entity& e);
     Entity& operator = (const Entity& c); // Assign operator
 
     // Destructor
     ~Entity();
 
+    void SetMatrix(Matrix44 matx);
+    void SetMesh(Mesh msh);
+    
     void Render();
     
 };
