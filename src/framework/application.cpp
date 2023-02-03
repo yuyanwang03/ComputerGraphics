@@ -23,6 +23,7 @@ Application::Application(const char* caption, int width, int height)
 
 Application::~Application()
 {
+    if (camera) delete this->camera; // Free memory
     SDL_DestroyWindow(window);
 }
 
