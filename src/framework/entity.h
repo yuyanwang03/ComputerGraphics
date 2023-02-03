@@ -5,6 +5,7 @@
 #include "main/includes.h"
 #include "framework.h"
 #include "mesh.h"
+#include "image.h"
 
 class Entity
 {
@@ -26,6 +27,7 @@ public:
     void SetMatrix(Matrix44 matx);
     void SetMesh(Mesh msh);
     
+    void Render(Image* framebuffer, Camera* camera, const Color& c);
     void Render();
     
 };
