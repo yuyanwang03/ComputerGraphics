@@ -28,7 +28,7 @@ public:
     void SetMesh(Mesh msh);
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);
-    void Render();
+    // void Render();
     
 };
 

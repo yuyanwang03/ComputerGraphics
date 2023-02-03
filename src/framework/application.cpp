@@ -33,6 +33,11 @@ void Application::Init(void)
     int status = tempMsh.LoadOBJ("../res/meshes/anna.obj");
     // std::cout << status << std::endl;
     if (status) {temp.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
+    Camera cam = Camera();
+    
+    cam.UpdateViewMatrix();
+    cam.UpdateProjectionMatrix();
+    temp.Render(&this->framebuffer, &cam, Color::BLUE);
 }
 
 // Render one frame
