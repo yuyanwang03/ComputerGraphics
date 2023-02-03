@@ -17,6 +17,7 @@ Application::Application(const char* caption, int width, int height)
     this->window_height = h;
     this->keystate = SDL_GetKeyboardState(nullptr);
 
+    this->camera = new Camera(); // Pointer to avoid initialization process
     this->framebuffer.Resize(w, h);
 }
 
@@ -28,16 +29,16 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
+    // Code testing
     Entity temp{Entity()};
     Mesh tempMsh{Mesh()};
     int status = tempMsh.LoadOBJ("../res/meshes/anna.obj");
     // std::cout << status << std::endl;
     if (status) {temp.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
-    Camera cam = Camera();
     
-    cam.UpdateViewMatrix();
-    cam.UpdateProjectionMatrix();
-    temp.Render(&this->framebuffer, &cam, Color::BLUE);
+    this->camera->UpdateViewMatrix();
+    this->camera->UpdateProjectionMatrix();
+    temp.Render(&this->framebuffer, this->camera, Color::BLUE);
 }
 
 // Render one frame
@@ -60,6 +61,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
+        case SDLK_o: {break;}
+        case SDLK_p: {break;}
     }
 }
 

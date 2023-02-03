@@ -6,6 +6,7 @@
 #include "main/includes.h"
 #include "framework.h"
 #include "image.h"
+#include "camera.h"
 
 enum mouse_state{
     default_free = 0,
@@ -70,6 +71,7 @@ public:
 
 	// CPU Global framebuffer
 	Image framebuffer;
+    Camera* camera;
     
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
