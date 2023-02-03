@@ -28,7 +28,7 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
-    Entity temp{Entity()};
+    
 }
 
 // Render one frame
