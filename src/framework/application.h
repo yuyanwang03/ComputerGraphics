@@ -86,7 +86,12 @@ public:
 		glViewport( 0,0, width, height );
 		this->window_width = width;
 		this->window_height = height;
+        // Update framebuffer size
         this->framebuffer.Resize(width, height);
+        // Update aspect ratio
+        this->camera->SetAspectRatio((float)width/height);
+        // Update projection matrix, that may use the aspect ratio value
+        this->camera->UpdateProjectionMatrix();
 	}
 
 	Vector2 GetWindowSize()
