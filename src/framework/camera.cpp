@@ -92,16 +92,6 @@ void Camera::UpdateViewMatrix()
     /*
 	// Comment this line to create your own projection matrix!
 	SetExampleViewMatrix();
-
-	// Remember how to fill a Matrix4x4 (check framework slides)
-	// Careful with the order of matrix multiplications, and be sure to use normalized vectors!
-	
-	// Create the view matrix rotation
-	// ...
-	// view_matrix.M[3][3] = 1.0;
-
-	// Translate view matrix
-	// ...
      */
 
 	UpdateViewProjectionMatrix();
@@ -112,21 +102,25 @@ void Camera::UpdateProjectionMatrix()
 {
 	// Reset Matrix (Identity)
 	projection_matrix.SetIdentity();
-
-    /*
-	// Comment this line to create your own projection matrix!
-	SetExampleProjectionMatrix();
-
-	// Remember how to fill a Matrix4x4 (check framework slides)
-     */
 	
 	if (type == PERSPECTIVE) {
-		// projection_matrix.M[2][3] = -1;
-		// ...
+        projection_matrix.m[0] = 2/aspect;                                          // M[0][0]
+        projection_matrix.m[5] = 1.0/(std::tan(fov*(PI/180)/2.0));                  // M[1][1]
+        projection_matrix.m[10] = (far_plane+near_plane)/(far_plane-near_plane);    // M[2][2]
+        projection_matrix.m[11] = -1;                                               // M[2][3]
+        projection_matrix.m[14] = 2*(far_plane*near_plane)/(far_plane-near_plane);  // M[3][2]
+        projection_matrix.m[15] = 0;                                                // M[3][3]
+	} else if (type == ORTHOGRAPHIC) {
+        projection_matrix.SetTranslation(-(right+left)/(right-left), -(top+bottom)/(top-bottom), -(far_plane+near_plane)/(far_plane-near_plane));
+        projection_matrix.M[0][0] = 2/(right-left);             // m[0]
+        projection_matrix.M[1][1] = 2/(top-bottom);             // m[5]
+        projection_matrix.M[2][2] = -2/(far_plane-near_plane);  // m[10]
 	}
-	else if (type == ORTHOGRAPHIC) {
-		// ...
-	} 
+    
+    /*
+    // Comment this line to create your own projection matrix!
+    SetExampleProjectionMatrix();
+    */
 
 	UpdateViewProjectionMatrix();
 }
