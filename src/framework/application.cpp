@@ -37,8 +37,18 @@ void Application::Init(void)
     // std::cout << status << std::endl;
     if (status) {temp.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
     
+    /*
+    Entity temp2{Entity()};
+    Mesh tempMsh2{Mesh()};
+    int status2 = tempMsh.LoadOBJ("../res/meshes/cleo.obj");
+    // std::cout << status << std::endl;
+    if (status2) {temp2.SetMesh(tempMsh2); std::cout << "Mesh correctly set" << std::endl;}
+    temp2.Render(&this->framebuffer, this->camera, Color::WHITE);
+    */
+    
     this->camera->UpdateViewMatrix();
     this->camera->UpdateProjectionMatrix();
+    this->camera->Move(Vector3(-]100, 200, 200));
     temp.Render(&this->framebuffer, this->camera, Color::BLUE);
 }
 
