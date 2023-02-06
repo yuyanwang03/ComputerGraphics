@@ -83,6 +83,13 @@ void Camera::UpdateViewMatrix()
 	// Reset Matrix (Identity)
 	view_matrix.SetIdentity();
 
+    // View matrix rotation
+    view_matrix.SetFrontAndOrthonormalize(this->center-this->eye);
+    
+    // Get final view matrix by multiplyting to the translation matrix
+    view_matrix.TranslateLocal(center.x, center.y, center.z);
+    
+    /*
 	// Comment this line to create your own projection matrix!
 	SetExampleViewMatrix();
 
@@ -95,6 +102,7 @@ void Camera::UpdateViewMatrix()
 
 	// Translate view matrix
 	// ...
+     */
 
 	UpdateViewProjectionMatrix();
 }
@@ -105,10 +113,12 @@ void Camera::UpdateProjectionMatrix()
 	// Reset Matrix (Identity)
 	projection_matrix.SetIdentity();
 
+    /*
 	// Comment this line to create your own projection matrix!
 	SetExampleProjectionMatrix();
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
+     */
 	
 	if (type == PERSPECTIVE) {
 		// projection_matrix.M[2][3] = -1;
