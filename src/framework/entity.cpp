@@ -34,25 +34,6 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
     bool neg0, neg1, neg2;
     // Iterate through the vertices of the mesh of the entity (3 by 3)
     for (int i=0; i<this->entityMesh.vertices.size(); i=i+3){
-        /*
-        // Set Vector4 from the vertices to make the matrix multiplication
-        temp0.Set(entityMesh.vertices[i].x, entityMesh.vertices[i].y, entityMesh.vertices[i].z, 1.0);
-        temp1.Set(entityMesh.vertices[i+1].x, entityMesh.vertices[i+1].y, entityMesh.vertices[i+1].z, 1.0);
-        temp2.Set(entityMesh.vertices[i+2].x, entityMesh.vertices[i+2].y, entityMesh.vertices[i+2].z, 1.0);
-        // Multiply the vertices by the modelMatrix to get the World Space coordinates
-        temp0 = this->modelMatrix*temp0;
-        temp1 = this->modelMatrix*temp1;
-        temp2 = this->modelMatrix*temp2;
-        // Get the positions (x,y,z) to be drawn on screen
-        tmp0 = temp0.GetVector3();
-        tmp1 = temp1.GetVector3();
-        tmp2 = temp2.GetVector3();
-        std::cout << "First" << std::endl;
-        std::cout << tmp0.x << " " << tmp0.y << " " << tmp0.z << std::endl;
-        std::cout << tmp1.x << " " << tmp1.y << " " << tmp1.z << std::endl;
-        std::cout << tmp2.x << " " << tmp2.y << " " << tmp2.z << std::endl;
-        Code is improved -> Following lines are a better approach
-        */
          
         // Get the vertices of the world space (3D)
         tmp0 = this->modelMatrix*entityMesh.vertices[i];
@@ -60,9 +41,9 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         tmp2 = this->modelMatrix*entityMesh.vertices[i+2];
 
         // Project world space (3D) to clip space (2D)
-        camera->ProjectVector(tmp0, neg0);
-        camera->ProjectVector(tmp1, neg1);
-        camera->ProjectVector(tmp2, neg2);
+        tmp0 = camera->ProjectVector(tmp0, neg0);
+        tmp1 = camera->ProjectVector(tmp1, neg1);
+        tmp2 = camera->ProjectVector(tmp2, neg2);
         
         // If any of the triangle projected vertices is outside the camera, don't draw the triangle
         if (neg0 || neg1 || neg2) {continue;}

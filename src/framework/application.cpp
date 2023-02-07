@@ -45,10 +45,7 @@ void Application::Init(void)
     if (status2) {temp2.SetMesh(tempMsh2); std::cout << "Mesh correctly set" << std::endl;}
     temp2.Render(&this->framebuffer, this->camera, Color::WHITE);
     */
-    
-    this->camera->UpdateViewMatrix();
-    this->camera->UpdateProjectionMatrix();
-    this->camera->Move(Vector3(-100, 200, 200));
+    this->camera->LookAt(Vector3(1, 1, 1), Vector3(0, 0.3, 0), Vector3::UP);
     temp.Render(&this->framebuffer, this->camera, Color::BLUE);
 }
 

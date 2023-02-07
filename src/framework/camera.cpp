@@ -6,7 +6,7 @@
 Camera::Camera()
 {
 	view_matrix.SetIdentity();
-	SetOrthographic(-100,100,100,-100,-100,100);
+	SetOrthographic(-1,1,1,-1,-1,1);
 }
 
 Vector3 Camera::GetLocalVector(const Vector3& v)
@@ -80,19 +80,20 @@ void Camera::LookAt(const Vector3& eye, const Vector3& center, const Vector3& up
 
 void Camera::UpdateViewMatrix()
 {
+    /*
 	// Reset Matrix (Identity)
 	view_matrix.SetIdentity();
-
+     */
+    
     // View matrix rotation
     view_matrix.SetFrontAndOrthonormalize(this->center-this->eye);
     
     // Get final view matrix by multiplyting to the translation matrix
     view_matrix.TranslateLocal(center.x, center.y, center.z);
     
-    /*
 	// Comment this line to create your own projection matrix!
 	SetExampleViewMatrix();
-     */
+     
 
 	UpdateViewProjectionMatrix();
 }
