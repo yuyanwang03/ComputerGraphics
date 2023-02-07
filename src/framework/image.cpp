@@ -128,8 +128,8 @@ void Image::FlipY()
 
 bool Image::LoadPNG(const char* filename, bool flip_y)
 {
-    std::string sfullPath = absResPath(filename);
-    std::ifstream file(sfullPath, std::ios::in | std::ios::binary | std::ios::ate);
+	std::string sfullPath = absResPath(filename);
+	std::ifstream file(sfullPath, std::ios::in | std::ios::binary | std::ios::ate);
 
     // Get filesize
     std::streamsize size = 0;
@@ -252,7 +252,9 @@ bool Image::LoadTGA(const char* filename, bool flip_y)
 	for (unsigned int y = 0; y < height; ++y) {
 		for (unsigned int x = 0; x < width; ++x) {
 			unsigned int pos = y * width * bytesPerPixel + x * bytesPerPixel;
-			SetPixel(x, height - y - 1, Color(tgainfo->data[pos + 2], tgainfo->data[pos + 1], tgainfo->data[pos]));
+			// Make sure we don't access out of memory
+			if( (pos < imageSize) && (pos + 1 < imageSize) && (pos + 2 < imageSize))
+				SetPixel(x, height - y - 1, Color(tgainfo->data[pos + 2], tgainfo->data[pos + 1], tgainfo->data[pos]));
 		}
 	}
 
@@ -271,13 +273,13 @@ bool Image::SaveTGA(const char* filename)
 {
     unsigned char TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    std::string fullPath = absResPath(filename);
-    FILE *file = fopen(fullPath.c_str(), "wb");
-    if ( file == NULL )
-    {
-        perror("Failed to open file: ");
-        return false;
-    }
+	std::string fullPath = absResPath(filename);
+	FILE *file = fopen(fullPath.c_str(), "wb");
+	if ( file == NULL )
+	{
+		perror("Failed to open file: ");
+		return false;
+	}
 
     unsigned short header_short[3];
     header_short[0] = width;

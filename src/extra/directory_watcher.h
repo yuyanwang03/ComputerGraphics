@@ -54,10 +54,9 @@ public:
                     &b,
                     nullptr,
                     0);
-
-                if (rc == 0) {
-                    DWORD e = GetLastError();
-                }
+				if (rc == 0) {
+					DWORD e = GetLastError();
+				}
 
                 if (fni.i.Action != 0) {
                     char name[MAX_PATH];

@@ -48,7 +48,7 @@ void Application::Init(void)
     
     this->camera->UpdateViewMatrix();
     this->camera->UpdateProjectionMatrix();
-    this->camera->Move(Vector3(-]100, 200, 200));
+    this->camera->Move(Vector3(-100, 200, 200));
     temp.Render(&this->framebuffer, this->camera, Color::BLUE);
 }
 
