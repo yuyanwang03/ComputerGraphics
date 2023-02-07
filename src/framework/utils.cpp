@@ -158,32 +158,35 @@ void launchLoop(Application* app)
         // Swap between front buffer and back buffer
         SDL_GL_SwapWindow(app->window);
 
-        // Update events
-        while(SDL_PollEvent(&sdlEvent))
-        {
-            switch(sdlEvent.type)
-                {
-                    case SDL_QUIT: return; break; // EVENT for when the user clicks the [x] in the corner
-                    case SDL_MOUSEBUTTONDOWN: // EXAMPLE OF sync mouse input
-                        app->OnMouseButtonDown(sdlEvent.button);
-                        break;
-                    case SDL_MOUSEBUTTONUP:
-                        app->OnMouseButtonUp(sdlEvent.button);
-                        break;
-                    case SDL_MOUSEMOTION:
-                        app->OnMouseMove(sdlEvent.button);
-                        break;
-                    case SDL_KEYUP:  // EXAMPLE OF sync keyboard input
-                        app->OnKeyPressed(sdlEvent.key);
-                        break;
-                    case SDL_WINDOWEVENT:
-                        switch (sdlEvent.window.event) {
-                            case SDL_WINDOWEVENT_RESIZED: // Resize OpenGL context
-                                std::cout << "window resize" << std::endl;
-                                app->SetWindowSize( sdlEvent.window.data1, sdlEvent.window.data2 );
-                                break;
-                        }
-                        break;
+		// Update events
+		while(SDL_PollEvent(&sdlEvent))
+		{
+			switch(sdlEvent.type)
+				{
+					case SDL_QUIT: return; break; // EVENT for when the user clicks the [x] in the corner
+					case SDL_MOUSEBUTTONDOWN: // EXAMPLE OF sync mouse input
+						app->OnMouseButtonDown(sdlEvent.button);
+						break;
+					case SDL_MOUSEBUTTONUP:
+						app->OnMouseButtonUp(sdlEvent.button);
+						break;
+					case SDL_MOUSEMOTION:
+						app->OnMouseMove(sdlEvent.button);
+						break;
+					case SDL_KEYUP:  // EXAMPLE OF sync keyboard input
+						app->OnKeyPressed(sdlEvent.key);
+						break;
+					case SDL_MOUSEWHEEL:
+						app->OnWheel(sdlEvent.wheel);
+						break;
+					case SDL_WINDOWEVENT:
+						switch (sdlEvent.window.event) {
+							case SDL_WINDOWEVENT_RESIZED: // Resize OpenGL context
+								std::cout << "window resize" << std::endl;
+								app->SetWindowSize( sdlEvent.window.data1, sdlEvent.window.data2 );
+								break;
+						}
+						break;
 #ifdef WIN32
                     case CDirectoryWatcher::WM_FILE_CHANGED:
                         const char* filename = (const char*)(sdlEvent.text.text);
