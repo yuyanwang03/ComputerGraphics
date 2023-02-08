@@ -81,7 +81,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         }
         case SDLK_o:
         { // Set to orthographic projection
-            if (currentSection==section3_4) {break;}
             std::cout << "Orthographic" << std::endl;
             currentSection = orthographic;
             this->SetToDefault();
@@ -94,7 +93,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_p:
         { // Set to perspective projection
             std::cout << "Perspective" << std::endl;
-            currentSection = perspective;
+            if (currentSection!=section3_4) {currentSection = perspective;}
             this->SetToDefault();
             camera->type = Camera::PERSPECTIVE;
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
@@ -133,6 +132,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = left_click;
+        mouse_prev = mouse_position;
     } else if (event.button == SDL_BUTTON_RIGHT){
         std::cout<<"rightc"<<std::endl;
         mouse_state = right_click;
