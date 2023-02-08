@@ -110,11 +110,12 @@ void Camera::UpdateProjectionMatrix()
 	projection_matrix.SetIdentity();
 	
 	if (type == PERSPECTIVE) {
-        projection_matrix.m[0] = 2/aspect;                                          // M[0][0]
-        projection_matrix.m[5] = 1.0/(std::tan(fov*(PI/180)/2.0));                  // M[1][1]
-        projection_matrix.m[10] = (far_plane+near_plane)/(far_plane-near_plane);    // M[2][2]
+        float f = 1.0/(std::tan(fov*(PI/180)/2.0));
+        projection_matrix.m[0] = f/aspect;                                          // M[0][0]
+        projection_matrix.m[5] = f;                                                 // M[1][1]
+        projection_matrix.m[10] = (far_plane+near_plane)/(near_plane-far_plane);    // M[2][2]
         projection_matrix.m[11] = -1;                                               // M[2][3]
-        projection_matrix.m[14] = 2*(far_plane*near_plane)/(far_plane-near_plane);  // M[3][2]
+        projection_matrix.m[14] = 2*(far_plane*near_plane)/(near_plane-far_plane);  // M[3][2]
         projection_matrix.m[15] = 0;                                                // M[3][3]
 	} else if (type == ORTHOGRAPHIC) {
         projection_matrix.SetTranslation(-(right+left)/(right-left), -(top+bottom)/(top-bottom), -(far_plane+near_plane)/(far_plane-near_plane));
@@ -123,10 +124,8 @@ void Camera::UpdateProjectionMatrix()
         projection_matrix.M[2][2] = -2/(far_plane-near_plane);  // m[10]
 	}
     
-    /*
     // Comment this line to create your own projection matrix!
     SetExampleProjectionMatrix();
-    */
 
 	UpdateViewProjectionMatrix();
 }
@@ -160,8 +159,9 @@ void Camera::SetExampleProjectionMatrix()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	if (type == PERSPECTIVE)
-		gluPerspective(fov, aspect, near_plane, far_plane);
+    if (type == PERSPECTIVE){
+        gluPerspective(fov, aspect, near_plane, far_plane);
+    }
 	else
 		glOrtho(left,right,bottom,top,near_plane,far_plane);
 
