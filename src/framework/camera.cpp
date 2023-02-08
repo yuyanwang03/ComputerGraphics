@@ -124,8 +124,10 @@ void Camera::UpdateProjectionMatrix()
         projection_matrix.M[2][2] = -2/(far_plane-near_plane);  // m[10]
 	}
     
+    /*
     // Comment this line to create your own projection matrix!
     SetExampleProjectionMatrix();
+     */
 
 	UpdateViewProjectionMatrix();
 }
