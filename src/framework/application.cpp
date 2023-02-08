@@ -81,6 +81,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             std::cout << "Ortographic" << std::endl;
             this->SetToDefault();
             camera->type = Camera::ORTHOGRAPHIC;
+            this->entity = Entity("../res/meshes/anna.obj");
+            // camera->LookAt(Vector3(0,0,0), Vector3(0,0,0), Vector3::UP);
             camera->SetOrthographic(-1,1,1,-1,-1,1);
             entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
@@ -89,7 +91,19 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             std::cout << "Perspective" << std::endl;
             this->SetToDefault();
             camera->type = Camera::PERSPECTIVE;
+            this->entity = Entity("../res/meshes/anna.obj");
+            camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
             camera->SetPerspective(45, window_width/window_height, 0.01, 100);
+            entity.Render(&this->framebuffer, this->camera, entityColor);
+            break;
+        }
+        case SDLK_q:{
+            currentSection = section3_1;
+            SetToDefault();
+            camera->type = Camera::ORTHOGRAPHIC;
+            this->entity = Entity("../res/meshes/anna.obj");
+            // camera->LookAt(Vector3(0,0,0), Vector3(0,0,0), Vector3::UP);
+            camera->SetOrthographic(-1,1,1,-1,-1,1);
             entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
