@@ -80,68 +80,20 @@ void Camera::LookAt(const Vector3& eye, const Vector3& center, const Vector3& up
 
 void Camera::UpdateViewMatrix()
 {
-    
 	// Reset Matrix (Identity)
 	view_matrix.SetIdentity();
     
-    
     // View matrix rotation
     view_matrix.SetFrontAndOrthonormalize(this->eye-this->center);
-    view_matrix.Print();
     
+    // Transpose the matrix. This line was obtained by comparing the code with GluLookAt code https://www.khronos.org/opengl/wiki/GluLookAt_code
     view_matrix.Transpose();
-    view_matrix.Print();
     
     // Get final view matrix by multiplyting to the translation matrix
     view_matrix.TranslateLocal(-eye.x, -eye.y, -eye.z);
-    // view_matrix.Print();
     
     // Comment this line to create your own projection matrix!
-    SetExampleViewMatrix();
-    // view_matrix.Print();
-    
-    Vector3 forward, side, up;
-    // --------------------
-    forward.x = center.x - eye.x;
-    forward.y = center.y - eye.y;
-    forward.z = center.z - eye.z;
-    forward.Normalize();
-    // --------------------
-    // Side = forward x up
-    side = forward.Cross(Vector3::UP);
-    side.Normalize();
-    // --------------------
-    // Recompute up as: up = side x forward
-    up = side.Cross(forward);
-    // --------------------
-    view_matrix.m[0] = side.x;
-    view_matrix.m[4] = side.y;
-    view_matrix.m[8] = side.z;
-    view_matrix.m[12] = 0.0;
-    // --------------------
-    view_matrix.m[1] = up.x;
-    view_matrix.m[5] = up.y;
-    view_matrix.m[9] = up.x;
-    view_matrix.m[13] = 0.0;
-    // --------------------
-    view_matrix.m[2] = -forward.x;
-    view_matrix.m[6] = -forward.y;
-    view_matrix.m[10] = -forward.z;
-    view_matrix.m[14] = 0.0;
-    // --------------------
-    view_matrix.m[3] = view_matrix.m[7] = view_matrix.m[11] = 0.0;
-    view_matrix.m[15] = 1.0;
-    /*
-    std::cout << "updt"<<  std::endl;
-    forward.Print();
-    side.Print();
-    up.Print();
-     */
-    std::cout << "mtx"<<  std::endl;
-    view_matrix.Print();
-    
-    view_matrix.TranslateLocal(-eye.x, -eye.y, -eye.z);
-    // view_matrix.Print();
+    // SetExampleViewMatrix();
     
 	UpdateViewProjectionMatrix();
 }
