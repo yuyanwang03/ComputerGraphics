@@ -81,13 +81,14 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             std::cout << "Ortographic" << std::endl;
             this->SetToDefault();
             camera->SetOrthographic(-1,1,1,-1,-1,1);
-            this->Render();
+            entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
         case SDLK_p: {
             std::cout << "Perspective" << std::endl;
             this->SetToDefault();
             camera->SetPerspective(45, window_width/window_height, 0.01, 100);
+            entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
     }
