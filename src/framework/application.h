@@ -51,6 +51,7 @@ public:
     bool toolbar_top;
     bool has_toolbar;
     int currentSection;
+    Entity entity;
     
 	float time;
 

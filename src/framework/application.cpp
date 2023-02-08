@@ -18,6 +18,13 @@ Application::Application(const char* caption, int width, int height) : animation
     this->keystate = SDL_GetKeyboardState(nullptr);
 
     this->camera = new Camera(); // Pointer to avoid initialization process
+    // this->entity = Entity();
+    Mesh tempMsh{Mesh()};
+    int status = tempMsh.LoadOBJ("../res/meshes/anna.obj");
+    // std::cout << status << std::endl;
+    if (status) {entity.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
+    // else {exit(0);}
+    
     this->framebuffer.Resize(w, h);
 }
 
@@ -32,13 +39,7 @@ void Application::Init(void)
     std::cout << "Initiating app..." << std::endl;
     
     // Code testing
-    // 1 mesh
-    Entity temp{Entity()};
-    Mesh tempMsh{Mesh()};
-    int status = tempMsh.LoadOBJ("../res/meshes/anna.obj");
-    // std::cout << status << std::endl;
-    if (status) {temp.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
-    /*
+    
     // 2 mesh
     Entity temp2{Entity()};
     Mesh tempMsh2{Mesh()};
@@ -47,13 +48,12 @@ void Application::Init(void)
     // std::cout << status << std::endl;
     if (status2) {temp2.SetMesh(tempMsh2); std::cout << "Mesh correctly set" << std::endl;}
     
-    camera->UpdateViewMatrix();*/
-    
     // Camera change view
     this->camera->LookAt(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.3, 0), Vector3::UP);
-    temp.Render(&this->framebuffer, this->camera, Color::BLUE);
+    // entity.Render(&this->framebuffer, this->camera, Color::BLUE);
     // this is rendering the 2 mesh with a different camera
-    // temp2.Render(&this->framebuffer, &tempCam, Color::WHITE);
+    temp2.Render(&this->framebuffer, &tempCam, Color::WHITE);
+    
 }
 
 // Render one frame
@@ -101,20 +101,31 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) {
-
+        mouse_state = left_click;
+    } else if (event.button == SDL_BUTTON_RIGHT){
+        std::cout<<"rightc"<<std::endl;
+        mouse_state = right_click;
+        mouse_prev = mouse_position;
     }
 }
 
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) {
-
+        mouse_state = default_free;
+    } else if (event.button == SDL_BUTTON_RIGHT){
+        std::cout<<"rightfree"<<std::endl;
+        // this->camera->Move(Vector3(mouse_prev.x-mouse_position.x, mouse_prev.y-mouse_position.y, 0));
+        entity.Render(&this->framebuffer, this->camera, Color::GREEN);
+        this->Render();
+        mouse_state = default_free;
+        mouse_prev.set(-1,-1);
     }
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-    
+
 }
 
 void Application::OnWheel(SDL_MouseWheelEvent event)
