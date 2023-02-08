@@ -97,8 +97,10 @@ void Camera::UpdateViewMatrix()
     // Get final view matrix by multiplyting to the translation matrix
     view_matrix.TranslateLocal(-eye.x, -eye.y, -eye.z);
     
+    /*
     // Comment this line to create your own projection matrix!
     SetExampleViewMatrix();
+     */
     
 	UpdateViewProjectionMatrix();
 }
