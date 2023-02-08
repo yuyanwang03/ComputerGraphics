@@ -62,3 +62,6 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
     return;
 }
 
+void Entity::Update(float seconds_elapsed){
+    return;
+}

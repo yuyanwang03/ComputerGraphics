@@ -7,6 +7,7 @@
 #include "framework.h"
 #include "image.h"
 #include "camera.h"
+#include "entity.h"
 
 enum mouse_state{
     default_free = 0,
@@ -60,8 +61,6 @@ public:
 	Vector2 mouse_delta; // Mouse movement in the last frame
     Vector2 mouse_prev;
 
-    bool LoadToolbar(void);
-    void ProceedToolbarFunction(int ButtonID);
     void SetToDefault(void);
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
@@ -70,6 +69,26 @@ public:
 	void OnWheel(SDL_MouseWheelEvent event);
 	void OnFileChanged(const char* filename);
 
+    // Create a class for the animation
+    class EntitySystem{
+        Application* app;
+        Entity* entities;
+        int numEntities;
+        Color* entitiesColor;
+        public:
+        EntitySystem(Application* a) {app = a; numEntities=0; entities = NULL;}
+        void Init(){
+            // Load specific meshes here
+            return;
+        }
+        void Update(float t) {for (int i=0; i<numEntities; i++) entities[i].Update(t); return;}
+        void Render(){
+            for (int i=0; i<numEntities; i++) {entities[i].Render(&app->framebuffer, app->camera, entitiesColor[i]);}
+            return;
+        }
+    };
+    
+    EntitySystem animation;
 	// CPU Global framebuffer
 	Image framebuffer;
     Camera* camera;

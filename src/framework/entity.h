@@ -26,6 +26,7 @@ public:
 
     void SetMatrix(Matrix44 matx);
     void SetMesh(Mesh msh);
+    void Update(float seconds_elapsed);
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);
     // void Render();
