@@ -6,7 +6,8 @@
 Camera::Camera()
 {
 	view_matrix.SetIdentity();
-	SetOrthographic(-1,1,1,-1,-1,1);
+	// SetOrthographic(-1,1,1,-1,-1,1);
+    SetPerspective(fov, aspect, near_plane, far_plane);
 }
 
 Vector3 Camera::GetLocalVector(const Vector3& v)

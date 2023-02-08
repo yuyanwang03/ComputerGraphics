@@ -67,14 +67,15 @@ public:
         public:
         EntitySystem(Application* a) {app = a; numEntities=0;}
         void Init(){
+            app->camera->SetOrthographic(-1,1,1,-1,-1,1);
             // Load specific meshes here
             app->camera->LookAt(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.3, 0), Vector3::UP);
             entities[0] = Entity("../res/meshes/anna.obj");
             entities[0].modelMatrix.Translate(0, 0.6, 0.1);
             entities[1] = Entity("../res/meshes/cleo.obj");
-            entities[1].modelMatrix.Translate(0.7, 0.1, 0.4);
+            entities[1].modelMatrix.Translate(0, 0, 0.4);
             entities[2] = Entity("../res/meshes/lee.obj");
-            entities[2].modelMatrix.Translate(-1.1, -0.4, -0.3);
+            entities[2].modelMatrix.Translate(0, -0.4, -0.3);
             numEntities = 3;
             for (int i=0; i<numEntities; i++) {
                 Color temp = Color();
