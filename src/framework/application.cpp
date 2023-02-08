@@ -36,17 +36,15 @@ void Application::Init(void)
     
     // Code testing
     
-    // Camera change view
-    this->camera->LookAt(Vector3(0.5, 0.2, 0), Vector3(0, 0.1, 0), Vector3::UP);
     entity.Render(&this->framebuffer, this->camera, entityColor);
-    
+
 }
 
 // Render one frame
 void Application::Render(void)
 {
     // ...
-
+    
     framebuffer.Render();
 }
 
@@ -75,12 +73,23 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             this->currentSection = section3_4;
             std::cout<< "Section 3.4 Animated Version" << std::endl;
             // Initializes the animation
-            this->animation.Init(); // Function to be filled!!
+            this->animation.Init();
             this->animation.Render();
             break;
         }
-        case SDLK_o: {break;}
-        case SDLK_p: {break;}
+        case SDLK_o: {
+            std::cout << "Ortographic" << std::endl;
+            this->SetToDefault();
+            camera->SetOrthographic(-1,1,1,-1,-1,1);
+            this->Render();
+            break;
+        }
+        case SDLK_p: {
+            std::cout << "Perspective" << std::endl;
+            this->SetToDefault();
+            camera->SetPerspective(45, window_width/window_height, 0.01, 100);
+            break;
+        }
     }
 }
 

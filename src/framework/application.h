@@ -116,6 +116,8 @@ public:
 		this->window_height = height;
         // Update framebuffer size
         this->framebuffer.Resize(width, height);
+        this->framebuffer.Fill(Color::BLACK);
+        entity.Render(&this->framebuffer, this->camera, entityColor);
         // Update aspect ratio
         this->camera->SetAspectRatio((float)width/height);
         // Update projection matrix, that may use the aspect ratio value

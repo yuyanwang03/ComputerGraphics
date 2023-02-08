@@ -6,8 +6,12 @@
 Camera::Camera()
 {
 	view_matrix.SetIdentity();
-	// SetOrthographic(-1,1,1,-1,-1,1);
-    SetPerspective(fov, aspect, near_plane, far_plane);
+	SetOrthographic(-1,1,1,-1,-1,1);
+    /*
+    this->fov = 45;
+    this->far_plane = 100;
+    this->near_plane = 0.01;
+     */
 }
 
 Vector3 Camera::GetLocalVector(const Vector3& v)
@@ -94,7 +98,7 @@ void Camera::UpdateViewMatrix()
     view_matrix.TranslateLocal(-eye.x, -eye.y, -eye.z);
     
     // Comment this line to create your own projection matrix!
-    // SetExampleViewMatrix();
+    SetExampleViewMatrix();
     
 	UpdateViewProjectionMatrix();
 }
