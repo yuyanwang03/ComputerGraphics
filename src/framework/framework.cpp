@@ -3,6 +3,7 @@
 #include <cmath> //for sqrt (square root) function
 #include <math.h> //atan2
 #include <cstring>
+#include <iostream>
 
 #define M_PI_2 1.57079632679489661923
 
@@ -395,13 +396,14 @@ void Matrix44::SetFrontAndOrthonormalize(Vector3 front)
 	m[9] = front.y;
 	m[10] = front.z;
 
+    
 	//orthonormalize
 	Vector3 right,up;
 	right = RightVector();
 
 	if ( abs(right.Dot( front )) < 0.99998 )
 	{
-		right = TopVector().Cross( front  );
+		right = TopVector().Cross( front );
 		up = front.Cross( right );
 	}
 	else
@@ -420,6 +422,13 @@ void Matrix44::SetFrontAndOrthonormalize(Vector3 front)
 	m[0] = right.x;
 	m[1] = right.y;
 	m[2] = right.z;
+    
+    /*
+    std::cout<< "setforw"<< std::endl;
+    front.Print();
+    right.Print();
+    up.Print();
+     */
 	
 }
 
@@ -510,4 +519,20 @@ Vector3 RayPlaneCollision( const Vector3& plane_pos, const Vector3& plane_normal
 	float denom = plane_normal.Dot(ray_dir);
 	float t = -(numer / denom);
 	return ray_origin + ray_dir * t;
+}
+
+void Vector3::Print(){
+    std::cout << this->x << " " << this->y << " " << this->z << std::endl;
+    return;
+}
+
+void Matrix44::Print(){
+    for (int i =0; i<4; i++){
+        for (int j =0; j<4; j++){
+            std::cout << this->M[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    return;
 }

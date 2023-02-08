@@ -84,6 +84,7 @@ public:
 	Vector3& Normalize();
 	void Random(float range);
 	void Random(Vector3 range);
+    void Print();
 
 	float Distance(const Vector3& v) const;
 
@@ -137,6 +138,7 @@ class Matrix44
 		void Clear();
 		void SetIdentity();
 		void Transpose();
+        void Print();
 
 		// Get base vectors
 		Vector3 RightVector() { return Vector3(m[0],m[1],m[2]); }

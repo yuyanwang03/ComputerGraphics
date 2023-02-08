@@ -38,7 +38,7 @@ void Application::Init(void)
     int status = tempMsh.LoadOBJ("../res/meshes/anna.obj");
     // std::cout << status << std::endl;
     if (status) {temp.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
-    
+    /*
     // 2 mesh
     Entity temp2{Entity()};
     Mesh tempMsh2{Mesh()};
@@ -47,11 +47,13 @@ void Application::Init(void)
     // std::cout << status << std::endl;
     if (status2) {temp2.SetMesh(tempMsh2); std::cout << "Mesh correctly set" << std::endl;}
     
+    camera->UpdateViewMatrix();*/
+    
     // Camera change view
-    this->camera->LookAt(Vector3(1, 1, 1), Vector3(0, 0.3, 0), Vector3::UP);
+    this->camera->LookAt(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.3, 0), Vector3::UP);
     temp.Render(&this->framebuffer, this->camera, Color::BLUE);
     // this is rendering the 2 mesh with a different camera
-    temp2.Render(&this->framebuffer, &tempCam, Color::WHITE);
+    // temp2.Render(&this->framebuffer, &tempCam, Color::WHITE);
 }
 
 // Render one frame
