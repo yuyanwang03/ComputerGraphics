@@ -11,11 +11,12 @@ Application::Application(const char* caption, int width, int height) : animation
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
 
-    this->mouse_state = 0;
+    this->mouse_state = default_free;
     this->time = 0.f;
     this->window_width = w;
     this->window_height = h;
     this->keystate = SDL_GetKeyboardState(nullptr);
+    this->currentSection = default_section;
 
     entityColor = Color::CYAN;
     this->camera = new Camera(); // Pointer to avoid initialization process
@@ -68,43 +69,61 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-        case SDLK_4: {
-            this->SetToDefault();
+        case SDLK_4:
+        { // Animation
             this->currentSection = section3_4;
             std::cout<< "Section 3.4 Animated Version" << std::endl;
+            this->SetToDefault();
             // Initializes the animation
             this->animation.Init();
             this->animation.Render();
             break;
         }
-        case SDLK_o: {
-            std::cout << "Ortographic" << std::endl;
+        case SDLK_o:
+        { // Set to orthographic projection
+            if (currentSection==section3_4) {break;}
+            std::cout << "Orthographic" << std::endl;
+            currentSection = orthographic;
             this->SetToDefault();
             camera->type = Camera::ORTHOGRAPHIC;
-            this->entity = Entity("../res/meshes/anna.obj");
-            // camera->LookAt(Vector3(0,0,0), Vector3(0,0,0), Vector3::UP);
+            camera->view_matrix.SetIdentity();
             camera->SetOrthographic(-1,1,1,-1,-1,1);
             entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
-        case SDLK_p: {
+        case SDLK_p:
+        { // Set to perspective projection
             std::cout << "Perspective" << std::endl;
+            currentSection = perspective;
             this->SetToDefault();
             camera->type = Camera::PERSPECTIVE;
-            this->entity = Entity("../res/meshes/anna.obj");
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
             camera->SetPerspective(45, window_width/window_height, 0.01, 100);
             entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
-        case SDLK_q:{
-            currentSection = section3_1;
+        case SDLK_q:
+        { // Go back to initial state; can be used to exit animation
+            currentSection = default_section;
             SetToDefault();
             camera->type = Camera::ORTHOGRAPHIC;
-            this->entity = Entity("../res/meshes/anna.obj");
-            // camera->LookAt(Vector3(0,0,0), Vector3(0,0,0), Vector3::UP);
+            camera->view_matrix.SetIdentity();
             camera->SetOrthographic(-1,1,1,-1,-1,1);
             entity.Render(&this->framebuffer, this->camera, entityColor);
+            break;
+        }
+        case SDLK_c:
+        { // Change color of the entity
+            entityColor.Random();
+            entity.Render(&this->framebuffer, this->camera, entityColor);
+            break;
+        }
+        case SDLK_PLUS:
+        { // Increase values for near_plane, far_plane or fov
+            break;
+        }
+        case SDLK_MINUS:
+        { // Decrease values for near_plane, far_plane or fov
             break;
         }
     }

@@ -16,11 +16,13 @@ enum mouse_state{
 };
 
 enum workingSection{
-    section3_1 = 1,
-    section3_2 = 2,
-    section3_3 = 3,
+    default_section = 1,
+    orthographic = 2,
+    perspective = 3,
     section3_4 = 4,
-    section3_5 = 5
+    change_far = 5,
+    change_near = 6,
+    change_fov = 7,
 };
 
 class Application

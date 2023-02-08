@@ -121,9 +121,9 @@ void Camera::UpdateProjectionMatrix()
         projection_matrix.m[15] = 0;                                                // M[3][3]
 	} else if (type == ORTHOGRAPHIC) {
         projection_matrix.SetTranslation(-(right+left)/(right-left), -(top+bottom)/(top-bottom), -(far_plane+near_plane)/(far_plane-near_plane));
-        projection_matrix.M[0][0] = 2/(right-left);             // m[0]
-        projection_matrix.M[1][1] = 2/(top-bottom);             // m[5]
-        projection_matrix.M[2][2] = -2/(far_plane-near_plane);  // m[10]
+        projection_matrix.M[0][0] = 2.0/(right-left);             // m[0]
+        projection_matrix.M[1][1] = 2.0/(top-bottom);             // m[5]
+        projection_matrix.M[2][2] = -2.0/(far_plane-near_plane);  // m[10]
 	}
     
     /*
