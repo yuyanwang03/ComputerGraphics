@@ -17,14 +17,10 @@ Application::Application(const char* caption, int width, int height) : animation
     this->window_height = h;
     this->keystate = SDL_GetKeyboardState(nullptr);
 
+    entityColor = Color::CYAN;
     this->camera = new Camera(); // Pointer to avoid initialization process
-    // this->entity = Entity();
-    Mesh tempMsh{Mesh()};
-    int status = tempMsh.LoadOBJ("../res/meshes/anna.obj");
-    // std::cout << status << std::endl;
-    if (status) {entity.SetMesh(tempMsh); std::cout << "Mesh correctly set" << std::endl;}
-    // else {exit(0);}
-    
+    this->entity = Entity("../res/meshes/anna.obj");
+        
     this->framebuffer.Resize(w, h);
 }
 
@@ -40,19 +36,9 @@ void Application::Init(void)
     
     // Code testing
     
-    // 2 mesh
-    Entity temp2{Entity()};
-    Mesh tempMsh2{Mesh()};
-    Camera tempCam = Camera();
-    int status2 = tempMsh2.LoadOBJ("../res/meshes/cleo.obj");
-    // std::cout << status << std::endl;
-    if (status2) {temp2.SetMesh(tempMsh2); std::cout << "Mesh correctly set" << std::endl;}
-    
     // Camera change view
-    this->camera->LookAt(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.3, 0), Vector3::UP);
-    // entity.Render(&this->framebuffer, this->camera, Color::BLUE);
-    // this is rendering the 2 mesh with a different camera
-    temp2.Render(&this->framebuffer, &tempCam, Color::WHITE);
+    this->camera->LookAt(Vector3(0.5, 0.2, 0), Vector3(0, 0.1, 0), Vector3::UP);
+    entity.Render(&this->framebuffer, this->camera, entityColor);
     
 }
 

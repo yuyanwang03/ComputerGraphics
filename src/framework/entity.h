@@ -18,6 +18,7 @@ public:
     Entity(Matrix44 matx, Mesh msh);
     Entity(Matrix44 matx);
     Entity(Mesh msh);
+    Entity(const char* path);
     Entity(const Entity& e);
     Entity& operator = (const Entity& c); // Assign operator
 

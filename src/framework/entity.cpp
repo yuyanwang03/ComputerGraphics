@@ -15,9 +15,23 @@ Entity::Entity(Matrix44 matx) {modelMatrix = matx;}
 
 Entity::Entity(Mesh msh) {entityMesh = msh;}
 
+Entity::Entity(const char* path){
+    Mesh tempMsh{Mesh()};
+    int status = tempMsh.LoadOBJ(path);
+    if (status) {entityMesh = tempMsh; std::cout << "Mesh correctly set" << std::endl;}
+}
+
 Entity::Entity(const Entity& e){
     modelMatrix = e.modelMatrix;
     entityMesh = e.entityMesh;
+}
+
+Entity& Entity::operator = (const Entity& e)
+{
+    modelMatrix = e.modelMatrix;
+    entityMesh = e.entityMesh;
+    
+    return *this;
 }
 
 void Entity::SetMatrix(Matrix44 matx) {this->modelMatrix = matx;}
@@ -63,5 +77,6 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
 }
 
 void Entity::Update(float seconds_elapsed){
+    modelMatrix.Rotate(seconds_elapsed*PI/180*6, Vector3(0,1,0));
     return;
 }

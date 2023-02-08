@@ -15,19 +15,6 @@ enum mouse_state{
     right_click = 2
 };
 
-enum buttonId{
-    create = 1,
-    save = 2,
-    black = 3,
-    red = 4,
-    green = 5,
-    navy_blue = 6,
-    yellow = 7,
-    purple = 8,
-    sky_blue = 9,
-    white = 10
-};
-
 enum workingSection{
     section3_1 = 1,
     section3_2 = 2,
@@ -52,6 +39,7 @@ public:
     bool has_toolbar;
     int currentSection;
     Entity entity;
+    Color entityColor;
     
 	float time;
 
@@ -73,17 +61,35 @@ public:
     // Create a class for the animation
     class EntitySystem{
         Application* app;
-        Entity* entities;
+        Entity entities[3];
         int numEntities;
-        Color* entitiesColor;
+        Color entitiesColor[3];
         public:
-        EntitySystem(Application* a) {app = a; numEntities=0; entities = NULL;}
+        EntitySystem(Application* a) {app = a; numEntities=0;}
         void Init(){
             // Load specific meshes here
+            app->camera->LookAt(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.3, 0), Vector3::UP);
+            entities[0] = Entity("../res/meshes/anna.obj");
+            entities[0].modelMatrix.Translate(0, 0.6, 0.1);
+            entities[1] = Entity("../res/meshes/cleo.obj");
+            entities[1].modelMatrix.Translate(0.7, 0.1, 0.4);
+            entities[2] = Entity("../res/meshes/lee.obj");
+            entities[2].modelMatrix.Translate(-1.1, -0.4, -0.3);
+            numEntities = 3;
+            for (int i=0; i<numEntities; i++) {
+                Color temp = Color();
+                temp.Random();
+                entitiesColor[i] = temp;
+            }
             return;
         }
-        void Update(float t) {for (int i=0; i<numEntities; i++) entities[i].Update(t); return;}
+        void Update(float t) {
+            for (int i=0; i<numEntities; i++) entities[i].Update(t);
+            this->Render();
+            return;
+        }
         void Render(){
+            app->framebuffer.Fill(Color::BLACK);
             for (int i=0; i<numEntities; i++) {entities[i].Render(&app->framebuffer, app->camera, entitiesColor[i]);}
             return;
         }
