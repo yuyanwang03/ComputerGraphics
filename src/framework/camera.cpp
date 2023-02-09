@@ -6,7 +6,11 @@
 Camera::Camera()
 {
 	view_matrix.SetIdentity();
-	SetOrthographic(-1,1,1,-1,-1,1);
+	// SetOrthographic(-1,1,1,-1,-1,1);
+    /*
+    LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
+    SetPerspective(45, window_width/window_height, 0.01, 100);
+     */
     /*
     this->fov = 45;
     this->far_plane = 100;

@@ -96,6 +96,13 @@ public:
             for (int i=0; i<numEntities; i++) {entities[i].Render(&app->framebuffer, app->camera, entitiesColor[i]);}
             return;
         }
+        void ChangeColor(){
+            for (int i=0; i<numEntities; i++) {
+                Color temp = Color();
+                temp.Random();
+                entitiesColor[i] = temp;
+            }
+        }
     };
     
     EntitySystem animation;

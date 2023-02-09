@@ -18,9 +18,7 @@ Application::Application(const char* caption, int width, int height) : animation
     this->keystate = SDL_GetKeyboardState(nullptr);
     this->currentSection = default_section;
 
-    entityColor = Color::CYAN;
     this->camera = new Camera(); // Pointer to avoid initialization process
-    this->entity = Entity("../res/meshes/anna.obj");
         
     this->framebuffer.Resize(w, h);
 }
@@ -36,8 +34,8 @@ void Application::Init(void)
     std::cout << "Initiating app..." << std::endl;
     
     // Code testing
-    
-    entity.Render(&this->framebuffer, this->camera, entityColor);
+    this->animation.Init();
+    this->animation.Render();
 
 }
 
@@ -45,15 +43,12 @@ void Application::Init(void)
 void Application::Render(void)
 {
     // ...
-    
     framebuffer.Render();
 }
 
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    // If inside the animation section, update the animation
-    // if (currentSection == section3_4) {this->animation.Update(seconds_elapsed);}
     this->animation.Update(seconds_elapsed);
 }
 
@@ -70,22 +65,10 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-        case SDLK_4:
-        { // Animation
-            this->currentSection = section3_4;
-            std::cout<< "Section 3.4 Animated Version" << std::endl;
-            this->SetToDefault();
-            // Initializes the animation
-            this->animation.Init();
-            this->animation.Render();
-            break;
-        }
         case SDLK_o:
         { // Set to orthographic projection
             std::cout << "Orthographic" << std::endl;
-            if (currentSection!=section3_4) {currentSection = perspective;}
             this->SetToDefault();
-            camera->type = Camera::ORTHOGRAPHIC;
             camera->view_matrix.SetIdentity();
             camera->SetOrthographic(-1,1,1,-1,-1,1);
             entity.Render(&this->framebuffer, this->camera, entityColor);
@@ -94,10 +77,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_p:
         { // Set to perspective projection
             std::cout << "Perspective" << std::endl;
-            // if (currentSection!=section3_4) {currentSection = perspective;}
-            currentSection=perspective;
             this->SetToDefault();
-            camera->type = Camera::PERSPECTIVE;
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
             camera->SetPerspective(45, window_width/window_height, 0.01, 100);
             entity.Render(&this->framebuffer, this->camera, entityColor);
@@ -116,8 +96,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         }
         case SDLK_c:
         { // Change color of the entity
-            entityColor.Random();
-            entity.Render(&this->framebuffer, this->camera, entityColor);
+            animation.ChangeColor();
             break;
         }
         case SDLK_n: {currentSection = change_near; break;}
