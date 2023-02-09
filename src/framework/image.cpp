@@ -356,7 +356,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     this->SetPixelSafe(x0, y0, c);
     // If the program is drawing in the 2, 3, 6 or 7 octants, it should make a loop with respect y; otherwise, with respect x
     if (reverse){
-        // Iterate respect y
+        // Iterate with respect to y
         while (y < y1){
             // Consider if it should decrease, increase or maintain the same x position
             if (d <= 0) {d += inc_E;}
@@ -365,7 +365,7 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
             this->SetPixelSafe(x, y, c);
         }
     } else {
-        // Iterate respect x
+        // Iterate with respect to x
         while (x < x1){
             // Consider if it should decrease, increase or maintain the same y position
             if (d <= 0) {d += inc_E;}
