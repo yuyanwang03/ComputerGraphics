@@ -35,14 +35,7 @@ public:
 	int window_width;
 	int window_height;
     // Set a attibute to keep track of the mouse color
-    Color mouse_color;
-    bool circleFill;
-    bool toolbar_top;
-    bool has_toolbar;
     int currentSection;
-    Entity entity;
-    Color entityColor;
-    
 	float time;
 
 	// Input
@@ -50,7 +43,6 @@ public:
 	int mouse_state; // Tells which buttons are pressed
 	Vector2 mouse_position; // Last mouse position
 	Vector2 mouse_delta; // Mouse movement in the last frame
-    Vector2 mouse_prev;
 
     void SetToDefault(void);
 	void OnKeyPressed(SDL_KeyboardEvent event);
@@ -126,7 +118,6 @@ public:
         // Update framebuffer size
         this->framebuffer.Resize(width, height);
         this->framebuffer.Fill(Color::BLACK);
-        entity.Render(&this->framebuffer, this->camera, entityColor);
         // Update aspect ratio
         this->camera->SetAspectRatio((float)width/height);
         // Update projection matrix, that may use the aspect ratio value

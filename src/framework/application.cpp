@@ -32,8 +32,8 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
+    camera->LookAt(Vector3(0.5,0.5,0.5), Vector3(0,0.3,0), Vector3(0,1,0));
     
-    // Code testing
     this->animation.Init();
     this->animation.Render();
 
@@ -55,7 +55,8 @@ void Application::Update(float seconds_elapsed)
 // Sets the application to starting conditions, which includes painting the displayed framebuffer with black
 void Application::SetToDefault(void){
     this->framebuffer.Fill(Color::BLACK);
-    mouse_prev.set(-1, -1);
+    camera->LookAt(Vector3(0.5,0.5,0.5), Vector3(0,0.3,0), Vector3(0,1,0));
+    currentSection = default_section;
     return;
 }
 
@@ -67,31 +68,24 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
         case SDLK_o:
         { // Set to orthographic projection
-            std::cout << "Orthographic" << std::endl;
-            this->SetToDefault();
-            camera->view_matrix.SetIdentity();
+            std::cout << "Orthographic View" << std::endl;
+            SetToDefault();
             camera->SetOrthographic(-1,1,1,-1,-1,1);
-            entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
         case SDLK_p:
         { // Set to perspective projection
-            std::cout << "Perspective" << std::endl;
+            std::cout << "Perspective View" << std::endl;
             this->SetToDefault();
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->SetPerspective(45, window_width/window_height, 0.01, 100);
-            entity.Render(&this->framebuffer, this->camera, entityColor);
-            this->animation.Render();
+            camera->SetPerspective(45, window_width/window_height, 0.01, 30);
             break;
         }
         case SDLK_q:
         { // Go back to initial state; can be used to exit animation
-            currentSection = default_section;
             SetToDefault();
-            camera->type = Camera::ORTHOGRAPHIC;
-            camera->view_matrix.SetIdentity();
+            // camera->view_matrix.SetIdentity(); // near far
             camera->SetOrthographic(-1,1,1,-1,-1,1);
-            entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
         case SDLK_c:
@@ -103,26 +97,22 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_f: {currentSection = change_far; break;}
         case SDLK_PLUS:
         { // Increase values for near_plane, far_plane or fov
-            std::cout <<"plus"<<std::endl;
-            if (currentSection==change_far) {camera->far_plane += 0.15; std::cout <<"here"<<std::endl;camera->UpdateProjectionMatrix();}
-            if (currentSection==change_near) {camera->near_plane += 0.15; camera->UpdateProjectionMatrix();}
-            if (currentSection==perspective) {
-                std::cout <<"here"<<std::endl;
-                camera->fov += 5;
-                camera->UpdateProjectionMatrix();
-                this->animation.Render();
-            }
+            if (currentSection==change_far) {camera->far_plane += 0.15;}
+            else if (currentSection==change_near) {camera->near_plane += 0.15; camera->near_plane = std::min(camera->near_plane, camera->far_plane);}
+            else if (camera->type==Camera::PERSPECTIVE) {camera->fov += 5; camera->fov = std::min((int)camera->fov, 180);}
+            else {break;}
+            camera->UpdateProjectionMatrix();
+            std::cout << "Increased value" << std::endl;
             break;
         }
         case SDLK_MINUS:
         { // Decrease values for near_plane, far_plane or fov
-            if (currentSection==change_far) {camera->far_plane -= 0.15; camera->UpdateProjectionMatrix();}
-            if (currentSection==change_near) {camera->near_plane -= 0.15; camera->UpdateProjectionMatrix();}
-            if (currentSection==perspective) {
-                camera->fov -= 5;
-                camera->UpdateProjectionMatrix();
-                this->animation.Render();
-            }
+            if (currentSection==change_far) {camera->far_plane -= 0.15; camera->far_plane = std::max(camera->near_plane, camera->far_plane);}
+            else if (currentSection==change_near) {camera->near_plane -= 0.15;}
+            else if (camera->type==Camera::PERSPECTIVE) {camera->fov -= 5; camera->fov = std::max((int)camera->fov, 0);}
+            else {break;}
+            camera->UpdateProjectionMatrix();
+            std::cout << "Decreased value" << std::endl;
             break;
         }
     }
@@ -132,11 +122,8 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = left_click;
-        mouse_prev = mouse_position;
     } else if (event.button == SDL_BUTTON_RIGHT){
-        std::cout<<"rightc"<<std::endl;
         mouse_state = right_click;
-        mouse_prev = mouse_position;
     }
 }
 
@@ -145,37 +132,25 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
     if (event.button == SDL_BUTTON_LEFT) {
         mouse_state = default_free;
     } else if (event.button == SDL_BUTTON_RIGHT){
-        std::cout<<"rightfree"<<std::endl;
-        // this->camera->Move(Vector3(mouse_prev.x-mouse_position.x, mouse_prev.y-mouse_position.y, 0));
-        entity.Render(&this->framebuffer, this->camera, Color::GREEN);
-        this->Render();
         mouse_state = default_free;
-        mouse_prev.set(-1,-1);
     }
 }
 
-void Application::OnMouseMove(SDL_MouseButtonEvent event)
+void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
 {
-
+    while (mouse_state==left_click){
+        camera->MoveEye(mouse_delta.x, mouse_delta.y);
+        camera->UpdateViewMatrix();
+        break;
+    }
 }
 
 void Application::OnWheel(SDL_MouseWheelEvent event)
 {
+    // Zoom in; Zoom out
 	float dy = event.preciseY;
-    float dx = event.preciseX;
-    /*
-    camera->MoveEye(dx, dy);
-     */
-    
     camera->eye = camera->eye+Vector3(0,0,dy);
     camera->UpdateViewMatrix();
-    framebuffer.Fill(Color::BLACK);
-    entity.Render(&this->framebuffer, this->camera, entityColor);
-    this->Render();
-    
-    std::cout << dx << " " << dy<<std::endl;
-    
-	// ...
 }
 
 void Application::OnFileChanged(const char* filename)
