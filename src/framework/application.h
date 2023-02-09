@@ -33,7 +33,6 @@ public:
 	SDL_Window* window;
 	int window_width;
 	int window_height;
-    // Set a attibute to keep track of the mouse color
     int currentSection;
 	float time;
 
