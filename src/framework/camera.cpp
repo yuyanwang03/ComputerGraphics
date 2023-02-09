@@ -83,6 +83,22 @@ void Camera::LookAt(const Vector3& eye, const Vector3& center, const Vector3& up
 	UpdateViewMatrix();
 }
 
+void Camera::MoveEye(float dx, float dy){
+    Matrix44 rotateX, rotateY;
+    Vector3 temp = eye-center;
+    float d = temp.Length();
+    float ax = atan2(dy, d);
+    float ay = atan2(dx, d);
+    rotateX.RotateLocal(ax, Vector3(1,0,0));
+    rotateY.RotateLocal(ay, Vector3(0,1,0));
+    /*
+    this->eye.x += dx;
+    this->eye.y += dy;*/
+    temp = (rotateX*rotateY)*temp;
+    eye = temp;
+    UpdateViewMatrix();
+}
+
 void Camera::UpdateViewMatrix()
 {
 	// Reset Matrix (Identity)

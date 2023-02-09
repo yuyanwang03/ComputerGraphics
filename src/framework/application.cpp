@@ -53,7 +53,8 @@ void Application::Render(void)
 void Application::Update(float seconds_elapsed)
 {
     // If inside the animation section, update the animation
-    if (currentSection == section3_4) {this->animation.Update(seconds_elapsed);}
+    // if (currentSection == section3_4) {this->animation.Update(seconds_elapsed);}
+    this->animation.Update(seconds_elapsed);
 }
 
 // Sets the application to starting conditions, which includes painting the displayed framebuffer with black
@@ -82,7 +83,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_o:
         { // Set to orthographic projection
             std::cout << "Orthographic" << std::endl;
-            currentSection = orthographic;
+            if (currentSection!=section3_4) {currentSection = perspective;}
             this->SetToDefault();
             camera->type = Camera::ORTHOGRAPHIC;
             camera->view_matrix.SetIdentity();
@@ -93,12 +94,14 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_p:
         { // Set to perspective projection
             std::cout << "Perspective" << std::endl;
-            if (currentSection!=section3_4) {currentSection = perspective;}
+            // if (currentSection!=section3_4) {currentSection = perspective;}
+            currentSection=perspective;
             this->SetToDefault();
             camera->type = Camera::PERSPECTIVE;
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
             camera->SetPerspective(45, window_width/window_height, 0.01, 100);
             entity.Render(&this->framebuffer, this->camera, entityColor);
+            this->animation.Render();
             break;
         }
         case SDLK_q:
@@ -117,12 +120,30 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             entity.Render(&this->framebuffer, this->camera, entityColor);
             break;
         }
+        case SDLK_n: {currentSection = change_near; break;}
+        case SDLK_f: {currentSection = change_far; break;}
         case SDLK_PLUS:
         { // Increase values for near_plane, far_plane or fov
+            std::cout <<"plus"<<std::endl;
+            if (currentSection==change_far) {camera->far_plane += 0.15; std::cout <<"here"<<std::endl;camera->UpdateProjectionMatrix();}
+            if (currentSection==change_near) {camera->near_plane += 0.15; camera->UpdateProjectionMatrix();}
+            if (currentSection==perspective) {
+                std::cout <<"here"<<std::endl;
+                camera->fov += 5;
+                camera->UpdateProjectionMatrix();
+                this->animation.Render();
+            }
             break;
         }
         case SDLK_MINUS:
         { // Decrease values for near_plane, far_plane or fov
+            if (currentSection==change_far) {camera->far_plane -= 0.15; camera->UpdateProjectionMatrix();}
+            if (currentSection==change_near) {camera->near_plane -= 0.15; camera->UpdateProjectionMatrix();}
+            if (currentSection==perspective) {
+                camera->fov -= 5;
+                camera->UpdateProjectionMatrix();
+                this->animation.Render();
+            }
             break;
         }
     }
@@ -162,7 +183,19 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 void Application::OnWheel(SDL_MouseWheelEvent event)
 {
 	float dy = event.preciseY;
-
+    float dx = event.preciseX;
+    /*
+    camera->MoveEye(dx, dy);
+     */
+    
+    camera->eye = camera->eye+Vector3(0,0,dy);
+    camera->UpdateViewMatrix();
+    framebuffer.Fill(Color::BLACK);
+    entity.Render(&this->framebuffer, this->camera, entityColor);
+    this->Render();
+    
+    std::cout << dx << " " << dy<<std::endl;
+    
 	// ...
 }
 
