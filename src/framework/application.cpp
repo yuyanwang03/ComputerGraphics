@@ -152,7 +152,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
         if (currentSection == change_center){
             camera->center = Vector3(camera->center.x+mouse_delta.x/6.0, camera->center.y+mouse_delta.y/6.0, camera->center.z);
         }
-        else {camera->MoveEye(mouse_delta.x, mouse_delta.y);}
+        else {camera->MoveEye(mouse_delta.x/4.0, mouse_delta.y/4.0);}
         camera->UpdateViewMatrix();
         break;
     }
