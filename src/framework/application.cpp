@@ -81,15 +81,23 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             camera->SetPerspective(45, window_width/window_height, 0.01, 30);
             break;
         }
-        /*
+        case SDLK_v:
+        {
+            std::cout << "Change center" << std::endl;
+            currentSection = change_center;
+            break;
+        }
         case SDLK_q:
-        { // To see the effects of far_plane and near_plane values
+        {
+            currentSection = default_section;
+            /*
+            // To see the effects of far_plane and near_plane values
             SetToDefault();
             camera->view_matrix.SetIdentity(); // near far
             camera->SetOrthographic(-1,1,1,-1,-1,1);
+            */
             break;
         }
-        */
         case SDLK_c:
         { // Change color of the entity
             animation.ChangeColor();
@@ -141,7 +149,10 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
 {
     while (mouse_state==left_click){
-        camera->MoveEye(mouse_delta.x, mouse_delta.y);
+        if (currentSection == change_center){
+            camera->center = Vector3(camera->center.x+mouse_delta.x/6.0, camera->center.y+mouse_delta.y/6.0, camera->center.z);
+        }
+        else {camera->MoveEye(mouse_delta.x, mouse_delta.y);}
         camera->UpdateViewMatrix();
         break;
     }

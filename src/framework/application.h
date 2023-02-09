@@ -21,6 +21,7 @@ enum workingSection{
     perspective = 3,
     change_far = 4,
     change_near = 5,
+    change_center = 6
 };
 
 class Application
