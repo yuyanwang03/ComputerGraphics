@@ -11,9 +11,9 @@ Entity::Entity(Matrix44 matx, Mesh msh){
     entityMesh = msh;
 }
 
-Entity::Entity(Matrix44 matx) {modelMatrix = matx;}
+Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh();}
 
-Entity::Entity(Mesh msh) {entityMesh = msh;}
+Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44();}
 
 Entity::Entity(const char* path){
     Mesh tempMsh{Mesh()};
@@ -30,7 +30,6 @@ Entity& Entity::operator = (const Entity& e)
 {
     modelMatrix = e.modelMatrix;
     entityMesh = e.entityMesh;
-    
     return *this;
 }
 

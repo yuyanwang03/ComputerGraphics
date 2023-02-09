@@ -6,16 +6,6 @@
 Camera::Camera()
 {
 	view_matrix.SetIdentity();
-	// SetOrthographic(-1,1,1,-1,-1,1);
-    /*
-    LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-    SetPerspective(45, window_width/window_height, 0.01, 100);
-     */
-    /*
-    this->fov = 45;
-    this->far_plane = 100;
-    this->near_plane = 0.01;
-     */
 }
 
 Vector3 Camera::GetLocalVector(const Vector3& v)

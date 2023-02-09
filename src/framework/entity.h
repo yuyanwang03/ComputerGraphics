@@ -30,8 +30,6 @@ public:
     void Update(float seconds_elapsed);
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);
-    // void Render();
-    
 };
 
 #endif /* entity_h */
