@@ -81,13 +81,15 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             camera->SetPerspective(45, window_width/window_height, 0.01, 30);
             break;
         }
+        /*
         case SDLK_q:
-        { // Go back to initial state; can be used to exit animation
+        { // To see the effects of far_plane and near_plane values
             SetToDefault();
-            // camera->view_matrix.SetIdentity(); // near far
+            camera->view_matrix.SetIdentity(); // near far
             camera->SetOrthographic(-1,1,1,-1,-1,1);
             break;
         }
+        */
         case SDLK_c:
         { // Change color of the entity
             animation.ChangeColor();

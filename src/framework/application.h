@@ -19,10 +19,8 @@ enum workingSection{
     default_section = 1,
     orthographic = 2,
     perspective = 3,
-    section3_4 = 4,
-    change_far = 5,
-    change_near = 6,
-    change_fov = 7,
+    change_far = 4,
+    change_near = 5,
 };
 
 class Application
