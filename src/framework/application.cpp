@@ -78,7 +78,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             std::cout << "Perspective View" << std::endl;
             this->SetToDefault();
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->SetPerspective(45, window_width/window_height, 0.01, 30);
+            camera->SetPerspective(45, (float)window_width/window_height, 0.01, 30);
             break;
         }
         case SDLK_v:
@@ -109,7 +109,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         { // Increase values for near_plane, far_plane or fov
             if (currentSection==change_far) {camera->far_plane += 0.15;}
             else if (currentSection==change_near) {camera->near_plane += 0.15; camera->near_plane = std::min(camera->near_plane, camera->far_plane);}
-            else if (camera->type==Camera::PERSPECTIVE) {camera->fov += 5; camera->fov = std::min((int)camera->fov, 180);}
+            else if (camera->type==Camera::PERSPECTIVE) {camera->fov += 5; camera->fov = std::min(camera->fov, 180.f);}
             else {break;}
             camera->UpdateProjectionMatrix();
             std::cout << "Increased value" << std::endl;
@@ -119,7 +119,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         { // Decrease values for near_plane, far_plane or fov
             if (currentSection==change_far) {camera->far_plane -= 0.15; camera->far_plane = std::max(camera->near_plane, camera->far_plane);}
             else if (currentSection==change_near) {camera->near_plane -= 0.15;}
-            else if (camera->type==Camera::PERSPECTIVE) {camera->fov -= 5; camera->fov = std::max((int)camera->fov, 0);}
+            else if (camera->type==Camera::PERSPECTIVE) {camera->fov -= 5; camera->fov = std::max(camera->fov, 0.f);}
             else {break;}
             camera->UpdateProjectionMatrix();
             std::cout << "Decreased value" << std::endl;
