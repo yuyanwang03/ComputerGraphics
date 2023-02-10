@@ -19,3 +19,6 @@ Access the Lab 1 Branch in Github: [GitHub Lab 1](https://github.com/yuyanwang03
 
 Access the Lab 2 Branch in Github: [GitHub Lab 2](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab2)
 
+## Lab 3
+
+Access the Lab 3 Branch in Github: [GitHub Lab 3](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab3)
