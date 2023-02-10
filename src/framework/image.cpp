@@ -377,6 +377,10 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
     return;
 }
 
+void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> &table){
+    return;
+}
+
 void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
     int x(0), y(r), v(1-r);
     this->SetPixelSafe(x0, y0+y, c);
@@ -403,6 +407,10 @@ void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
     }
     this->SetPixelSafe(x0+r, y0, c);
     this->SetPixelSafe(x0-r, y0, c);
+    return;
+}
+
+void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2, const Color& color){
     return;
 }
 
