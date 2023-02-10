@@ -1,4 +1,4 @@
-#  Labs Overview *
+#  Labs Overview
 
 Access the Github Repository of the Lab: [GitHub Repo Here](https://github.com/yuyanwang03/ComputerGraphics)
 
@@ -15,7 +15,7 @@ If you get lost somehow, just go back to the main branch, there will be direct l
 
 Access the Lab 1 Branch in Github: [GitHub Lab 1](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab1)
 
-## Lab 2
+## Lab 2 *
 
 Access the Lab 2 Branch in Github: [GitHub Lab 2]
 
