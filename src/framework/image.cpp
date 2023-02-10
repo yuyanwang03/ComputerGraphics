@@ -414,20 +414,31 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     return;
 }
 
-void Image::DrawImagePixels(const Image& image, int x, int y, bool top){
-    // Iterate through the pixels and draw these with its colors into their corresponding position
-    for (int i=x; i<image.width; i++){
-        for (int j=y; j<image.height; j++){
-            this->SetPixelSafe(i, j, image.pixels[j*image.width + i]);
-        }
-    }
-    // Adding border lines
-    int margin(5),iconSize(50), numButtons(10);
-    for (unsigned int i =0; i<numButtons; i++){
-        this->DrawRect(margin+i*iconSize, margin, iconSize, iconSize, Color::GRAY);
-    }
-    if (top) {this->FlipY();}
+
+void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2){
     return;
+}
+
+void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer){
+    return;
+}
+
+void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer, Image * texture, const Vector2 &uv0, const Vector2 &uv1, const Vector2 &uv2){
+    return;
+}
+
+/*
+void Image::DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer){
+    return;
+}
+*/
+
+Color BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2){
+    Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
+    float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
+    // TO FINISH
+    Color temp = Color();
+    return temp;
 }
 
 #ifndef IGNORE_LAMBDAS
