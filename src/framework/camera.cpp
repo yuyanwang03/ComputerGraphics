@@ -89,7 +89,7 @@ void Camera::MoveEye(float dx, float dy){
     this->eye.x += dx;
     this->eye.y += dy;*/
     temp = (rotateX*rotateY)*temp;
-    eye = temp;
+    eye = temp + center;
     UpdateViewMatrix();
 }
 
