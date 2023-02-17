@@ -455,9 +455,9 @@ void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
 }
 
 void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2, const Color& color){
-    //intialize the Active Edges Table (AET)
+    // Intialize the Active Edges Table (AET)
     std::vector<cell> table = std::vector<cell>(this->height);
-    //update the AET
+    // Fill the AET
     ScanLineBresenham(p0.x, p0.y, p1.x, p1.y, table);
     ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
     ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
@@ -484,6 +484,25 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
 
 
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2){
+    // Intialize the Active Edges Table (AET)
+    std::vector<cell> table = std::vector<cell>(this->height);
+    // Fill the AET
+    ScanLineBresenham(p0.x, p0.y, p1.x, p1.y, table);
+    ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
+    ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
+    
+    Color pixelColor;
+    
+    // Find the minimum value of y and start filling the triangle from that point to the max y value
+    int minYPixel = std::min({p0.y, p1.y, p2.y});
+    int maxYPixel = std::max({p0.y, p1.y, p2.y});
+    for (int i = minYPixel; i<maxYPixel; i++){
+        for (int j=table[i].min; j<=table[i].max; j++){
+            pixelColor = BarycentricInterpolation(Vector2(j,i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
+            SetPixelSafe(j, i, pixelColor);
+        }
+    }
+    
     return;
 }
 
@@ -504,8 +523,13 @@ void Image::DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* 
 Color BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2){
     Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
     float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
-    // TO FINISH
-    Color temp = Color();
+    float denom = d00*d11 + d01*d01;
+    float v = (d11*d20 - d01*d21)/denom;
+    float w = (d00*d21 - d01*d20)/denom;
+    float u = 1.0 - v - w;
+    if (u+v+w!=1) {std::cout << "error color"<<std::endl; return Color::WHITE;}
+    Color temp = Color(c0*u+c1*v+c2*w);
+    // std::cout<<temp.r<<" "<<temp.g<<" "<<temp.b<<std::endl;
     return temp;
 }
 
