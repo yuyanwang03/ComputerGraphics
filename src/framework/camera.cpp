@@ -47,7 +47,7 @@ void Camera::Orbit(float angleX, float angleY){
 }
 
 void Camera::Zoom(float delta){
-    float factor = (delta<0 ? 1.2 : 0.8);
+    float factor = (delta>0 ? 1.2 : 0.8);
     Vector3 new_front = (float)factor*(eye-center);
     eye = center + new_front;
     UpdateViewMatrix();

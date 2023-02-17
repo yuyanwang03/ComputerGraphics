@@ -46,12 +46,12 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
     Vector3 tmp0, tmp1, tmp2;
     bool neg0, neg1, neg2;
     // Iterate through the vertices of the mesh of the entity (3 by 3)
-    for (int i=0; i<this->entityMesh.vertices.size(); i=i+3){
+    for (int i=0; i<this->entityMesh.GetVertices().size(); i=i+3){
          
         // Get the vertices of the world space (3D)
-        tmp0 = this->modelMatrix*entityMesh.vertices[i];
-        tmp1 = this->modelMatrix*entityMesh.vertices[i+1];
-        tmp2 = this->modelMatrix*entityMesh.vertices[i+2];
+        tmp0 = this->modelMatrix*entityMesh.GetVertices()[i];
+        tmp1 = this->modelMatrix*entityMesh.GetVertices()[i+1];
+        tmp2 = this->modelMatrix*entityMesh.GetVertices()[i+2];
 
         // Project world space (3D) to clip space (2D)
         tmp0 = camera->ProjectVector(tmp0, neg0);
