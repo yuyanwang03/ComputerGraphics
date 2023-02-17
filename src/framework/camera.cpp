@@ -34,6 +34,22 @@ void Camera::Rotate(float angle, const Vector3& axis)
 	UpdateViewMatrix();
 }
 
+void Camera::Orbit(float angleX, float angleY){
+    Matrix44 RU, RL;
+    RU.SetRotation(angleY*0.1, Vector3::UP);
+    RL.SetRotation(angleX*0.1, Vector3(1, 0, 0));
+    Vector3 new_front = RL * RU * (eye-center);
+    center = eye + new_front;
+    UpdateViewMatrix();
+}
+
+void Camera::Zoom(float delta){
+    float factor = (delta>0 ? 1.1 : 0.9);
+    Vector3 new_front = factor*(eye-center);
+    center = eye + new_front;
+    UpdateViewMatrix();
+}
+
 void Camera::Move(Vector3 delta)
 {
 	Vector3 localDelta = GetLocalVector(delta);

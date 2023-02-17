@@ -32,21 +32,17 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
-    camera->LookAt(Vector3(0,1.5,1.5), Vector3(0,0.3,0), Vector3::UP);
+    camera->LookAt(Vector3(0,1.5,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
-    /*
-    this->animation.Init();
-    this->animation.Render();
-    */
     entity = Entity("../res/meshes/anna.obj");
-    entity.modelMatrix.Translate(0, 0.6, 0.1);
-    entity.Render(&framebuffer, camera, Color::RED);
+    // entity.modelMatrix.Translate(0, 0.6, 0.1);
 }
 
 // Render one frame
 void Application::Render(void)
 {
     // ...
+    framebuffer.Fill(Color::BLACK);
     entity.Render(&framebuffer, camera, Color::RED);
     framebuffer.Render();
 }
@@ -54,14 +50,11 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    // this->animation.Update(seconds_elapsed);
-    this->framebuffer.Fill(Color::BLACK);
-    // this->framebuffer.DrawTriangle(Vector2(10, 10), Vector2(40, 30), Vector2(20, 70), Color::BLUE);
+
 }
 
 // Sets the application to starting conditions, which includes painting the displayed framebuffer with black
 void Application::SetToDefault(void){
-    this->framebuffer.Fill(Color::BLACK);
     camera->LookAt(Vector3(0.5,0.5,0.5), Vector3(0,0.3,0), Vector3(0,1,0));
     currentSection = default_section;
     return;
@@ -158,10 +151,9 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
     while (mouse_state==left_click){
         if (currentSection == change_center){
             camera->center = Vector3(camera->center.x+mouse_delta.x/6.0, camera->center.y+mouse_delta.y/6.0, camera->center.z);
+            camera->UpdateViewMatrix();
         }
-        else {camera->MoveEye(mouse_delta.x/4.0, mouse_delta.y/4.0);}
-        camera->UpdateViewMatrix();
-        this->Render();
+        else {camera->Orbit(mouse_delta.x, mouse_delta.y);}
         break;
     }
 }
@@ -170,8 +162,7 @@ void Application::OnWheel(SDL_MouseWheelEvent event)
 {
     // Zoom in; Zoom out
 	float dy = event.preciseY;
-    camera->eye = camera->eye+Vector3(0,0,dy);
-    camera->UpdateViewMatrix();
+    camera->Zoom(dy);
 }
 
 void Application::OnFileChanged(const char* filename)

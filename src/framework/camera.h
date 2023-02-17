@@ -61,6 +61,8 @@ public:
 	void SetOrthographic(float left, float right, float top, float bottom, float near_plane, float far_plane);
 	void LookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
     void MoveEye(float dx, float dy);
+    void Orbit(float angleX, float angleY);
+    void Zoom(float delta);
 
 	// Compute the matrices
 	void UpdateViewMatrix();
