@@ -11,7 +11,6 @@ Application::Application(const char* caption, int width, int height) // : animat
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
 
-    this->mouse_state = default_free;
     this->time = 0.f;
     this->window_width = w;
     this->window_height = h;
@@ -19,7 +18,8 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->currentSection = default_section;
 
     this->camera = new Camera(); // Pointer to avoid initialization process
-        
+    this->entityColor.Random();
+    
     this->framebuffer.Resize(w, h);
 }
 
@@ -32,7 +32,7 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
-    camera->LookAt(Vector3(0,1.5,1.5), Vector3(0,0,0), Vector3::UP);
+    camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
     entity = Entity("../res/meshes/anna.obj");
     // entity.modelMatrix.Translate(0, 0.6, 0.1);
@@ -43,7 +43,7 @@ void Application::Render(void)
 {
     // ...
     framebuffer.Fill(Color::BLACK);
-    entity.Render(&framebuffer, camera, Color::RED);
+    entity.Render(&framebuffer, camera, entityColor);
     framebuffer.Render();
 }
 
@@ -51,13 +51,6 @@ void Application::Render(void)
 void Application::Update(float seconds_elapsed)
 {
 
-}
-
-// Sets the application to starting conditions, which includes painting the displayed framebuffer with black
-void Application::SetToDefault(void){
-    camera->LookAt(Vector3(0.5,0.5,0.5), Vector3(0,0.3,0), Vector3(0,1,0));
-    currentSection = default_section;
-    return;
 }
 
 //keyboard press event
@@ -69,16 +62,15 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_o:
         { // Set to orthographic projection
             std::cout << "Orthographic View" << std::endl;
-            SetToDefault();
+            camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
             camera->SetOrthographic(-1,1,1,-1,-1,1);
             break;
         }
         case SDLK_p:
         { // Set to perspective projection
             std::cout << "Perspective View" << std::endl;
-            this->SetToDefault();
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->SetPerspective(45, window_width/window_height, 0.01, 30);
+            camera->SetPerspective(45, window_width/window_height, 0.01, 100);
             break;
         }
         case SDLK_v:
@@ -90,17 +82,11 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_q:
         {
             currentSection = default_section;
-            /*
-            // To see the effects of far_plane and near_plane values
-            SetToDefault();
-            camera->view_matrix.SetIdentity(); // near far
-            camera->SetOrthographic(-1,1,1,-1,-1,1);
-            */
             break;
         }
         case SDLK_c:
         { // Change color of the entity
-            // animation.ChangeColor();
+            entityColor.Random();
             break;
         }
         case SDLK_n: {currentSection = change_near; break;}
@@ -131,24 +117,25 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) {
-        mouse_state = left_click;
+        
     } else if (event.button == SDL_BUTTON_RIGHT){
-        mouse_state = right_click;
+        
     }
 }
 
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) {
-        mouse_state = default_free;
+
     } else if (event.button == SDL_BUTTON_RIGHT){
-        mouse_state = default_free;
+
     }
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
 {
-    while (mouse_state==left_click){
+    //  std::cout<<"here"<<std::endl;
+    while (event.button == SDL_BUTTON_LEFT){
         if (currentSection == change_center){
             camera->center = Vector3(camera->center.x+mouse_delta.x/6.0, camera->center.y+mouse_delta.y/6.0, camera->center.z);
             camera->UpdateViewMatrix();

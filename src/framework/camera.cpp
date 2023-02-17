@@ -36,17 +36,17 @@ void Camera::Rotate(float angle, const Vector3& axis)
 
 void Camera::Orbit(float angleX, float angleY){
     Matrix44 RU, RL;
-    RU.SetRotation(angleY*0.1, Vector3::UP);
-    RL.SetRotation(angleX*0.1, Vector3(1, 0, 0));
+    RU.SetRotation(4*angleX*DEG2RAD, Vector3::UP);
+    RL.SetRotation(4*angleY*DEG2RAD, Vector3(1, 0, 0));
     Vector3 new_front = RL * RU * (eye-center);
-    center = eye + new_front;
+    eye = center + new_front;
     UpdateViewMatrix();
 }
 
 void Camera::Zoom(float delta){
-    float factor = (delta>0 ? 1.1 : 0.9);
-    Vector3 new_front = factor*(eye-center);
-    center = eye + new_front;
+    float factor = (delta<0 ? 1.2 : 0.8);
+    Vector3 new_front = (float)factor*(eye-center);
+    eye = center + new_front;
     UpdateViewMatrix();
 }
 

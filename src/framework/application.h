@@ -9,12 +9,6 @@
 #include "camera.h"
 #include "entity.h"
 
-enum mouse_state{
-    default_free = 0,
-    left_click = 1,
-    right_click = 2
-};
-
 enum workingSection{
     default_section = 1,
     orthographic = 2,
@@ -100,6 +94,7 @@ public:
 	Image framebuffer;
     Camera* camera;
     Entity entity;
+    Color entityColor;
     
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
