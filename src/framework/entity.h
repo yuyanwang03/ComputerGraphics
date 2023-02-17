@@ -9,9 +9,17 @@
 
 class Entity
 {
+    enum class eRenderMode {
+        POINTCLOUD,
+        WIREFRAME,
+        TRIANGLES,
+        TRIANGLES_INTERPOLATED
+
+    };
 public:
     Matrix44 modelMatrix;
     Mesh entityMesh;
+    eRenderMode renderMode;
     
     // Constructors
     Entity();

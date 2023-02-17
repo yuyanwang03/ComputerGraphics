@@ -378,6 +378,58 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 }
 
 void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> &table){
+    int dx, dy, inc_E, inc_NE, d, x, y;
+    // Create a boolean indicator to check if the line is in the 2, 3, 6 or 7 octants
+    bool reverse = abs(y1 - y0) > abs(x1 - x0);
+    // If it is the case, we should swap the definitions of dx and dy
+    dx = reverse ? y1 - y0 : x1 - x0;
+    dy = reverse ? x1 - x0 : y1 - y0;
+    // Change order of x0 and x1 for them to be increasing; that is, to have x1>x0
+    if (dx < 0) { return ScanLineBresenham(x1, y1, x0, y0,table);}
+    // Having increasing x, see if the line has a positive or a negative slope; this is indicated with the orientationHandler
+    int orientationHandler = (dy > 0) ? 1 : -1;
+    // Since we already take into account the vertical orientation, dy should take positive value
+    dy *= orientationHandler;
+    inc_E = 2 * dy;
+    inc_NE = 2 * (dy - dx);
+    d = 2 * dy - dx;
+    x = x0; y = y0;
+
+    // If the program is drawing in the 2, 3, 6 or 7 octants, it should make a loop with respect y; otherwise, with respect x
+    if (reverse) {
+        // Iterate with respect to y
+        while (y < y1) {
+            if ((y >= 0 && y < this->height) && (x >= 0 && x < this->width)) {
+                if (table[y].min == INT_MIN || table[y].min > x) {
+                    table[y].min = x;
+                }
+                if (table[y].max == INT_MAX || table[y].max < x) {
+                    table[y].max == x;
+                }
+            }
+            // Consider if it should decrease, increase or maintain the same x position
+            if (d <= 0) { d += inc_E; }
+            else { d += inc_NE; x += orientationHandler; }
+            y++;
+        }
+    }
+    else {
+        // Iterate with respect to x
+        while (x < x1) {
+            if ((y >= 0 && y < this->height) && (x >= 0 && x < this->width)) {
+                if (table[y].min == INT_MIN || table[y].min > x) {
+                    table[y].min = x;
+                }
+                if (table[y].max == INT_MAX || table[y].max < x) {
+                    table[y].max == x;
+                }
+            }
+            // Consider if it should decrease, increase or maintain the same y position
+            if (d <= 0) { d += inc_E; }
+            else { d += inc_NE; y += orientationHandler; }
+            x++;
+        }
+    }
     return;
 }
 
@@ -411,6 +463,18 @@ void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
 }
 
 void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2, const Color& color){
+    //intialize the Active Edges Table (AET)
+    std::vector<cell> table = std::vector<cell>(this->height);
+    //update the AET
+    ScanLineBresenham(p0.x, p0.y, p1.x, p1.y, table);
+    ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
+    ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
+    //find the minimum value of y 
+    int minYPixel;
+    if (p0.y <= p1.y) { minYPixel = p0.y; }
+    else { minYPixel = p1.y; }
+    if (p2.y < minYPixel) { minYPixel = p2.y; }
+
     return;
 }
 
