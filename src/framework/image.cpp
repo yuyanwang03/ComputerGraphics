@@ -400,12 +400,8 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
         // Iterate with respect to y
         while (y < y1) {
             if ((y >= 0 && y < this->height) && (x >= 0 && x < this->width)) {
-                if (table[y].min == INT_MIN || table[y].min > x) {
-                    table[y].min = x;
-                }
-                if (table[y].max == INT_MAX || table[y].max < x) {
-                    table[y].max == x;
-                }
+                if (table[y].min == INT_MIN || table[y].min > x) {table[y].min = x;}
+                if (table[y].max == INT_MAX || table[y].max < x) {table[y].max = x;}
             }
             // Consider if it should decrease, increase or maintain the same x position
             if (d <= 0) { d += inc_E; }
@@ -417,12 +413,8 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
         // Iterate with respect to x
         while (x < x1) {
             if ((y >= 0 && y < this->height) && (x >= 0 && x < this->width)) {
-                if (table[y].min == INT_MIN || table[y].min > x) {
-                    table[y].min = x;
-                }
-                if (table[y].max == INT_MAX || table[y].max < x) {
-                    table[y].max == x;
-                }
+                if (table[y].min == INT_MIN || table[y].min > x) {table[y].min = x;}
+                if (table[y].max == INT_MAX || table[y].max < x) {table[y].max = x;}
             }
             // Consider if it should decrease, increase or maintain the same y position
             if (d <= 0) { d += inc_E; }
@@ -469,12 +461,25 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     ScanLineBresenham(p0.x, p0.y, p1.x, p1.y, table);
     ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
     ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
-    //find the minimum value of y 
-    int minYPixel;
-    if (p0.y <= p1.y) { minYPixel = p0.y; }
-    else { minYPixel = p1.y; }
-    if (p2.y < minYPixel) { minYPixel = p2.y; }
-
+    
+    // Find the minimum value of y and start filling the triangle from that point to the max y value
+    
+    int minYPixel = std::min({p0.y, p1.y, p2.y});
+    int maxYPixel = std::max({p0.y, p1.y, p2.y});
+    for (int i = minYPixel; i<maxYPixel; i++){
+        for (int j=table[i].min; j<=table[i].max; j++) SetPixelSafe(j, i, color);
+    }
+    /*
+    std::cout <<"draw2"<< std::endl;
+    for (int i =0; i<this->height; i++){
+        std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
+        for (int j=table[i].min; j<=table[i].max; j++){
+            if (table[i].min==INT_MIN || table[i].max==INT_MAX) std::cout <<"drawe"<< std::endl; continue;
+            SetPixel(j, i, color);
+            std::cout <<"draw"<< std::endl;
+        }
+    }
+     */
     return;
 }
 

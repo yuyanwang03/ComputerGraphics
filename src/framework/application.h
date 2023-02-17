@@ -95,10 +95,11 @@ public:
         }
     };
     
-    EntitySystem animation;
+    // EntitySystem animation;
 	// CPU Global framebuffer
 	Image framebuffer;
     Camera* camera;
+    Entity entity;
     
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);

@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "entity.h"
 
-Application::Application(const char* caption, int width, int height) : animation(this)
+Application::Application(const char* caption, int width, int height) // : animation(this)
 {
     this->window = createWindow(caption, width, height);
 
@@ -32,24 +32,31 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
-    camera->LookAt(Vector3(0.5,0.5,0.5), Vector3(0,0.3,0), Vector3(0,1,0));
-    
+    camera->LookAt(Vector3(0,1.5,1.5), Vector3(0,0.3,0), Vector3::UP);
+    camera->SetPerspective(50, window_width/window_height, 0.01, 100);
+    /*
     this->animation.Init();
     this->animation.Render();
-
+    */
+    entity = Entity("../res/meshes/anna.obj");
+    entity.modelMatrix.Translate(0, 0.6, 0.1);
+    entity.Render(&framebuffer, camera, Color::RED);
 }
 
 // Render one frame
 void Application::Render(void)
 {
     // ...
+    entity.Render(&framebuffer, camera, Color::RED);
     framebuffer.Render();
 }
 
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    this->animation.Update(seconds_elapsed);
+    // this->animation.Update(seconds_elapsed);
+    this->framebuffer.Fill(Color::BLACK);
+    // this->framebuffer.DrawTriangle(Vector2(10, 10), Vector2(40, 30), Vector2(20, 70), Color::BLUE);
 }
 
 // Sets the application to starting conditions, which includes painting the displayed framebuffer with black
@@ -100,7 +107,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         }
         case SDLK_c:
         { // Change color of the entity
-            animation.ChangeColor();
+            // animation.ChangeColor();
             break;
         }
         case SDLK_n: {currentSection = change_near; break;}
@@ -154,6 +161,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
         }
         else {camera->MoveEye(mouse_delta.x/4.0, mouse_delta.y/4.0);}
         camera->UpdateViewMatrix();
+        this->Render();
         break;
     }
 }
