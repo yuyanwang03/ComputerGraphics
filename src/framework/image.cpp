@@ -464,22 +464,21 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     
     // Find the minimum value of y and start filling the triangle from that point to the max y value
     
+    /*
     int minYPixel = std::min({p0.y, p1.y, p2.y});
     int maxYPixel = std::max({p0.y, p1.y, p2.y});
     for (int i = minYPixel; i<maxYPixel; i++){
         for (int j=table[i].min; j<=table[i].max; j++) SetPixelSafe(j, i, color);
-    }
-    /*
-    std::cout <<"draw2"<< std::endl;
+    }*/
+    
+    // std::cout <<"draw2"<< std::endl;
     for (int i =0; i<this->height; i++){
-        std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
+        // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
         for (int j=table[i].min; j<=table[i].max; j++){
-            if (table[i].min==INT_MIN || table[i].max==INT_MAX) std::cout <<"drawe"<< std::endl; continue;
+            if (table[i].min==INT_MIN || table[i].max==INT_MAX) continue;
             SetPixel(j, i, color);
-            std::cout <<"draw"<< std::endl;
         }
     }
-     */
     return;
 }
 

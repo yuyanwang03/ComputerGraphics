@@ -36,8 +36,8 @@ void Camera::Rotate(float angle, const Vector3& axis)
 
 void Camera::Orbit(float angleX, float angleY){
     Matrix44 RU, RL;
-    RU.SetRotation(4*angleX*DEG2RAD, Vector3::UP);
-    RL.SetRotation(4*angleY*DEG2RAD, Vector3(1, 0, 0));
+    RU.SetRotation(2*angleX*DEG2RAD, Vector3::UP);
+    RL.SetRotation(2*angleY*DEG2RAD, Vector3(1, 0, 0));
     Vector3 new_front = RL * RU * (eye-center);
     eye = center + new_front;
     UpdateViewMatrix();

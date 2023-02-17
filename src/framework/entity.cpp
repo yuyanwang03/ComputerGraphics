@@ -67,6 +67,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         tmp1.Set((tmp1.x/2+0.5)*framebuffer->width, (tmp1.y/2+0.5)*framebuffer->height, tmp1.z);
         tmp2.Set((tmp2.x/2+0.5)*framebuffer->width, (tmp2.y/2+0.5)*framebuffer->height, tmp2.z);
         
+        
         // Draw the lines of the triangle on the framebuffer
         framebuffer->DrawLineBresenham(tmp0.x, tmp0.y, tmp1.x, tmp1.y, c);
         framebuffer->DrawLineBresenham(tmp0.x, tmp0.y, tmp2.x, tmp2.y, c);

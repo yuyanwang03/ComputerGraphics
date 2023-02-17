@@ -35,7 +35,6 @@ void Application::Init(void)
     camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
     entity = Entity("../res/meshes/anna.obj");
-    // entity.modelMatrix.Translate(0, 0.6, 0.1);
 }
 
 // Render one frame
@@ -44,6 +43,7 @@ void Application::Render(void)
     // ...
     framebuffer.Fill(Color::BLACK);
     entity.Render(&framebuffer, camera, entityColor);
+    // framebuffer.DrawTriangle(Vector2(10, 40), Vector2(100, 60), Vector2(30, 200), Color::RED);
     framebuffer.Render();
 }
 
@@ -134,14 +134,13 @@ void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
 {
-    //  std::cout<<"here"<<std::endl;
-    while (event.button == SDL_BUTTON_LEFT){
+    // std::cout<<"here"<<std::endl;
+    if (event.button == SDL_BUTTON_LEFT){
         if (currentSection == change_center){
             camera->center = Vector3(camera->center.x+mouse_delta.x/6.0, camera->center.y+mouse_delta.y/6.0, camera->center.z);
             camera->UpdateViewMatrix();
         }
         else {camera->Orbit(mouse_delta.x, mouse_delta.y);}
-        break;
     }
 }
 
