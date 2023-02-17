@@ -31,6 +31,11 @@ class Image
 		unsigned char* data; // Bytes with the pixel information
 	} TGAInfo;
 
+    struct cell{
+        int min = INT_MIN;
+        int max = INT_MAX;
+    };
+    
 public:
 	unsigned int width;
 	unsigned int height;
@@ -82,7 +87,14 @@ public:
     void DrawLineDDA(int x0, int y0, int x1, int y1, const Color &c);
     void DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c);
     void DrawCircle(int x0, int y0, int r, const Color &c, bool fill);
-    void DrawImagePixels(const Image& image, int x, int y, bool top);
+    void DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2, const Color& color);
+    void ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> &table);
+    void DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2);
+    void DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer);
+    void DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer, Image * texture, const Vector2 &uv0, const Vector2 &uv1, const Vector2 &uv2);
+    // void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
+    // void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
+    Color BarycentricInterpolation(Vector2 p, Vector2 v0, Vector2 v1, Vector2 v2, Color c0, Color c1, Color c2);
 
 	// Used to easy code
 	#ifndef IGNORE_LAMBDAS

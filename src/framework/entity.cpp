@@ -75,6 +75,10 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
     return;
 }
 
+void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
+    return;
+}
+
 void Entity::Update(float seconds_elapsed){
     modelMatrix.Rotate(seconds_elapsed*PI/180*10, Vector3(0,1,0));
     return;
