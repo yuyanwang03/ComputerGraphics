@@ -21,6 +21,7 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->entityColor.Random();
     
     this->framebuffer.Resize(w, h);
+    this->zBuffer.Resize(w, h);
 }
 
 Application::~Application()
@@ -42,7 +43,10 @@ void Application::Render(void)
 {
     // ...
     framebuffer.Fill(Color::BLACK);
-    entity.Render(&framebuffer, camera, entityColor);
+    // Render without zBuffer
+    // entity.Render(&framebuffer, camera, entityColor);
+    // Renser with zBuffer
+    entity.Render(&framebuffer, camera, &zBuffer);
     // framebuffer.DrawTriangle(Vector2(10, 40), Vector2(100, 60), Vector2(30, 200), Color::RED);
     framebuffer.Render();
 }

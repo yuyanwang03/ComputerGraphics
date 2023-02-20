@@ -95,6 +95,7 @@ public:
     // void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
     // void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
     Color BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2);
+    float BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, float p0z, float p1z, float p2z);
 
 	// Used to easy code
 	#ifndef IGNORE_LAMBDAS

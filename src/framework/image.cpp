@@ -385,7 +385,7 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
     dx = reverse ? y1 - y0 : x1 - x0;
     dy = reverse ? x1 - x0 : y1 - y0;
     // Change order of x0 and x1 for them to be increasing; that is, to have x1>x0
-    if (dx < 0) { return ScanLineBresenham(x1, y1, x0, y0,table);}
+    if (dx < 0) { return ScanLineBresenham(x1, y1, x0, y0, table);}
     // Having increasing x, see if the line has a positive or a negative slope; this is indicated with the orientationHandler
     int orientationHandler = (dy > 0) ? 1 : -1;
     // Since we already take into account the vertical orientation, dy should take positive value
@@ -400,8 +400,8 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
         // Iterate with respect to y
         while (y < y1) {
             if ((y >= 0 && y < this->height) && (x >= 0 && x < this->width)) {
-                if (table[y].min == INT_MIN || table[y].min > x) {table[y].min = x;}
-                if (table[y].max == INT_MAX || table[y].max < x) {table[y].max = x;}
+                if (x < table[y].min) {table[y].min = x;}
+                if (x > table[y].max) {table[y].max = x;}
             }
             // Consider if it should decrease, increase or maintain the same x position
             if (d <= 0) { d += inc_E; }
@@ -413,8 +413,8 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
         // Iterate with respect to x
         while (x < x1) {
             if ((y >= 0 && y < this->height) && (x >= 0 && x < this->width)) {
-                if (table[y].min == INT_MIN || table[y].min > x) {table[y].min = x;}
-                if (table[y].max == INT_MAX || table[y].max < x) {table[y].max = x;}
+                if (x < table[y].min) {table[y].min = x;}
+                if (x > table[y].max) {table[y].max = x;}
             }
             // Consider if it should decrease, increase or maintain the same y position
             if (d <= 0) { d += inc_E; }
@@ -462,20 +462,10 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
     ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
     
-    // Find the minimum value of y and start filling the triangle from that point to the max y value
-    
-    /*
-    int minYPixel = std::min({p0.y, p1.y, p2.y});
-    int maxYPixel = std::max({p0.y, p1.y, p2.y});
-    for (int i = minYPixel; i<maxYPixel; i++){
-        for (int j=table[i].min; j<=table[i].max; j++) SetPixelSafe(j, i, color);
-    }*/
-    
-    // std::cout <<"draw2"<< std::endl;
     for (int i =0; i<this->height; i++){
         // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
         for (int j=table[i].min; j<=table[i].max; j++){
-            if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
+            // if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
             SetPixel(j, i, color);
         }
     }
@@ -495,7 +485,6 @@ Color Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2
     return temp;
 }
 
-
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2){
     // Intialize the Active Edges Table (AET)
     std::vector<cell> table = std::vector<cell>(this->height);
@@ -505,7 +494,7 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
     ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
     
     Color pixelColor;
-    
+    /*
     // Find the minimum value of y and start filling the triangle from that point to the max y value
     int minYPixel = std::min({p0.y, p1.y, p2.y});
     int maxYPixel = std::max({p0.y, p1.y, p2.y});
@@ -514,11 +503,52 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
             pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
             SetPixelSafe(j, i, pixelColor);
         }
+    }*/
+    for (int i =0; i<this->height; i++){
+        // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
+        for (int j=table[i].min; j<=table[i].max; j++){
+            // if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
+            pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
+            SetPixel(j, i, pixelColor);
+        }
     }
     return;
 }
 
+// Use BarycentricInterpolation to calculate the z value of a point inside the triangle
+float Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, float p0z, float p1z, float p2z){
+    Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
+    float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
+    float denom = d00*d11 - d01*d01;
+    float v = (d11*d20 - d01*d21)/denom;
+    float w = (d00*d21 - d01*d20)/denom;
+    float u = 1.0 - v - w;
+    // if (u<0 || v<0 || w<0) std::cout<<"exit"<<std::endl; return;
+    // if (u+v+w!=1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
+    float z = p0z*u + p1z*v + p2z*w;
+    return z;
+}
+
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer){
+    // Intialize the Active Edges Table (AET)
+    std::vector<cell> table = std::vector<cell>(this->height);
+    // Fill the AET
+    ScanLineBresenham(p0.x, p0.y, p1.x, p1.y, table);
+    ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
+    ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
+    Color pixelColor;
+    for (int i =0; i<this->height; i++){
+        // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
+        for (int j=table[i].min; j<=table[i].max; j++){
+            // if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
+            float z = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), p0.z, p1.z, p2.z);
+            // Don't do anything if value z is larger than the one stored in zbuffer, meaning that the current pixel is farer to the camera
+            if (z>=zbuffer->GetPixel(j, i)) {continue;}
+            zbuffer->SetPixel(j, i, z);
+            pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
+            SetPixel(j, i, pixelColor);
+        }
+    }
     return;
 }
 
