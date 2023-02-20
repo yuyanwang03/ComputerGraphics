@@ -479,8 +479,13 @@ Color Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2
     float v = (d11*d20 - d01*d21)/denom;
     float w = (d00*d21 - d01*d20)/denom;
     float u = 1.0 - v - w;
-    // if (u<0 || v<0 || w<0) std::cout<<"exit"<<std::endl; return;
-    // if (u+v+w!=1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
+    u = clamp(u, 0 , 1);
+    v = clamp(v, 0 , 1);
+    w = clamp(w, 0 , 1);
+    float sum = u + v + w;
+    u /= sum; v /= sum; w /= sum;
+    if (u<0 || v<0 || w<0) {std::cout<<"exit"<<std::endl; return;}
+    // if (u+v+w != 1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
     Color temp = Color(c0*u+c1*v+c2*w);
     return temp;
 }
@@ -523,7 +528,12 @@ float Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2
     float v = (d11*d20 - d01*d21)/denom;
     float w = (d00*d21 - d01*d20)/denom;
     float u = 1.0 - v - w;
-    // if (u<0 || v<0 || w<0) std::cout<<"exit"<<std::endl; return;
+    u = clamp(u, 0 , 1);
+    v = clamp(v, 0 , 1);
+    w = clamp(w, 0 , 1);
+    float sum = u + v + w;
+    u /= sum; v /= sum; w /= sum;
+    if (u<0 || v<0 || w<0) {std::cout<<"exit"<<std::endl; return;}
     // if (u+v+w!=1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
     float z = p0z*u + p1z*v + p2z*w;
     return z;

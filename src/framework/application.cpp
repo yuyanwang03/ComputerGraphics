@@ -43,11 +43,10 @@ void Application::Render(void)
 {
     // ...
     framebuffer.Fill(Color::BLACK);
-    // Render without zBuffer
+    // Render without zBuffer (Section 1 and 2)
     // entity.Render(&framebuffer, camera, entityColor);
-    // Renser with zBuffer
+    // Renser with zBuffer (Section 3)
     entity.Render(&framebuffer, camera, &zBuffer);
-    // framebuffer.DrawTriangle(Vector2(10, 40), Vector2(100, 60), Vector2(30, 200), Color::RED);
     framebuffer.Render();
 }
 
@@ -141,7 +140,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
     // std::cout<<"here"<<std::endl;
     if (event.button == SDL_BUTTON_LEFT){
         if (currentSection == change_center){
-            camera->center = Vector3(camera->center.x+mouse_delta.x/6.0, camera->center.y+mouse_delta.y/6.0, camera->center.z);
+            camera->center = Vector3(camera->center.x+mouse_delta.x/12.0, camera->center.y+mouse_delta.y/12.0, camera->center.z);
             camera->UpdateViewMatrix();
         }
         else {camera->Orbit(mouse_delta.x, mouse_delta.y);}
