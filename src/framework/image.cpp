@@ -482,6 +482,19 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     return;
 }
 
+Color Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2){
+    Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
+    float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
+    float denom = d00*d11 - d01*d01;
+    float v = (d11*d20 - d01*d21)/denom;
+    float w = (d00*d21 - d01*d20)/denom;
+    float u = 1.0 - v - w;
+    // if (u<0 || v<0 || w<0) std::cout<<"exit"<<std::endl; return;
+    // if (u+v+w!=1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
+    Color temp = Color(c0*u+c1*v+c2*w);
+    return temp;
+}
+
 
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2){
     // Intialize the Active Edges Table (AET)
@@ -498,11 +511,10 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
     int maxYPixel = std::max({p0.y, p1.y, p2.y});
     for (int i = minYPixel; i<maxYPixel; i++){
         for (int j=table[i].min; j<=table[i].max; j++){
-            // pixelColor = BarycentricInterpolation(Vector2(j,i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
+            pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
             SetPixelSafe(j, i, pixelColor);
         }
     }
-    
     return;
 }
 
@@ -519,19 +531,6 @@ void Image::DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* 
     return;
 }
 */
-
-Color BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2){
-    Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
-    float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
-    float denom = d00*d11 + d01*d01;
-    float v = (d11*d20 - d01*d21)/denom;
-    float w = (d00*d21 - d01*d20)/denom;
-    float u = 1.0 - v - w;
-    if (u+v+w!=1) {std::cout << "error color"<<std::endl; return Color::WHITE;}
-    Color temp = Color(c0*u+c1*v+c2*w);
-    // std::cout<<temp.r<<" "<<temp.g<<" "<<temp.b<<std::endl;
-    return temp;
-}
 
 #ifndef IGNORE_LAMBDAS
 
