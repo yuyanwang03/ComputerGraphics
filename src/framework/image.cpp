@@ -475,7 +475,7 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     for (int i =0; i<this->height; i++){
         // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
         for (int j=table[i].min; j<=table[i].max; j++){
-            if (table[i].min==INT_MIN || table[i].max==INT_MAX) continue;
+            if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
             SetPixel(j, i, color);
         }
     }
@@ -498,7 +498,7 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
     int maxYPixel = std::max({p0.y, p1.y, p2.y});
     for (int i = minYPixel; i<maxYPixel; i++){
         for (int j=table[i].min; j<=table[i].max; j++){
-            pixelColor = BarycentricInterpolation(Vector2(j,i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
+            // pixelColor = BarycentricInterpolation(Vector2(j,i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
             SetPixelSafe(j, i, pixelColor);
         }
     }

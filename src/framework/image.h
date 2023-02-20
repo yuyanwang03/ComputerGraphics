@@ -32,8 +32,8 @@ class Image
 	} TGAInfo;
 
     struct cell{
-        int min = INT_MIN;
-        int max = INT_MAX;
+        int min = INT_MAX;
+        int max = INT_MIN;
     };
     
 public:
