@@ -378,6 +378,64 @@ void Image::DrawLineBresenham(int x0, int y0, int x1, int y1, const Color &c){
 }
 
 void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> &table){
+    // 4th and 5th octants
+    if (x1 < x0) { int t = x1; x1 = x0; x0 = t; t = y1; y1 = y0; y0 = t; }
+    
+    int dx, dy, iE, iNE, d, x, y;
+    dx = x1 - x0;
+    dy = y1 - y0;
+    // 8th octant
+    if (y0 > y1) {dy = -dy;}
+    
+    iE = 2 * dy;
+    iNE = 2 * (dy - dx);
+    d = 2 * dy - dx;
+    x = x0; y = y0;
+    // if (x < table[y].minx) {table[y].minx = x;}
+    // if (x > table[y].maxx) {table[y].maxx = x;}
+    
+    if ((y >= 0 && y <= this->height) && (x >= 0 && x <= this->width)) {
+        if (x < table[y].minx) {table[y].minx = x;}
+        if (x > table[y].maxx) {table[y].maxx = x;}
+    }
+    if (dx > dy) {
+        while (x < x1) {
+            if (d <= 0) { d += iE; x += 1;}
+            else {
+                d += iNE; x += 1;
+                if (y0 > y1) {y -= 1;}
+                else {y += 1;}
+            }
+            if ((y >= 0 && y <= this->height) && (x >= 0 && x <= this->width)) {
+                if (x < table[y].minx) {table[y].minx = x;}
+                if (x > table[y].maxx) {table[y].maxx = x;}
+            }
+        }
+    }
+    // 2nd and 6th octants
+    else {
+        iE = 2 * dx;
+        iNE = 2 * (dx - dy);
+        d = 2 * dx - dy;
+        // 3rd and 7th octants
+        if (y1 < y0) {int t = x1; x1 = x0; x0 = t; t = y1; y1 = y0; y0 = t; x = x0; y = y0;}
+        while (y < y1) {
+            if (d <= 0) { d += iE; y += 1;}
+            else {
+                d += iNE; y += 1;
+                if (x0 > x1) {x -= 1;}
+                else {x += 1;}
+            }
+            if ((y >= 0 && y <= this->height) && (x >= 0 && x <= this->width)) {
+                if (x < table[y].minx) {table[y].minx = x;}
+                if (x > table[y].maxx) {table[y].maxx = x;}
+            }
+        }
+    }
+}
+
+/*
+void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> &table){
     int dx, dy, inc_E, inc_NE, d, x, y;
     // Create a boolean indicator to check if the line is in the 2, 3, 6 or 7 octants
     bool reverse = abs(y1 - y0) > abs(x1 - x0);
@@ -394,7 +452,7 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
     inc_NE = 2 * (dy - dx);
     d = 2 * dy - dx;
     x = x0; y = y0;
-
+    
     // If the program is drawing in the 2, 3, 6 or 7 octants, it should make a loop with respect y; otherwise, with respect x
     if (reverse) {
         // Iterate with respect to y
@@ -423,7 +481,7 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
         }
     }
     return;
-}
+}*/
 
 void Image::DrawCircle(int x0, int y0, int r, const Color &c, bool fill){
     int x(0), y(r), v(1-r);
@@ -462,10 +520,9 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
     ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
     
-    for (int i =0; i<this->height; i++){
+    for (int i=0; i<this->height; i++){
         // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
-        for (int j=table[i].min; j<=table[i].max; j++){
-            // if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
+        for (int j=table[i].minx; j<=table[i].maxx; j++){
             SetPixel(j, i, color);
         }
     }
@@ -511,8 +568,7 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
     }*/
     for (int i =0; i<this->height; i++){
         // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
-        for (int j=table[i].min; j<=table[i].max; j++){
-            // if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
+        for (int j=table[i].minx; j<=table[i].maxx; j++){
             pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
             SetPixel(j, i, pixelColor);
         }
@@ -549,7 +605,7 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
     Color pixelColor;
     for (int i =0; i<this->height; i++){
         // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
-        for (int j=table[i].min; j<=table[i].max; j++){
+        for (int j=table[i].minx; j<=table[i].maxx; j++){
             // if (table[i].min==INT_MAX || table[i].max==INT_MIN) continue;
             float z = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), p0.z, p1.z, p2.z);
             // Don't do anything if value z is larger than the one stored in zbuffer, meaning that the current pixel is farer to the camera

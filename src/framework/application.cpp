@@ -47,6 +47,7 @@ void Application::Render(void)
     entity.Render(&framebuffer, camera, entityColor);
     // Renser with zBuffer (Section 3)
     // entity.Render(&framebuffer, camera, &zBuffer);
+    // framebuffer.DrawTriangle(Vector2(200,0), Vector2(900, 0), Vector2(800, 600), Color::BLUE);
     framebuffer.Render();
 }
 
