@@ -67,16 +67,16 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         tmp1.Set((tmp1.x/2+0.5)*framebuffer->width, (tmp1.y/2+0.5)*framebuffer->height, tmp1.z);
         tmp2.Set((tmp2.x/2+0.5)*framebuffer->width, (tmp2.y/2+0.5)*framebuffer->height, tmp2.z);
         
-        
+        /*
         // Draw the lines of the triangle on the framebuffer
         framebuffer->DrawLineBresenham(tmp0.x, tmp0.y, tmp1.x, tmp1.y, c);
         framebuffer->DrawLineBresenham(tmp0.x, tmp0.y, tmp2.x, tmp2.y, c);
-        framebuffer->DrawLineBresenham(tmp1.x, tmp1.y, tmp2.x, tmp2.y, c);
+        framebuffer->DrawLineBresenham(tmp1.x, tmp1.y, tmp2.x, tmp2.y, c);*/
         
         // Section 1 error in drawing lines
-        // framebuffer->DrawTriangle(Vector2(tmp0.x, tmp0.y), Vector2(tmp1.x, tmp1.y), Vector2(tmp2.x, tmp2.y), c);
+        framebuffer->DrawTriangle(Vector2(tmp0.x, tmp0.y), Vector2(tmp1.x, tmp1.y), Vector2(tmp2.x, tmp2.y), c);
         // Section 2 error in negative u, v or w
-        framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
+        // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
     }
     return;
 }
@@ -85,7 +85,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
     Vector3 tmp0, tmp1, tmp2;
     bool neg0, neg1, neg2;
     // Fill the zBuffer with high distance
-    zBuffer->Fill(zBuffer->Fill(std::numeric_limits<float>::max()));
+    zBuffer->Fill((float)INT_MAX);
     
     // Iterate through the vertices of the mesh of the entity (3 by 3)
     for (int i=0; i<this->entityMesh.GetVertices().size(); i=i+3){

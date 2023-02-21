@@ -44,9 +44,9 @@ void Application::Render(void)
     // ...
     framebuffer.Fill(Color::BLACK);
     // Render without zBuffer (Section 1 and 2)
-    // entity.Render(&framebuffer, camera, entityColor);
+    entity.Render(&framebuffer, camera, entityColor);
     // Renser with zBuffer (Section 3)
-    entity.Render(&framebuffer, camera, &zBuffer);
+    // entity.Render(&framebuffer, camera, &zBuffer);
     framebuffer.Render();
 }
 
