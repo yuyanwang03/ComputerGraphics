@@ -391,12 +391,11 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
     iNE = 2 * (dy - dx);
     d = 2 * dy - dx;
     x = x0; y = y0;
-    // if (x < table[y].minx) {table[y].minx = x;}
-    // if (x > table[y].maxx) {table[y].maxx = x;}
     
-    if ((y >= 0 && y <= this->height) && (x >= 0 && x <= this->width)) {
+    if ((y >= 0 && y <= this->height) && (x >= 0) ){
         if (x < table[y].minx) {table[y].minx = x;}
         if (x > table[y].maxx) {table[y].maxx = x;}
+        if (x >= this->width) {table[y].maxx = this->width-1;}
     }
     if (dx > dy) {
         while (x < x1) {
@@ -406,9 +405,10 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
                 if (y0 > y1) {y -= 1;}
                 else {y += 1;}
             }
-            if ((y >= 0 && y <= this->height) && (x >= 0 && x <= this->width)) {
+            if ((y >= 0 && y <= this->height) && (x >= 0) ){
                 if (x < table[y].minx) {table[y].minx = x;}
                 if (x > table[y].maxx) {table[y].maxx = x;}
+                if (x >= this->width) {table[y].maxx = this->width-1;}
             }
         }
     }
@@ -426,9 +426,10 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
                 if (x0 > x1) {x -= 1;}
                 else {x += 1;}
             }
-            if ((y >= 0 && y <= this->height) && (x >= 0 && x <= this->width)) {
+            if ((y >= 0 && y <= this->height) && (x >= 0) ){
                 if (x < table[y].minx) {table[y].minx = x;}
                 if (x > table[y].maxx) {table[y].maxx = x;}
+                if (x >= this->width) {table[y].maxx = this->width-1;}
             }
         }
     }
