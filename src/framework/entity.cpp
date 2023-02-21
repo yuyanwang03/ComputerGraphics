@@ -85,7 +85,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
     Vector3 tmp0, tmp1, tmp2;
     bool neg0, neg1, neg2;
     // Fill the zBuffer with high distance
-    zBuffer->Fill(MAXFLOAT);
+    zBuffer->Fill(zBuffer->Fill(std::numeric_limits<float>::max()));
     
     // Iterate through the vertices of the mesh of the entity (3 by 3)
     for (int i=0; i<this->entityMesh.GetVertices().size(); i=i+3){

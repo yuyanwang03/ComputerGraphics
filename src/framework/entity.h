@@ -2,6 +2,7 @@
 #ifndef entity_h // Or put #pragma once
 #define entity_h
 
+#include <limits>
 #include "main/includes.h"
 #include "framework.h"
 #include "mesh.h"
