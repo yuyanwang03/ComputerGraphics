@@ -21,6 +21,7 @@ public:
     Matrix44 modelMatrix;
     Mesh entityMesh;
     eRenderMode renderMode;
+    Image* texture;
     
     // Constructors
     Entity();

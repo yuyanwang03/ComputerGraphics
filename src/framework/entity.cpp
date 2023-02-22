@@ -72,7 +72,6 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         // Section 2
         framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
     }
-    return;
 }
 
 void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
@@ -105,10 +104,8 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
         
         framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
     }
-    return;
 }
 
 void Entity::Update(float seconds_elapsed){
     modelMatrix.Rotate(seconds_elapsed*PI/180*10, Vector3(0,1,0));
-    return;
 }
