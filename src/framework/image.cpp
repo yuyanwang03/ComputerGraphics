@@ -637,7 +637,8 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
                 pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
             } else{
                 uv = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), uv0, uv1, uv2);
-                pixelColor = texture->GetPixelSafe(uv.x, uv.y);
+                // std::cout << uv.x <<" "<<uv.y<<std::endl;
+                pixelColor = texture->GetPixelSafe(uv.x*(texture->width-1), uv.y*(texture->height-1));
             }
             SetPixel(j, i, pixelColor);
         }

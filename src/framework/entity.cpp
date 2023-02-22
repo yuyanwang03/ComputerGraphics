@@ -43,7 +43,7 @@ void Entity::SetMesh(Mesh msh) {this->entityMesh = msh;}
 
 void Entity::LoadTexture(const char* path){
     texture = new Image();
-    bool status = texture->LoadTGA(path);
+    bool status = texture->LoadTGA(path, true);
     if (status) {std::cout << "Texture loaded" << std::endl;}
 }
 
