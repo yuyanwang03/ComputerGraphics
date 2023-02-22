@@ -68,13 +68,13 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         tmp2.Set((tmp2.x/2+0.5)*(framebuffer->width-1), (tmp2.y/2+0.5)*(framebuffer->height-1), tmp2.z);
         
         // Section 1 error in drawing lines
-        // framebuffer->DrawTriangle(Vector2(tmp0.x, tmp0.y), Vector2(tmp1.x, tmp1.y), Vector2(tmp2.x, tmp2.y), c);
+        framebuffer->DrawTriangle(Vector2(tmp0.x, tmp0.y), Vector2(tmp1.x, tmp1.y), Vector2(tmp2.x, tmp2.y), c);
         // Section 2
-        framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
+        // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
     }
     return;
 }
-
+/*
 void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
     Vector3 tmp0, tmp1, tmp2;
     bool neg0, neg1, neg2;
@@ -106,7 +106,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
         framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
     }
     return;
-}
+}*/
 
 void Entity::Update(float seconds_elapsed){
     modelMatrix.Rotate(seconds_elapsed*PI/180*10, Vector3(0,1,0));
