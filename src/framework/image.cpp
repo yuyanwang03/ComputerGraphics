@@ -392,10 +392,9 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
     d = 2 * dy - dx;
     x = x0; y = y0;
     
-    if ((y >= 0 && y <= this->height) && (x >= 0) ){
+    if ((y >= 0 && y <= this->height)){
         if (x < table[y].minx) {table[y].minx = x;}
         if (x > table[y].maxx) {table[y].maxx = x;}
-        if (x >= this->width) {table[y].maxx = this->width-1;}
     }
     if (dx > dy) {
         while (x < x1) {
@@ -405,10 +404,9 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
                 if (y0 > y1) {y -= 1;}
                 else {y += 1;}
             }
-            if ((y >= 0 && y <= this->height) && (x >= 0) ){
+            if ((y >= 0 && y <= this->height)){
                 if (x < table[y].minx) {table[y].minx = x;}
                 if (x > table[y].maxx) {table[y].maxx = x;}
-                if (x >= this->width) {table[y].maxx = this->width-1;}
             }
         }
     }
@@ -426,10 +424,9 @@ void Image::ScanLineBresenham(int x0, int y0, int x1, int y1, std::vector<cell> 
                 if (x0 > x1) {x -= 1;}
                 else {x += 1;}
             }
-            if ((y >= 0 && y <= this->height) && (x >= 0) ){
+            if ((y >= 0 && y <= this->height)){
                 if (x < table[y].minx) {table[y].minx = x;}
                 if (x > table[y].maxx) {table[y].maxx = x;}
-                if (x >= this->width) {table[y].maxx = this->width-1;}
             }
         }
     }
@@ -522,14 +519,11 @@ void Image::DrawTriangle(const Vector2 &p0, const Vector2 &p1, const Vector2 &p2
     ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
     
     for (int i=0; i<this->height; i++){
-        // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
-        for (int j=table[i].minx; j<=table[i].maxx; j++){
-            SetPixel(j, i, color);
-        }
+        for (int j=table[i].minx; j<=table[i].maxx; j++) {SetPixelSafe(j, i, color);}
     }
     return;
 }
-/*
+
 Color Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2){
     Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
     float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
@@ -542,12 +536,11 @@ Color Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2
     w = clamp(w, 0 , 1);
     float sum = u + v + w;
     u /= sum; v /= sum; w /= sum;
-    if (u<0 || v<0 || w<0) {std::cout<<"exit"<<std::endl; return;}
+    // if (u<0 || v<0 || w<0) {std::cout<<"exit"<<std::endl; return;}
     // if (u+v+w != 1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
-    Color temp = Color(c0*u+c1*v+c2*w);
-    return temp;
-}*/
-/*
+    return Color(c0*u+c1*v+c2*w);
+}
+
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2){
     // Intialize the Active Edges Table (AET)
     std::vector<cell> table = std::vector<cell>(this->height);
@@ -561,13 +554,13 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
         // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
         for (int j=table[i].minx; j<=table[i].maxx; j++){
             pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
-            SetPixel(j, i, pixelColor);
+            SetPixelSafe(j, i, pixelColor);
         }
     }
     return;
-}*/
+}
 
-/*
+
 // Use BarycentricInterpolation to calculate the z value of a point inside the triangle
 float Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, float p0z, float p1z, float p2z){
     Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
@@ -585,8 +578,8 @@ float Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2
     // if (u+v+w!=1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
     float z = p0z*u + p1z*v + p2z*w;
     return z;
-}*/
-/*
+}
+
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer){
     // Intialize the Active Edges Table (AET)
     std::vector<cell> table = std::vector<cell>(this->height);
@@ -612,7 +605,7 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
 
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer, Image * texture, const Vector2 &uv0, const Vector2 &uv1, const Vector2 &uv2){
     return;
-}*/
+}
 
 /*
 void Image::DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer){
