@@ -241,8 +241,7 @@ bool Image::LoadTGA(const char* filename, bool flip_y)
 	fclose(file);
 
 	// Save info in image
-	if(pixels)
-		delete pixels;
+    if (pixels) {delete pixels;}
 
 	width = tgainfo->width;
 	height = tgainfo->height;
@@ -599,9 +598,50 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
         }
     }
 }
-/*
+
+// Use BarycentricInterpolation to compute the UV position of a point inside the triangle
+Vector2 Image::BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 uv0, Vector2 uv1, Vector2 uv2) {
+    Vector2 v0(p1-p0), v1(p2-p0), v2(p-p0);
+    float d00(v0.Dot(v0)), d01(v0.Dot(v1)), d11(v1.Dot(v1)), d20(v2.Dot(v0)), d21(v2.Dot(v1));
+    float denom = d00*d11 - d01*d01;
+    float v = (d11*d20 - d01*d21)/denom;
+    float w = (d00*d21 - d01*d20)/denom;
+    float u = 1.0 - v - w;
+    u = clamp(u, 0 , 1);
+    v = clamp(v, 0 , 1);
+    w = clamp(w, 0 , 1);
+    float sum = u + v + w;
+    u /= sum; v /= sum; w /= sum;
+    // if (u+v+w!=1.0) {std::cout << "error color "<< u<< " "<<v <<" "<<w <<std::endl; return Color::WHITE;}
+    Vector2 uv = uv0*u + uv1*v + uv2*w;
+    return uv;
+}
+
 void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer, Image * texture, const Vector2 &uv0, const Vector2 &uv1, const Vector2 &uv2){
-    return;
+    // Intialize the Active Edges Table (AET)
+    std::vector<cell> table = std::vector<cell>(this->height);
+    // Fill the AET
+    ScanLineBresenham(p0.x, p0.y, p1.x, p1.y, table);
+    ScanLineBresenham(p1.x, p1.y, p2.x, p2.y, table);
+    ScanLineBresenham(p0.x, p0.y, p2.x, p2.y, table);
+    Color pixelColor; Vector2 uv;
+    
+    for (int i =0; i<this->height; i++){
+        // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
+        for (int j=table[i].minx; j<=table[i].maxx; j++){
+            float z = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), p0.z, p1.z, p2.z);
+            // Don't do anything if value z is larger than the one stored in zbuffer, meaning that the current pixel is farer to the camera
+            if (z >= zbuffer->GetPixel(j, i)) {continue;}
+            zbuffer->SetPixel(j, i, z);
+            if (texture == nullptr){
+                pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), c0, c1, c2);
+            } else{
+                uv = BarycentricInterpolation(Vector2(j, i), Vector2(p0.x, p0.y), Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), uv0, uv1, uv2);
+                pixelColor = texture->GetPixelSafe(uv.x, uv.y);
+            }
+            SetPixel(j, i, pixelColor);
+        }
+    }
 }
 
 /*

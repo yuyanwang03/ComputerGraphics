@@ -4,16 +4,18 @@
 Entity::Entity(){
     modelMatrix = Matrix44();
     entityMesh = Mesh();
+    texture = nullptr;
 }
 
 Entity::Entity(Matrix44 matx, Mesh msh){
     modelMatrix = matx;
     entityMesh = msh;
+    texture = nullptr;
 }
 
-Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh();}
+Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); texture=nullptr;}
 
-Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44();}
+Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); texture=nullptr;}
 
 Entity::Entity(const char* path){
     Mesh tempMsh{Mesh()};
@@ -24,18 +26,26 @@ Entity::Entity(const char* path){
 Entity::Entity(const Entity& e){
     modelMatrix = e.modelMatrix;
     entityMesh = e.entityMesh;
+    texture = e.texture;
 }
 
 Entity& Entity::operator = (const Entity& e)
 {
     modelMatrix = e.modelMatrix;
     entityMesh = e.entityMesh;
+    texture = e.texture;
     return *this;
 }
 
 void Entity::SetMatrix(Matrix44 matx) {this->modelMatrix = matx;}
 
 void Entity::SetMesh(Mesh msh) {this->entityMesh = msh;}
+
+void Entity::LoadTexture(const char* path){
+    texture = new Image();
+    bool status = texture->LoadTGA(path);
+    if (status) {std::cout << "Texture loaded" << std::endl;}
+}
 
 Entity::~Entity(){
     // if (modelMatrix) delete modelMatrix;
@@ -102,7 +112,10 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
         tmp1.Set((tmp1.x/2+0.5)*(framebuffer->width-1), (tmp1.y/2+0.5)*(framebuffer->height-1), tmp1.z);
         tmp2.Set((tmp2.x/2+0.5)*(framebuffer->width-1), (tmp2.y/2+0.5)*(framebuffer->height-1), tmp2.z);
         
-        framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
+        // Section 3
+        // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
+        // Section 4
+        framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer, texture, entityMesh.GetUVs()[i], entityMesh.GetUVs()[i+1], entityMesh.GetUVs()[i+2]);
     }
 }
 

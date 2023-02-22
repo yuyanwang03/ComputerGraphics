@@ -37,6 +37,7 @@ public:
 
     void SetMatrix(Matrix44 matx);
     void SetMesh(Mesh msh);
+    void LoadTexture(const char* path);
     void Update(float seconds_elapsed);
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);
