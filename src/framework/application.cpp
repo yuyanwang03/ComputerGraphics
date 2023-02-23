@@ -19,6 +19,7 @@ Application::Application(const char* caption, int width, int height) // : animat
 
     this->camera = new Camera(); // Pointer to avoid initialization process
     this->entityColor.Random();
+    this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
     
     this->framebuffer.Resize(w, h);
     this->zBuffer.Resize(w, h);
@@ -90,6 +91,23 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             break;
         }
         case SDLK_c:
+        {
+            this->entity.renderMode = (entity.renderMode==Entity::eRenderMode::TRIANGLES) ? Entity::eRenderMode::TRIANGLES_INTERPOLATED : Entity::eRenderMode::TRIANGLES;
+            break;
+        }
+        case SDLK_z:
+        {
+            this->entity.texture = nullptr;
+            this->entity.renderMode = Entity::eRenderMode::TRIANGLES_INTERPOLATED;
+            break;
+        }
+        case SDLK_t:
+        {
+            this->entity.renderMode = Entity::eRenderMode::TRIANGLES_INTERPOLATED;
+            this->entity.LoadTexture("../res/textures/anna_color_specular.tga");
+            break;
+        }
+        case SDLK_r:
         { // Change color of the entity
             entityColor.Random();
             break;

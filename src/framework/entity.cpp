@@ -77,10 +77,20 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         tmp1.Set((tmp1.x/2+0.5)*(framebuffer->width-1), (tmp1.y/2+0.5)*(framebuffer->height-1), tmp1.z);
         tmp2.Set((tmp2.x/2+0.5)*(framebuffer->width-1), (tmp2.y/2+0.5)*(framebuffer->height-1), tmp2.z);
         
-        // Section 1 error in drawing lines
-        // framebuffer->DrawTriangle(Vector2(tmp0.x, tmp0.y), Vector2(tmp1.x, tmp1.y), Vector2(tmp2.x, tmp2.y), c);
-        // Section 2
-        framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
+        if (renderMode==eRenderMode::POINTCLOUD) {
+            framebuffer->SetPixelSafe(tmp0.x, tmp0.y, c);
+            framebuffer->SetPixelSafe(tmp1.x, tmp1.y, c);
+            framebuffer->SetPixelSafe(tmp2.x, tmp2.y, c);
+        }
+        else if (renderMode==eRenderMode::WIREFRAME){
+            // Draw the lines of the triangle on the framebuffer
+            framebuffer->DrawLineBresenham(tmp0.x, tmp0.y, tmp1.x, tmp1.y, c);
+            framebuffer->DrawLineBresenham(tmp0.x, tmp0.y, tmp2.x, tmp2.y, c);
+            framebuffer->DrawLineBresenham(tmp1.x, tmp1.y, tmp2.x, tmp2.y, c);
+        }
+        else if (renderMode==eRenderMode::TRIANGLES) {framebuffer->DrawTriangle(Vector2(tmp0.x, tmp0.y), Vector2(tmp1.x, tmp1.y), Vector2(tmp2.x, tmp2.y), c);}
+        else if (renderMode==eRenderMode::TRIANGLES_INTERPOLATED) {framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);}
+        
     }
 }
 /*
