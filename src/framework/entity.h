@@ -20,6 +20,7 @@ public:
     
     Matrix44 modelMatrix;
     Mesh entityMesh;
+    Color entityColor;
     eRenderMode renderMode;
     Image* texture;
     

@@ -18,8 +18,8 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->currentSection = default_section;
 
     this->camera = new Camera(); // Pointer to avoid initialization process
-    this->entityColor.Random();
     this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
+    this->useZbuffer = false;
     
     this->framebuffer.Resize(w, h);
     this->zBuffer.Resize(w, h);
@@ -46,10 +46,9 @@ void Application::Render(void)
     // ...
     framebuffer.Fill(Color::BLACK);
     // Render without zBuffer (Section 1 and 2)
-    //entity.Render(&framebuffer, camera, entityColor);
+    if (!useZbuffer) entity.Render(&framebuffer, camera, entity.entityColor);
     // Renser with zBuffer (Section 3)
-    entity.Render(&framebuffer, camera, &zBuffer);
-    //framebuffer.DrawTriangle(Vector2(200,0), Vector2(900, 0), Vector2(800, 600), Color::BLUE);
+    else entity.Render(&framebuffer, camera, &zBuffer);
     framebuffer.Render();
 }
 
@@ -85,33 +84,27 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             currentSection = change_center;
             break;
         }
-        case SDLK_q:
-        {
-            currentSection = default_section;
-            break;
-        }
-        case SDLK_c:
-        {
+        case SDLK_q: {currentSection = default_section; break;}
+        case SDLK_c: {
+            this->useZbuffer = false;
             this->entity.renderMode = (entity.renderMode==Entity::eRenderMode::TRIANGLES) ? Entity::eRenderMode::TRIANGLES_INTERPOLATED : Entity::eRenderMode::TRIANGLES;
             break;
         }
         case SDLK_z:
         {
+            this->useZbuffer = true;
             this->entity.texture = nullptr;
-            this->entity.renderMode = Entity::eRenderMode::TRIANGLES_INTERPOLATED;
             break;
         }
         case SDLK_t:
         {
-            this->entity.renderMode = Entity::eRenderMode::TRIANGLES_INTERPOLATED;
+            this->useZbuffer = true;
             this->entity.LoadTexture("../res/textures/anna_color_specular.tga");
             break;
         }
-        case SDLK_r:
-        { // Change color of the entity
-            entityColor.Random();
-            break;
-        }
+        case SDLK_w: {this->useZbuffer = false; this->entity.renderMode = Entity::eRenderMode::WIREFRAME; break;}
+        case SDLK_d: {this->useZbuffer = false; this->entity.renderMode = Entity::eRenderMode::POINTCLOUD; break;}
+        case SDLK_r: {entity.entityColor.Random(); break;}
         case SDLK_n: {currentSection = change_near; break;}
         case SDLK_f: {currentSection = change_far; break;}
         case SDLK_PLUS:

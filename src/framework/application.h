@@ -35,6 +35,7 @@ public:
 	int mouse_state; // Tells which buttons are pressed
 	Vector2 mouse_position; // Last mouse position
 	Vector2 mouse_delta; // Mouse movement in the last frame
+    bool useZbuffer;
 
     void SetToDefault(void);
 	void OnKeyPressed(SDL_KeyboardEvent event);
@@ -94,7 +95,6 @@ public:
 	Image framebuffer;
     Camera* camera;
     Entity entity;
-    Color entityColor;
     FloatImage zBuffer;
     
 	// Constructor and main methods
@@ -113,6 +113,7 @@ public:
         // Update framebuffer size
         this->framebuffer.Resize(width, height);
         this->framebuffer.Fill(Color::BLACK);
+        // this->zBuffer.Resize(width, height);
         // Update aspect ratio
         this->camera->SetAspectRatio((float)width/height);
         // Update projection matrix, that may use the aspect ratio value

@@ -4,20 +4,24 @@
 Entity::Entity(){
     modelMatrix = Matrix44();
     entityMesh = Mesh();
+    entityColor.Random();
     texture = nullptr;
 }
 
 Entity::Entity(Matrix44 matx, Mesh msh){
     modelMatrix = matx;
     entityMesh = msh;
+    entityColor.Random();
     texture = nullptr;
 }
 
-Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); texture=nullptr;}
+Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); entityColor.Random(); texture=nullptr;}
 
-Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); texture=nullptr;}
+Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); entityColor.Random(); texture=nullptr;}
 
 Entity::Entity(const char* path){
+    entityColor = Color(147, 112, 219);
+    texture = nullptr;
     Mesh tempMsh{Mesh()};
     int status = tempMsh.LoadOBJ(path);
     if (status) {entityMesh = tempMsh; std::cout << "Mesh correctly set" << std::endl;}
@@ -27,6 +31,7 @@ Entity::Entity(const Entity& e){
     modelMatrix = e.modelMatrix;
     entityMesh = e.entityMesh;
     texture = e.texture;
+    entityColor = e.entityColor;
 }
 
 Entity& Entity::operator = (const Entity& e)
@@ -34,6 +39,7 @@ Entity& Entity::operator = (const Entity& e)
     modelMatrix = e.modelMatrix;
     entityMesh = e.entityMesh;
     texture = e.texture;
+    entityColor = e.entityColor;
     return *this;
 }
 
@@ -164,12 +170,15 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
         // copy(entityMesh.GetUVs().begin()+i, entityMesh.GetUVs().begin()+i+2, back_inserter(triangle.uvs));
         triangle.uvs.push_back(entityMesh.GetUVs()[i]); triangle.uvs.push_back(entityMesh.GetUVs()[i+1]); triangle.uvs.push_back(entityMesh.GetUVs()[i+2]);
         
+        
+        framebuffer->DrawTriangleInterpolated(triangle, zBuffer);
+        
         // Section 3
         // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
         // Section 4
         // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer, texture, entityMesh.GetUVs()[i], entityMesh.GetUVs()[i+1], entityMesh.GetUVs()[i+2]);
         // Section 4.2
-        framebuffer->DrawTriangleInterpolated(triangle, zBuffer);
+        // framebuffer->DrawTriangleInterpolated(triangle, zBuffer);
     }
 }
 
