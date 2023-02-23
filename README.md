@@ -119,5 +119,16 @@ The change of values for near_plane and far_plane can not allways have visual ef
 
 If the user wants to check that the near_plane and far_plane are being changed, following is a sequence of key presses that can provide an example: 'P' -> 'N' -> '+' -> '+' -> '+' -> '+' -> '+'. The meshes will be apprearing and disappearing from the windows due to the fact that they are getting inside and outside of the frustrum.
 
+## Lab 3
+
+Access the Lab 3 Branch in Github: [GitHub Lab 3](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab3)
+
+## Lab 4
+
+Access the Lab 4 Branch in Github: [GitHub Lab 4](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab4)
+
+## Lab 5
+
+Access the Lab 5 Branch in Github: [GitHub Lab 5](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab5)
 
 
