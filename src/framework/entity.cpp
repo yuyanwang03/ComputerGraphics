@@ -47,6 +47,7 @@ void Entity::SetMatrix(Matrix44 matx) {this->modelMatrix = matx;}
 
 void Entity::SetMesh(Mesh msh) {this->entityMesh = msh;}
 
+// Loads a texture in TGA formate given a path
 void Entity::LoadTexture(const char* path){
     texture = new Image();
     bool status = texture->LoadTGA(path, true);
@@ -83,6 +84,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         tmp1.Set((tmp1.x/2+0.5)*(framebuffer->width-1), (tmp1.y/2+0.5)*(framebuffer->height-1), tmp1.z);
         tmp2.Set((tmp2.x/2+0.5)*(framebuffer->width-1), (tmp2.y/2+0.5)*(framebuffer->height-1), tmp2.z);
         
+        // Different implentation depending on the render mode
         if (renderMode==eRenderMode::POINTCLOUD) {
             framebuffer->SetPixelSafe(tmp0.x, tmp0.y, c);
             framebuffer->SetPixelSafe(tmp1.x, tmp1.y, c);
@@ -104,6 +106,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
     Vector3 tmp0, tmp1, tmp2;
     bool neg0, neg1, neg2;
     sTriangleInfo triangle;
+    // Add default values for color and texture
     triangle.colors.push_back(Color::RED); triangle.colors.push_back(Color::BLUE); triangle.colors.push_back(Color::GREEN);
     triangle.texture = this->texture;
     // Fill the zBuffer with high distance
