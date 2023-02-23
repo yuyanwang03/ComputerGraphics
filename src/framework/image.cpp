@@ -660,6 +660,7 @@ void Image::DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* 
         for (int j=table[i].minx; j<=table[i].maxx; j++){
             float z = BarycentricInterpolation(Vector2(j, i), Vector2(triangle.points[0].x, triangle.points[0].y), Vector2(triangle.points[1].x, triangle.points[1].y), Vector2(triangle.points[2].x, triangle.points[2].y), triangle.points[0].z, triangle.points[1].z, triangle.points[2].z);
             // Don't do anything if value z is larger than the one stored in zbuffer, meaning that the current pixel is farer to the camera
+            if (j<0 || j>=this->width) {continue;}
             if (z >= zbuffer->GetPixel(j, i)) {continue;}
             zbuffer->SetPixel(j, i, z);
             if (triangle.texture == nullptr){
