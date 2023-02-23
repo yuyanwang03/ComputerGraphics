@@ -47,7 +47,7 @@ void Application::Render(void)
     framebuffer.Fill(Color::BLACK);
     // Render without zBuffer (Section 1 and 2)
     if (!useZbuffer) entity.Render(&framebuffer, camera, entity.entityColor);
-    // Renser with zBuffer (Section 3)
+    // Render with zBuffer (Section 3 and 4)
     else entity.Render(&framebuffer, camera, &zBuffer);
     framebuffer.Render();
 }
