@@ -83,7 +83,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c){
         framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN);
     }
 }
-
+/*
 void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
     Vector3 tmp0, tmp1, tmp2;
     bool neg0, neg1, neg2;
@@ -117,7 +117,52 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
         // Section 4
         framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer, texture, entityMesh.GetUVs()[i], entityMesh.GetUVs()[i+1], entityMesh.GetUVs()[i+2]);
     }
+}*/
+void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
+    Vector3 tmp0, tmp1, tmp2;
+    bool neg0, neg1, neg2;
+    sTriangleInfo triangle;
+    triangle.colors.push_back(Color::RED); triangle.colors.push_back(Color::BLUE); triangle.colors.push_back(Color::GREEN);
+    triangle.texture = this->texture;
+    // Fill the zBuffer with high distance
+    zBuffer->Fill((float)INT_MAX);
+    
+    // Iterate through the vertices of the mesh of the entity (3 by 3)
+    for (int i=0; i<this->entityMesh.GetVertices().size(); i=i+3){
+        // Get the vertices of the world space (3D)
+        tmp0 = this->modelMatrix*entityMesh.GetVertices()[i];
+        tmp1 = this->modelMatrix*entityMesh.GetVertices()[i+1];
+        tmp2 = this->modelMatrix*entityMesh.GetVertices()[i+2];
+
+        // Project world space (3D) to clip space (2D)
+        tmp0 = camera->ProjectVector(tmp0, neg0);
+        tmp1 = camera->ProjectVector(tmp1, neg1);
+        tmp2 = camera->ProjectVector(tmp2, neg2);
+        
+        // If any of the triangle projected vertices is outside the camera, don't draw the triangle
+        if (neg0 || neg1 || neg2) {continue;}
+        
+        // Convert clip space (2D vector in range [-1, 1]) to screenspace (2D vector in range [0, width-1] || [0, height-1])
+        // Essentially, that is to convert the clipspace range from [-1,1] to [0,1] and multiply the values by the width and height respectively
+        tmp0.Set((tmp0.x/2+0.5)*(framebuffer->width-1), (tmp0.y/2+0.5)*(framebuffer->height-1), tmp0.z);
+        tmp1.Set((tmp1.x/2+0.5)*(framebuffer->width-1), (tmp1.y/2+0.5)*(framebuffer->height-1), tmp1.z);
+        tmp2.Set((tmp2.x/2+0.5)*(framebuffer->width-1), (tmp2.y/2+0.5)*(framebuffer->height-1), tmp2.z);
+        
+        triangle.points.clear();
+        triangle.uvs.clear();
+        triangle.points.push_back(tmp0); triangle.points.push_back(tmp1); triangle.points.push_back(tmp2);
+        // copy(entityMesh.GetUVs().begin()+i, entityMesh.GetUVs().begin()+i+2, back_inserter(triangle.uvs));
+        triangle.uvs.push_back(entityMesh.GetUVs()[i]); triangle.uvs.push_back(entityMesh.GetUVs()[i+1]); triangle.uvs.push_back(entityMesh.GetUVs()[i+2]);
+        
+        // Section 3
+        // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
+        // Section 4
+        // framebuffer->DrawTriangleInterpolated(tmp0, tmp1, tmp2, Color::RED, Color::BLUE, Color::GREEN, zBuffer, texture, entityMesh.GetUVs()[i], entityMesh.GetUVs()[i+1], entityMesh.GetUVs()[i+2]);
+        // Section 4.2
+        framebuffer->DrawTriangleInterpolated(triangle, zBuffer);
+    }
 }
+
 
 void Entity::Update(float seconds_elapsed){
     modelMatrix.Rotate(seconds_elapsed*PI/180*10, Vector3(0,1,0));

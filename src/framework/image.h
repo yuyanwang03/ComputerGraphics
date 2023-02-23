@@ -19,6 +19,14 @@
 class FloatImage;
 class Entity;
 class Camera;
+class Image;
+
+typedef struct _TriangleInfo{
+    std::vector<Vector3> points;
+    std::vector<Vector2> uvs;
+    std::vector<Color> colors;
+    Image* texture;
+} sTriangleInfo;
 
 // A matrix of pixels
 class Image
@@ -92,8 +100,7 @@ public:
     void DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2);
     void DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer);
     void DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const Vector3 &p2, const Color &c0, const Color &c1, const Color &c2, FloatImage* zbuffer, Image * texture, const Vector2 &uv0, const Vector2 &uv1, const Vector2 &uv2);
-    // void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
-    // void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
+    void DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer);
     Color BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Color c0, Color c1, Color c2);
     float BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, float p0z, float p1z, float p2z);
     Vector2 BarycentricInterpolation(Vector2 p, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 uv0, Vector2 uv1, Vector2 uv2);

@@ -645,11 +645,34 @@ void Image::DrawTriangleInterpolated(const Vector3 &p0, const Vector3 &p1, const
     }
 }
 
-/*
+
 void Image::DrawTriangleInterpolated(const sTriangleInfo &triangle, FloatImage* zbuffer){
-    return;
+    // Intialize the Active Edges Table (AET)
+    std::vector<cell> table = std::vector<cell>(this->height);
+    // Fill the AET
+    ScanLineBresenham(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, table);
+    ScanLineBresenham(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, table);
+    ScanLineBresenham(triangle.points[0].x, triangle.points[0].y, triangle.points[2].x, triangle.points[2].y, table);
+    Color pixelColor; Vector2 uv;
+    
+    for (int i =0; i<this->height; i++){
+        // std::cout <<table[i].min<<" "<<table[i].max<< std::endl;
+        for (int j=table[i].minx; j<=table[i].maxx; j++){
+            float z = BarycentricInterpolation(Vector2(j, i), Vector2(triangle.points[0].x, triangle.points[0].y), Vector2(triangle.points[1].x, triangle.points[1].y), Vector2(triangle.points[2].x, triangle.points[2].y), triangle.points[0].z, triangle.points[1].z, triangle.points[2].z);
+            // Don't do anything if value z is larger than the one stored in zbuffer, meaning that the current pixel is farer to the camera
+            if (z >= zbuffer->GetPixel(j, i)) {continue;}
+            zbuffer->SetPixel(j, i, z);
+            if (triangle.texture == nullptr){
+                pixelColor = BarycentricInterpolation(Vector2(j, i), Vector2(triangle.points[0].x, triangle.points[0].y), Vector2(triangle.points[1].x, triangle.points[1].y), Vector2(triangle.points[2].x, triangle.points[2].y), triangle.colors[0], triangle.colors[1], triangle.colors[2]);
+            } else{
+                uv = BarycentricInterpolation(Vector2(j, i),  Vector2(triangle.points[0].x, triangle.points[0].y), Vector2(triangle.points[1].x, triangle.points[1].y), Vector2(triangle.points[2].x, triangle.points[2].y), triangle.uvs[0], triangle.uvs[1], triangle.uvs[2]);
+                // std::cout << uv.x <<" "<<uv.y<<std::endl;
+                pixelColor = triangle.texture->GetPixelSafe(uv.x*(triangle.texture->width-1), uv.y*(triangle.texture->height-1));
+            }
+            SetPixel(j, i, pixelColor);
+        }
+    }
 }
-*/
 
 #ifndef IGNORE_LAMBDAS
 
