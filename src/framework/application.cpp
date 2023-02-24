@@ -21,8 +21,6 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
     this->useZbuffer = false;
     
-    this->framebuffer.Resize(w, h);
-    this->zBuffer.Resize(w, h);
 }
 
 Application::~Application()
@@ -43,12 +41,6 @@ void Application::Init(void)
 void Application::Render(void)
 {
     // ...
-    framebuffer.Fill(Color::BLACK);
-    // Render without zBuffer (Section 1 and 2)
-    if (!useZbuffer) entity.Render(&framebuffer, camera, entity.entityColor);
-    // Render with zBuffer (Section 3 and 4)
-    else entity.Render(&framebuffer, camera, &zBuffer);
-    framebuffer.Render();
 }
 
 // Called after render
