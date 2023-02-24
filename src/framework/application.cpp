@@ -3,6 +3,7 @@
 #include "shader.h"
 #include "utils.h"
 #include "entity.h"
+#include "shader.h"
 
 Application::Application(const char* caption, int width, int height) // : animation(this)
 {
@@ -20,12 +21,14 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->camera = new Camera(); // Pointer to avoid initialization process
     this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
     this->useZbuffer = false;
+    this->shader = new Shader();
     
 }
 
 Application::~Application()
 {
     if (camera) delete this->camera; // Free memory
+    if (shader) delete this->shader;
     SDL_DestroyWindow(window);
 }
 
@@ -35,12 +38,18 @@ void Application::Init(void)
     camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
     entity = Entity("../res/meshes/anna.obj");
+    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
+    std::cout << (shader == NULL) << std::endl;
+    quad.CreateQuad();
 }
 
 // Render one frame
 void Application::Render(void)
 {
     // ...
+    shader->Enable();
+    quad.Render(GL_TRIANGLES);
+    shader->Disable();
 }
 
 // Called after render

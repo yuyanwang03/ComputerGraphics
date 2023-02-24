@@ -8,6 +8,7 @@
 #include "image.h"
 #include "camera.h"
 #include "entity.h"
+#include "shader.h"
 
 enum workingSection{
     default_section = 1,
@@ -49,7 +50,8 @@ public:
 	// Image framebuffer;
     Camera* camera;
     Entity entity;
-    
+    Shader* shader;
+    Mesh quad;
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
 	~Application();
