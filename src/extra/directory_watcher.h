@@ -85,15 +85,6 @@ public:
 
                           ::Sleep(500);
 
-<<<<<<< HEAD
-                          ::PostMessage(hWnd, WM_FILE_CHANGED, fni.i.Action, LPARAM(full_name));
-                          SDL_Event sdlevent;
-                          sprintf(sdlevent.text.text, "%s", full_name);
-                          sdlevent.type = WM_FILE_CHANGED;
-                          SDL_PushEvent(&sdlevent);
-                        }
-                      }
-=======
 						  ::PostMessage(hWnd, WM_FILE_CHANGED, fni.i.Action, LPARAM(full_name));
 						  SDL_Event sdlevent;
 						  sprintf(file_name, "%s", full_name);
@@ -101,7 +92,6 @@ public:
 						  SDL_PushEvent(&sdlevent);
 						}
 					  }
->>>>>>> upstream/main
 
                       fni.i.Action = 0;
                     }
