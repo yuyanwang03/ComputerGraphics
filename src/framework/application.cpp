@@ -56,6 +56,7 @@ void Application::Render(void)
 void Application::Update(float seconds_elapsed)
 {
     // camera->Orbit(seconds_elapsed*10, 0);
+    shader->ReloadAll();
 }
 
 //keyboard press event
