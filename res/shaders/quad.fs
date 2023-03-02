@@ -5,7 +5,7 @@ varying vec3 localPos;
 // 3.1.f
 vec3 board(vec2 uv, float rows, float cols){
     float t = (floor(v_uv.x*cols)+floor(v_uv.y*rows));
-    return vec3(mod(t,2.0)<1.0 ?1.0:0.0);
+    return vec3(mod(t,2.0)<1.0);
 }
 void main()
 {
