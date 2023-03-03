@@ -27,8 +27,10 @@ void main()
     gl_FragColor = vec4(v(v_uv, d1, 1.0), 0.0, 0.0, 0.1) + vec4(0.0, 0.0, w(v_uv, d2, 1.0), 0.1); // red + blue
     // 3.1.f
     gl_FragColor = vec4(board(v_uv, 20.0, 20.0),1);
-    
-    
+    // 3.1.d
+    float tempX = v_uv.x;
+    float tempY = v_uv.y;
+    gl_FragColor = (mod(tempX, 0.1)+0.9)*vec4(mix(vec4(0,0,1,1), vec4(1, 0, 0, 1), v_uv.x))+(mod(tempY, 0.1)+0.6)*vec4(0,1,0,1);
     
     // gl_FragColor = vec4((0.3-distance(vec2(v_uv.x, 0.0), vec2(0.5, 0.0)))*1.0, 0, 0, 1);
     // gl_FragColor = vec4(smoothstep(0.1, 0.2, v_uv.x)*1.0, 0, 0, 1);
