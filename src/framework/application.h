@@ -52,6 +52,7 @@ public:
     Entity entity;
     Shader* shader;
     Mesh quad;
+    float shaderType;
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
 	~Application();

@@ -48,6 +48,7 @@ void Application::Render(void)
 {
     // ...
     shader->Enable();
+    shader->SetFloat("shaderType", shaderType);
     quad.Render(GL_TRIANGLES);
     shader->Disable();
 }
@@ -55,7 +56,7 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    shader->ReloadAll();
+    // shader->ReloadAll();
 }
 
 //keyboard press event
@@ -64,6 +65,12 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
+        case SDLK_1: {shaderType=1.0; break;}
+        case SDLK_2: {shaderType=2.0; break;}
+        case SDLK_3: {shaderType=3.0; break;}
+        case SDLK_4: {shaderType=4.0; break;}
+        case SDLK_5: {shaderType=5.0; break;}
+        case SDLK_6: {shaderType=6.0; break;}
         case SDLK_o:
         { // Set to orthographic projection
             std::cout << "Orthographic View" << std::endl;

@@ -1,4 +1,5 @@
 varying vec2 v_uv;
+uniform float shaderType;
 
 void main()
 {	
