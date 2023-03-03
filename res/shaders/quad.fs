@@ -1,5 +1,6 @@
 varying vec2 v_uv;
 uniform float shaderType;
+uniform sampler2D u_texture;
 
 // 3.1.c
 // 色值大小计算 Compute the smoothed effect of the colors
@@ -18,6 +19,7 @@ vec3 board(vec2 uv, float rows, float cols){
 
 void main()
 {
+    /*
     if (shaderType==1.0){
         // 3.1.a
         gl_FragColor = vec4(mix(vec4(0,0,1,1), vec4(1, 0, 0, 1), v_uv.x));
@@ -38,6 +40,9 @@ void main()
     } else{
         // 3.1.f
         gl_FragColor = vec4(board(v_uv, 20.0, 20.0),1);
-    }
+    }*/
+    vec4 texture_color = texture2D(u_texture, v_uv);
+    gl_FragColor = texture_color;
+    
     
 }

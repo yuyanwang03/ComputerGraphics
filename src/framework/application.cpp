@@ -22,6 +22,7 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
     this->useZbuffer = false;
     this->shader = new Shader();
+    this->shaderType=1.0;
     
 }
 
@@ -37,7 +38,8 @@ void Application::Init(void)
     std::cout << "Initiating app..." << std::endl;
     camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
-    entity = Entity("../res/meshes/anna.obj");
+    this->shaderTexture.Load("images/fruits.png");
+    // entity = Entity("../res/meshes/anna.obj");
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     std::cout << (shader == NULL) << std::endl;
     quad.CreateQuad();
@@ -49,6 +51,7 @@ void Application::Render(void)
     // ...
     shader->Enable();
     shader->SetFloat("shaderType", shaderType);
+    shader->SetTexture("u_texture", &shaderTexture);
     quad.Render(GL_TRIANGLES);
     shader->Disable();
 }

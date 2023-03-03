@@ -53,6 +53,7 @@ public:
     Shader* shader;
     Mesh quad;
     float shaderType;
+    Texture shaderTexture;
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
 	~Application();
