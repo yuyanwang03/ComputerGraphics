@@ -22,8 +22,8 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
     this->useZbuffer = false;
     this->shader = new Shader();
-    this->shaderType=1.0;
-    
+    this->shaderType = 1.0;
+    this->useTexture = false;
 }
 
 Application::~Application()
@@ -68,12 +68,14 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-        case SDLK_1: {shaderType=1.0; break;}
-        case SDLK_2: {shaderType=2.0; break;}
-        case SDLK_3: {shaderType=3.0; break;}
-        case SDLK_4: {shaderType=4.0; break;}
-        case SDLK_5: {shaderType=5.0; break;}
-        case SDLK_6: {shaderType=6.0; break;}
+        case SDLK_a: {useTexture = false; break;}
+        case SDLK_b: {useTexture = true; break;}
+        case SDLK_1: {shaderType= useTexture ? 1.5: 1.0; break;}
+        case SDLK_2: {shaderType= useTexture ? 2.5: 2.0; break;}
+        case SDLK_3: {shaderType= useTexture ? 3.5: 3.0; break;}
+        case SDLK_4: {shaderType= useTexture ? 4.5: 4.0; break;}
+        case SDLK_5: {shaderType= useTexture ? 5.5: 5.0; break;}
+        case SDLK_6: {shaderType= useTexture ? 6.5: 6.0; break;}
         case SDLK_o:
         { // Set to orthographic projection
             std::cout << "Orthographic View" << std::endl;

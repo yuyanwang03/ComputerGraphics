@@ -19,7 +19,8 @@ vec3 board(vec2 uv, float rows, float cols){
 
 void main()
 {
-    /*
+    vec4 texture_color;
+    
     if (shaderType==1.0){
         // 3.1.a
         gl_FragColor = vec4(mix(vec4(0,0,1,1), vec4(1, 0, 0, 1), v_uv.x));
@@ -37,44 +38,37 @@ void main()
     } else if (shaderType==5.0){
         // 3.1.e
         gl_FragColor = vec4((v_uv.y < 0.5+0.25*sin(v_uv.x*2.0*3.1415)))*vec4(mix(vec4(0,0,0,1), vec4(0, 1, 0, 1), v_uv.y)) + vec4((v_uv.y > 0.5+0.25*sin(v_uv.x*2.0*3.1415)))*vec4(mix(vec4(0,1,0,1), vec4(0, 0, 0, 1), v_uv.y));
-    } else{
+    } else if (shaderType==6.0){
         // 3.1.f
         gl_FragColor = vec4(board(v_uv, 20.0, 20.0),1);
-    }*/
-    
-    vec4 texture_color = texture2D(u_texture, v_uv);
-    
-    if (shaderType==1.0){
-        // 3.2.a
-        texture_color = vec4(vec3((texture_color.r+texture_color.g+texture_color.b)/3.0), 1.0);
-    } else if (shaderType==2.0){
-        // 3.2.b
-        texture_color  = vec4(vec3(1.0)-texture_color.rgb, 1.0);
-    } else if (shaderType==3.0){
-        // 3.2.c
-        texture_color = vec4(1.0-texture_color.b, texture_color.r, 0.5*texture_color.g, 1.0);
-    } else if (shaderType==4.0){
-        // 3.2.d
-        texture_color = vec4(vec3(step(0.5, (texture_color.r+texture_color.g+texture_color.b)/3.0)), 1.0);
-    } else if (shaderType==5.0){
-        // 3.2.e
-        gl_FragColor = vec4((v_uv.y < 0.5+0.25*sin(v_uv.x*2.0*3.1415)))*vec4(mix(vec4(0,0,0,1), vec4(0, 1, 0, 1), v_uv.y)) + vec4((v_uv.y > 0.5+0.25*sin(v_uv.x*2.0*3.1415)))*vec4(mix(vec4(0,1,0,1), vec4(0, 0, 0, 1), v_uv.y));
     } else{
-        // 3.2.f
-        gl_FragColor = vec4(board(v_uv, 20.0, 20.0),1);
+        // Load texture (image)
+        texture_color = texture2D(u_texture, v_uv);
     }
     
-    // 3.2.a
-    // texture_color = vec4(vec3((texture_color.r+texture_color.g+texture_color.b)/3.0), 1.0);
-    // 3.2.b
-    // texture_color  = vec4(vec3(1.0)-texture_color.rgb, 1.0);
-    // 3.2.c
-    // texture_color = vec4(1.0-texture_color.b, texture_color.r, 0.5*texture_color.g, 1.0);
-    // 3.2.d
-    // texture_color = vec4(vec3(step(0.5, (texture_color.r+texture_color.g+texture_color.b)/3.0)), 1.0);
+    if (shaderType==1.5){
+        // 3.2.a
+        gl_FragColor = vec4(vec3((texture_color.r+texture_color.g+texture_color.b)/3.0), 1.0);
+    } else if (shaderType==2.5){
+        // 3.2.b
+        gl_FragColor  = vec4(vec3(1.0)-texture_color.rgb, 1.0);
+    } else if (shaderType==3.5){
+        // 3.2.c
+        gl_FragColor = vec4(1.0-texture_color.b, texture_color.r, 0.5*texture_color.g, 1.0);
+    } else if (shaderType==4.5){
+        // 3.2.d
+        gl_FragColor = vec4(vec3(step(0.5, (texture_color.r+texture_color.g+texture_color.b)/3.0)), 1.0);
+    } else if (shaderType==5.5){
+        // 3.2.e
+        
+    } else if (shaderType==6.5){
+        // 3.2.f
+    }
+    
     // 3.2.e
     // texture_color = vec4(1.0);
-    gl_FragColor = texture_color;
-    // gl_FragColor = texture_color*vec4(0.2);
+    // texture_color = vec4(texture_color.rbb, 0.0);
+    
+    //gl_FragColor = texture_color*vec4(0.2);
     
 }

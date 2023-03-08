@@ -51,6 +51,7 @@ public:
     Camera* camera;
     Entity entity;
     Shader* shader;
+    bool useTexture;
     Mesh quad;
     float shaderType;
     Texture shaderTexture;
