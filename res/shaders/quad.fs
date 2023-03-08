@@ -45,7 +45,6 @@ void main()
         // Load texture (image)
         texture_color = texture2D(u_texture, v_uv);
     }
-    
     if (shaderType==1.5){
         // 3.2.a
         gl_FragColor = vec4(vec3((texture_color.r+texture_color.g+texture_color.b)/3.0), 1.0);
@@ -60,15 +59,16 @@ void main()
         gl_FragColor = vec4(vec3(step(0.5, (texture_color.r+texture_color.g+texture_color.b)/3.0)), 1.0);
     } else if (shaderType==5.5){
         // 3.2.e
-        
+        float fstep = 0.002;
+        gl_FragColor = (texture2D(u_texture, vec2(v_uv.x-fstep, v_uv.y-fstep)) + texture2D(u_texture, vec2(v_uv.x+fstep, v_uv.y-fstep)) + texture2D(u_texture, vec2(v_uv.x-fstep, v_uv.y+fstep)) + texture2D(u_texture, vec2(v_uv.x+fstep, v_uv.y+fstep)))/vec4(4.0);
     } else if (shaderType==6.5){
         // 3.2.f
+        gl_FragColor = texture_color*(vec4(1.0)-distance(vec2(0.5, 0.5), v_uv.xy)*vec4(1,1,1,1));
     }
-    
-    // 3.2.e
-    // texture_color = vec4(1.0);
-    // texture_color = vec4(texture_color.rbb, 0.0);
-    
-    //gl_FragColor = texture_color*vec4(0.2);
+    /* Animation effect
+    float fstep = 0.002;
+    gl_FragColor = (texture_color + texture2D(u_texture, vec2(v_uv.x-fstep, v_uv.y-fstep)) + texture2D(u_texture, vec2(v_uv.x+fstep, v_uv.y-fstep)) + texture2D(u_texture, vec2(v_uv.x-fstep, v_uv.y+fstep)) + texture2D(u_texture, vec2(v_uv.x+fstep, v_uv.y+fstep)))/vec4(5.0);
+    // gl_FragColor = texture_color*(distance(vec2(0.5, 0.5), v_uv.xy)*vec4(1,1,1,1));
+    */
     
 }
