@@ -75,7 +75,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
         case SDLK_a: {useQuad = true; useTexture = false; break;}
         case SDLK_b: {useQuad = true; useTexture = true; this->shaderType = 1.5; break;}
-        case SDLK_c: {
+        case SDLK_d: {
             useQuad = false;
             // Set camera
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
@@ -116,19 +116,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             break;
         }
         case SDLK_q: {currentSection = default_section; break;}
-        case SDLK_z:
-        {
-            this->entity.texture = nullptr;
-            break;
-        }
-        case SDLK_t:
-        {
-            this->entity.LoadTexture("../res/textures/anna_color_specular.tga");
-            break;
-        }
-        case SDLK_w: {this->entity.renderMode = Entity::eRenderMode::WIREFRAME; break;}
-        case SDLK_d: {this->entity.renderMode = Entity::eRenderMode::POINTCLOUD; break;}
-        case SDLK_r: {entity.entityColor.Random(); break;}
         case SDLK_n: {currentSection = change_near; break;}
         case SDLK_f: {currentSection = change_far; break;}
         case SDLK_PLUS:
