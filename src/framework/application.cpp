@@ -70,9 +70,14 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-        case SDLK_a: {useQuad = true; useTexture = false; break;}
-        case SDLK_b: {useQuad = true; useTexture = true; this->shaderType = 1.5; break;}
-        case SDLK_d: {
+        case SDLK_a: {useQuad = true; useTexture = false; break;} // Section 3.1
+        case SDLK_b: {useQuad = true; useTexture = true; this->shaderType = 1.5; break;} // Section 3.2
+        case SDLK_c: // Section 3.3
+        {
+            break;
+        }
+        case SDLK_d: // Section 3.4
+        {
             useQuad = false;
             // Set camera
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);

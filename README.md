@@ -27,43 +27,53 @@ Access the Lab 3 Branch in Github: [GitHub Lab 3](https://github.com/yuyanwang03
 
 Access the Lab 4 Branch in Github: [GitHub Lab 4](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab4)
 
-Just after running the program, the user should see a one-color-painted entity situated at the middle of the windows. These are the default setting of the program: projection type is the perspective; the entity render mode is "TRIANGLES" and the boolean useZbuffer is set to be false (meaning that the program is not using zBuffer yet to render the entity).
-
-This lab is very similar to Lab 2 so there are shared keys that do the same for both labs.
+Just after running the program, the user should see a windows displaying a transition of colors with blue at the left side and red at the right side. This is mainly the effect asked for section 3.1.a in this lab.
 
 Following we will explain in what consists the User Interface.
 
-### **Key character 'D'**
+### **Key character 'A'**
 
-It sets the program to the "POINTCLOUD" render mode, which basically displays only the vertices (dots) of the mesh on screen. It will set the boolean useZbuffer to false and hence the program will paint all the points regardless of if they are nearer or farer to the camera.
+This will correspond to section 3.1 of the lab; it starts displaying the one that is 3.1.a's formula. The user will be able to switch between the drawing formulas by pressing key numbers [1,6].
 
-### **Key character 'W'**
+### **Key character 'B'**
 
-It sets the program to the "WIREFRAME" render mode, which basically displays only the lines of the triangles of the mesh on screen; that is, the same display mode as in previous lab. It will set the boolean useZbuffer to false and hence the program will paint all the edges regardless of if they are nearer or farer to the camera.
+This will correspond to section 3.2 of the lab; it starts displaying the grayscale image. The user will be able to switch between the image effects by pressing key numbers [1,6].
 
 ### **Key character 'C'**
 
-It will set the boolean useZbuffer to false and the program will switch the render mode between "TRIANGLES" and "TRIANGLES_INTERPOLATED". The former render mode paints mesh's triangles with only one color and the latter paints the triangles with the barycentric interpolation method having the vertices' colors being red, blue and green. This character mainly displays the tasks asked for sections 3.1 and 3.2 of the lab.
+This will correspond to section 3.3 of the lab; the windows shows some transformation on the same image as in section 3.2. The program will provide 2 different animations, and these will be switched with every click on the key character 'C'.
 
-### **Key character 'Z'**
+### **Key character 'D'**
 
-The program will display a mesh using a zBuffer (that is, taking into consideration the distances to the camera) and barycentric interpolation; it does the job demanded for section 3.3. If observed with detail, the entity should slightly be different than the one without using zBuffer.
+This will correspond to section 3.4 of the lab; the entity uses a given texture. The program displays on screen an entity that is rotating.
 
-### **Key character 'T'**
+### **Key character '1'**
 
-The program will load a texture to the entity and using the zBuffer (section 3.4). It will use the UV coordinates to get the correct colors.
+Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
 
-If the texture is not correctly loaded, the program will proceed to render the mesh in the same way as when typing key "Z". 
+### **Key character '2'**
 
-### **Key character 'R'**
+Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
 
-The program will randomly change the color of the rendered mesh. Bear in mind that there's a chance that the rendered mesh becomes black (same as the background color) and so it seems to disappear. In this case, just press the 'R' key again.
+### **Key character '3'**
 
-The user can change the colors of the meshes whenever he/she wants and for unlimited number of times.
+Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
+
+### **Key character '4'**
+
+Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
+
+### **Key character '5'**
+
+Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
+
+### **Key character '6'**
+
+Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
 
 ---
 
-Following are the shared keys funcionalities with Lab 2
+Following are the shared keys funcionalities with Lab 2 and Lab 3
 
 ### **Mouse wheel**
 
@@ -73,19 +83,9 @@ It allows the user to zoom in or to zoom out.
 
 It will allow the user to orbit around the center point of the camera by changing the eye vector of the camera. However, it has a different implementation if the user is on section "change_view".
 
-### **Key character 'O'**
-
-The program will change the camera projection type to Orthographic. It will reset the values of the camera; so it is good to use it if the user somehow gets lost and does not find the meshes.
-
-Keep in mind that, because of the properties of the orthographic view, the use of the *mouse wheel* may not have any change to the displayed windows.
-
-### **Key character 'P'**
-
-The program will change the camera projection type to Perspective. It will reset the values of the camera; so it is good to use it if the user somehow gets lost and does not find the meshes.
-
 ### **Key character 'V'**
 
-After typing 'V', the user is now in the "change_view" section, which allows the user to modify the coordinates of the center point, that is, where the camera is looking at.s
+After typing 'V', the user is now in the "change_view" section, which allows the user to modify the coordinates of the center point, that is, where the camera is looking at.
 
 This can by done by a mouse left-click and the center point will change according to the mouse move that the user does while having the mouse hold on the click.
 
@@ -128,37 +128,41 @@ Remember, user can make use of the key 'Q' to get back to the default working se
 The windows created when running the program will be closed; that is equivalent to the end of execution.
 
 > #### Résumé
-> List of keys that will work in this program: 'esc', 'C', 'D', 'F', 'N', 'O', 'P', 'Q', 'R', 'T', 'V', 'W', 'Z', '+', '-'. Mouse actions: "mouse wheel", "holding left-click and moving the mouse".
+> List of keys that will work in this program: 'esc', 'A', 'B', 'C', 'D', '1', '2', '3', '4', '5', '6', 'F', 'N', 'Q', 'V', '+', '-'. Mouse actions: "mouse wheel", "holding left-click and moving the mouse".
 
 ### Remarks
 
-If there are some file path issues in your computer (which does not happen in our case), please change the path inside the following function manually:
+If there are some file path issues in your computer (which does not happen in our case), please change the path inside the following functions manually:
 
 ```c++
-void Application::Init(void){
+void Application::Init(void)
+{
     std::cout << "Initiating app..." << std::endl;
-    camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-    camera->SetPerspective(50, window_width/window_height, 0.01, 100);
-    entity = Entity("../res/meshes/anna.obj");
+    // Load Quad shader
+    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
+    this->shaderTexture.Load("images/fruits.png");
+    quad.CreateQuad();
+    
 }
 
 void Application::OnKeyPressed(SDL_KeyboardEvent event){
     ...
-    case SDLK_t:
-    {
-        this->useZbuffer = true;
-        this->entity.LoadTexture("../res/textures/anna_color_specular.tga");
-        break;
-    }
+    case SDLK_d: // Section 3.4
+        {
+            ...
+            // Load entity
+            entity = Entity("../res/meshes/anna.obj");
+            entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
+            entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+            entity.SetCamera(this->camera);
+            entity.LoadTexture("../res/textures/anna_color_specular.tga");
+            break;
+        }
     ...
 }
 ```
 
-We have tested the program under various circumstances and situations and it works without having strange behaviours, so quality can be assured. However, we are aware that our program may have some little bugs (that we could not find), but it fulfills perfectly the basic needs.
-
-We recommend the user to work with the perspective view since it resemble more the real world. It will better approximate the views.
-
-The change of values for near_plane and far_plane can not allways have visual effects since they only modify the size of the frustrum. If the meshes are still inside the frustrum we shall see them without errors. In the same manner, if the user modifies the center of the camera up to some point, he/she will not see any mesh rendered on the screen or will observe that the meshes are partially rendered. 
+Mouse actions may not work with a very high probability, that is why the entity is set to be rotating by itself regardless of the user's action. The code has been mainly tested on Mac, and taking into consideration that we have had similar problems previously in other labs (rotation and orbit don't work in some specific cases with mac even though there are no coding errors), we decided to ignore this part.
 
 ## Lab 5
 
