@@ -19,7 +19,6 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->currentSection = default_section;
 
     this->camera = new Camera(); // Pointer to avoid initialization process
-    this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
     this->shader = new Shader();
     this->shaderType = 1.0;
     this->useTexture = false;
@@ -94,21 +93,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_4: {shaderType= useTexture ? 4.5: 4.0; break;}
         case SDLK_5: {shaderType= useTexture ? 5.5: 5.0; break;}
         case SDLK_6: {shaderType= useTexture ? 6.5: 6.0; break;}
-        case SDLK_o:
-        { // Set to orthographic projection
-            std::cout << "Orthographic View" << std::endl;
-            camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->SetOrthographic(-1,1,1,-1,-1,1);
-            break;
-        }
-        case SDLK_p:
-        { // Set to perspective projection
-            std::cout << "Perspective View" << std::endl;
-            camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->Zoom(-0.5); camera->Zoom(-0.5); camera->Zoom(-0.5);
-            camera->SetPerspective(45, window_width/window_height, 0.01, 100);
-            break;
-        }
         case SDLK_v:
         {
             std::cout << "Change center" << std::endl;
