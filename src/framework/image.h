@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "framework.h"
+#include "texture.h"
 
 //remove unsafe warnings
 #ifndef _CRT_SECURE_NO_WARNINGS
@@ -25,7 +26,7 @@ typedef struct _TriangleInfo{
     std::vector<Vector3> points;
     std::vector<Vector2> uvs;
     std::vector<Color> colors;
-    Image* texture;
+    Texture* texture;
 } sTriangleInfo;
 
 // A matrix of pixels

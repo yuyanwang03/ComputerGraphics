@@ -1,6 +1,7 @@
 // Global variables from the CPU
 uniform mat4 u_model;
 uniform mat4 u_viewprojection;
+uniform sampler2D u_texture;
 
 // Variables to pass to the fragment shader
 varying vec2 v_uv;

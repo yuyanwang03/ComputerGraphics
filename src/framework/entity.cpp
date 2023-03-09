@@ -6,6 +6,7 @@ Entity::Entity(){
     entityMesh = Mesh();
     entityColor.Random();
     texture = nullptr;
+    shader = nullptr;
 }
 
 Entity::Entity(Matrix44 matx, Mesh msh){
@@ -13,15 +14,17 @@ Entity::Entity(Matrix44 matx, Mesh msh){
     entityMesh = msh;
     entityColor.Random();
     texture = nullptr;
+    shader = nullptr;
 }
 
-Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); entityColor.Random(); texture=nullptr;}
+Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); entityColor.Random(); texture=nullptr; shader = nullptr;}
 
-Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); entityColor.Random(); texture=nullptr;}
+Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); entityColor.Random(); texture=nullptr; shader = nullptr;}
 
 Entity::Entity(const char* path){
     entityColor = Color(147, 112, 219);
     texture = nullptr;
+    shader = nullptr;
     Mesh tempMsh{Mesh()};
     int status = tempMsh.LoadOBJ(path);
     if (status) {entityMesh = tempMsh; std::cout << "Mesh correctly set" << std::endl;}
@@ -32,6 +35,7 @@ Entity::Entity(const Entity& e){
     entityMesh = e.entityMesh;
     texture = e.texture;
     entityColor = e.entityColor;
+    shader = e.shader;
 }
 
 Entity& Entity::operator = (const Entity& e)
@@ -40,6 +44,7 @@ Entity& Entity::operator = (const Entity& e)
     entityMesh = e.entityMesh;
     texture = e.texture;
     entityColor = e.entityColor;
+    shader = e.shader;
     return *this;
 }
 
@@ -48,9 +53,13 @@ void Entity::SetMatrix(Matrix44 matx) {this->modelMatrix = matx;}
 void Entity::SetMesh(Mesh msh) {this->entityMesh = msh;}
 
 void Entity::LoadTexture(const char* path){
-    texture = new Image();
-    bool status = texture->LoadTGA(path, true);
+    texture = new Texture();
+    bool status = texture->Load(path);
     if (status) {std::cout << "Texture loaded" << std::endl;}
+}
+
+void Entity::SetShader(const char* vsf, const char* psf, const char* macros){
+    shader = Shader::Get(vsf, psf, macros);
 }
 
 Entity::~Entity(){
@@ -142,7 +151,11 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
 }
 
 void Entity::Render(void){
-    return NULL;
+    glEnable(GL_DEPTH_TEST);
+    shader->Enable();
+    shader->SetTexture("u_texture", texture);
+    entityMesh.Render(GL_TRIANGLES);
+    shader->Disable();
 }
 
 void Entity::Update(float seconds_elapsed){

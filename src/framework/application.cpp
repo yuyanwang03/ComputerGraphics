@@ -38,31 +38,33 @@ void Application::Init(void)
     std::cout << "Initiating app..." << std::endl;
     camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
+    
     // quad
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     this->shaderTexture.Load("images/fruits.png");
-    // mesh
-    /*
-    entity = Entity("../res/meshes/anna.obj");
-    shader = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
-    this->shaderTexture.Load("../res/textures/anna_color_specular.tga");
-     */
-    std::cout << (shader == NULL) << std::endl;
     quad.CreateQuad();
+     
+    
+    // mesh
+    entity = Entity("../res/meshes/anna.obj");
+    entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+    entity.LoadTexture("../res/textures/anna_color_specular.tga");
+    
+    std::cout << (shader == NULL) << std::endl;
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    // ...
+    // quad
     shader->Enable();
     shader->SetFloat("shaderType", shaderType);
     shader->SetTexture("u_texture", &shaderTexture);
-    // quad
     quad.Render(GL_TRIANGLES);
-    //
-    
     shader->Disable();
+    
+    
+    // entity.Render();
 }
 
 // Called after render

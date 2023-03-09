@@ -7,6 +7,8 @@
 #include "framework.h"
 #include "mesh.h"
 #include "image.h"
+#include "texture.h"
+#include "shader.h"
 
 class Entity
 {
@@ -22,7 +24,8 @@ public:
     Mesh entityMesh;
     Color entityColor;
     eRenderMode renderMode;
-    Image* texture;
+    Texture* texture;
+    Shader* shader;
     
     // Constructors
     Entity();
@@ -39,6 +42,7 @@ public:
     void SetMatrix(Matrix44 matx);
     void SetMesh(Mesh msh);
     void LoadTexture(const char* path);
+    void SetShader(const char* vsf, const char* psf, const char* macros);
     void Update(float seconds_elapsed);
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);
