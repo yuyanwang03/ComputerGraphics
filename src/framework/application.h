@@ -36,7 +36,6 @@ public:
 	int mouse_state; // Tells which buttons are pressed
 	Vector2 mouse_position; // Last mouse position
 	Vector2 mouse_delta; // Mouse movement in the last frame
-    bool useZbuffer;
 
     void SetToDefault(void);
 	void OnKeyPressed(SDL_KeyboardEvent event);
@@ -52,6 +51,7 @@ public:
     Entity entity;
     Shader* shader;
     bool useTexture;
+    bool useQuad;
     Mesh quad;
     float shaderType;
     Texture shaderTexture;

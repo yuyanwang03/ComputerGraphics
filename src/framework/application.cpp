@@ -20,10 +20,10 @@ Application::Application(const char* caption, int width, int height) // : animat
 
     this->camera = new Camera(); // Pointer to avoid initialization process
     this->entity.renderMode = Entity::eRenderMode::TRIANGLES;
-    this->useZbuffer = false;
     this->shader = new Shader();
     this->shaderType = 1.0;
     this->useTexture = false;
+    this->useQuad = true;
 }
 
 Application::~Application()
@@ -36,51 +36,35 @@ Application::~Application()
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
-    camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-    camera->SetPerspective(50, window_width/window_height, 0.01, 100);
     
-    
-    // quad
+    // Load Quad shader
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     this->shaderTexture.Load("images/fruits.png");
     quad.CreateQuad();
-    std::cout << (shader == NULL) << std::endl;
-    
-    
-    // mesh
-    entity = Entity("../res/meshes/anna.obj");
-    entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
-    entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
-    entity.LoadTexture("../res/textures/anna_color_specular.tga");
-    
-    /*
-    entity = Entity("../res/meshes/anna.obj");
-    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
-    this->shaderTexture.Load("../res/textures/anna_normal.tga");*/
-    // std::cout << shaderTexture.width << " "<< this->window_width << " " << shaderTexture.height<< " "<< this->window_height << std::endl;
     
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    /*
-    // quad
-    shader->Enable();
-    shader->SetFloat("shaderType", shaderType);
-    shader->SetTexture("u_texture", &shaderTexture);
-    quad.Render(GL_TRIANGLES);
-    shader->Disable();*/
+    if (useQuad){ // Render Quad
+        shader->Enable();
+        shader->SetFloat("shaderType", shaderType);
+        shader->SetTexture("u_texture", &shaderTexture);
+        quad.Render(GL_TRIANGLES);
+        shader->Disable();
+    } else{
+        entity.Render();
+    }
     
-    camera->Orbit(0.2, 0.2);
-    entity.viewMatrix = camera->view_matrix;
-    entity.Render();
 }
 
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
     // shader->ReloadAll();
+    // camera->Orbit(0.2*seconds_elapsed, 0.0);
+    // entity.viewMatrix = camera->view_matrix;
 }
 
 //keyboard press event
@@ -89,8 +73,21 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-        case SDLK_a: {useTexture = false; break;}
-        case SDLK_b: {useTexture = true; break;}
+        case SDLK_a: {useQuad = true; useTexture = false; break;}
+        case SDLK_b: {useQuad = true; useTexture = true; this->shaderType = 1.5; break;}
+        case SDLK_c: {
+            useQuad = false;
+            // Set camera
+            camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
+            camera->SetPerspective(50, window_width/window_height, 0.01, 100);
+            // Load entity
+            entity = Entity("../res/meshes/anna.obj");
+            entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
+            entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+            entity.SetCamera(this->camera);
+            entity.LoadTexture("../res/textures/anna_color_specular.tga");
+            break;
+        }
         case SDLK_1: {shaderType= useTexture ? 1.5: 1.0; break;}
         case SDLK_2: {shaderType= useTexture ? 2.5: 2.0; break;}
         case SDLK_3: {shaderType= useTexture ? 3.5: 3.0; break;}
@@ -118,25 +115,18 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             break;
         }
         case SDLK_q: {currentSection = default_section; break;}
-        case SDLK_c: {
-            this->useZbuffer = false;
-            this->entity.renderMode = (entity.renderMode==Entity::eRenderMode::TRIANGLES) ? Entity::eRenderMode::TRIANGLES_INTERPOLATED : Entity::eRenderMode::TRIANGLES;
-            break;
-        }
         case SDLK_z:
         {
-            this->useZbuffer = true;
             this->entity.texture = nullptr;
             break;
         }
         case SDLK_t:
         {
-            this->useZbuffer = true;
             this->entity.LoadTexture("../res/textures/anna_color_specular.tga");
             break;
         }
-        case SDLK_w: {this->useZbuffer = false; this->entity.renderMode = Entity::eRenderMode::WIREFRAME; break;}
-        case SDLK_d: {this->useZbuffer = false; this->entity.renderMode = Entity::eRenderMode::POINTCLOUD; break;}
+        case SDLK_w: {this->entity.renderMode = Entity::eRenderMode::WIREFRAME; break;}
+        case SDLK_d: {this->entity.renderMode = Entity::eRenderMode::POINTCLOUD; break;}
         case SDLK_r: {entity.entityColor.Random(); break;}
         case SDLK_n: {currentSection = change_near; break;}
         case SDLK_f: {currentSection = change_far; break;}

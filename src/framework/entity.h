@@ -21,12 +21,12 @@ public:
     };
     
     Matrix44 modelMatrix;
-    Matrix44 viewMatrix;
     Mesh entityMesh;
     Color entityColor;
     eRenderMode renderMode;
     Texture* texture;
     Shader* shader;
+    Camera* camera;
     
     // Constructors
     Entity();
@@ -44,6 +44,7 @@ public:
     void SetMesh(Mesh msh);
     void LoadTexture(const char* path);
     void SetShader(const char* vsf, const char* psf, const char* macros);
+    void SetCamera(Camera* cam);
     void Update(float seconds_elapsed);
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);

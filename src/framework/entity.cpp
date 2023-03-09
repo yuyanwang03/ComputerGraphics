@@ -3,11 +3,11 @@
 
 Entity::Entity(){
     modelMatrix = Matrix44();
-    viewMatrix = Matrix44();
     entityMesh = Mesh();
     entityColor.Random();
     texture = nullptr;
     shader = nullptr;
+    camera = nullptr;
 }
 
 Entity::Entity(Matrix44 matx, Mesh msh){
@@ -18,14 +18,15 @@ Entity::Entity(Matrix44 matx, Mesh msh){
     shader = nullptr;
 }
 
-Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); entityColor.Random(); texture=nullptr; shader = nullptr;}
+Entity::Entity(Matrix44 matx) {modelMatrix = matx; entityMesh = Mesh(); entityColor.Random(); texture=nullptr; shader = nullptr; camera = nullptr;}
 
-Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); entityColor.Random(); texture=nullptr; shader = nullptr;}
+Entity::Entity(Mesh msh) {entityMesh = msh; modelMatrix = Matrix44(); entityColor.Random(); texture=nullptr; shader = nullptr; camera = nullptr;}
 
 Entity::Entity(const char* path){
     entityColor = Color(147, 112, 219);
     texture = nullptr;
     shader = nullptr;
+    camera = nullptr;
     Mesh tempMsh{Mesh()};
     int status = tempMsh.LoadOBJ(path);
     if (status) {entityMesh = tempMsh; std::cout << "Mesh correctly set" << std::endl;}
@@ -37,6 +38,7 @@ Entity::Entity(const Entity& e){
     texture = e.texture;
     entityColor = e.entityColor;
     shader = e.shader;
+    camera = e.camera;
 }
 
 Entity& Entity::operator = (const Entity& e)
@@ -46,6 +48,7 @@ Entity& Entity::operator = (const Entity& e)
     texture = e.texture;
     entityColor = e.entityColor;
     shader = e.shader;
+    camera = e.camera;
     return *this;
 }
 
@@ -62,6 +65,10 @@ void Entity::LoadTexture(const char* path){
 void Entity::SetShader(const char* vsf, const char* psf, const char* macros){
     shader = Shader::Get(vsf, psf, macros);
     // if (shader!=nullptr) {std::cout << "Shader loaded" << std::endl;}
+}
+
+void Entity::SetCamera(Camera* cam){
+    this->camera = cam;
 }
 
 Entity::~Entity(){
@@ -158,7 +165,7 @@ void Entity::Render(void){
     shader->Enable();
     shader->SetTexture("u_texture", this->texture);
     shader->SetMatrix44("u_model", modelMatrix);
-    shader->SetMatrix44("u_viewprojection", viewMatrix);
+    shader->SetMatrix44("u_viewprojection", camera->view_matrix);
     entityMesh.Render();
     glDisable(GL_DEPTH_TEST);
     shader->Disable();
