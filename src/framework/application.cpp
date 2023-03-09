@@ -39,33 +39,48 @@ void Application::Init(void)
     camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
     
-    /*
+    
     // quad
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
-    this->shaderTexture.Load("images/fruits.png");
+    this->shaderTexture.Load("../res/textures/anna_normal.tga");
     quad.CreateQuad();
     std::cout << (shader == NULL) << std::endl;
-    */
     
+    /*
     // mesh
     entity = Entity("../res/meshes/anna.obj");
     entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
-    entity.LoadTexture("../res/textures/anna_normal.tga");
+    entity.LoadTexture("../res/textures/anna_normal.tga");*/
+    
+    entity = Entity("../res/meshes/anna.obj");
+    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
+    this->shaderTexture.Load("../res/textures/anna_normal.tga");
+    // std::cout << shaderTexture.width << " "<< this->window_width << " " << shaderTexture.height<< " "<< this->window_height << std::endl;
     
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    /*
+    
     // quad
     shader->Enable();
     shader->SetFloat("shaderType", shaderType);
     shader->SetTexture("u_texture", &shaderTexture);
     quad.Render(GL_TRIANGLES);
-    shader->Disable();*/
-    entity.viewMatrix = camera->view_matrix;
+    // shader->Disable();
+    
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    //shader->Enable();
+    shader->SetFloat("shaderType", shaderType);
+    shader->SetTexture("u_texture", &shaderTexture);
+    shader->SetMatrix44("u_model", entity.modelMatrix);
+    shader->SetMatrix44("u_viewprojection", camera->view_matrix);
+    // std::cout << "shader not loaded: " << (shader == NULL) << std::endl;
     entity.Render();
+    glDisable(GL_DEPTH_TEST);
+    shader->Disable();
 }
 
 // Called after render
