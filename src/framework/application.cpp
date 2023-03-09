@@ -46,7 +46,6 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void)
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
     if (useQuad){ // Render Quad
         shader->Enable();
         shader->SetFloat("shaderType", shaderType);
@@ -148,7 +147,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
     // std::cout<<"here"<<std::endl;
     if (event.button == SDL_BUTTON_LEFT){
         if (currentSection == change_center){
-            camera->center = Vector3(camera->center.x+mouse_delta.x/12.0, camera->center.y+mouse_delta.y/12.0, camera->center.z);
+            camera->center = Vector3(camera->center.x+mouse_delta.x/3.0, camera->center.y+mouse_delta.y/3.0, camera->center.z);
             camera->UpdateViewMatrix();
         }
         else {camera->Orbit(mouse_delta.x, mouse_delta.y);}
