@@ -79,7 +79,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             useQuad = false;
             // Set camera
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->SetPerspective(50, window_width/window_height, 0.01, 100);
+            camera->Zoom(-0.5); camera->Zoom(-0.5);
+            camera->SetPerspective(50, window_width/window_height, 0.001, 10000);
             // Load entity
             entity = Entity("../res/meshes/anna.obj");
             entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));

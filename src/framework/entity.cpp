@@ -160,6 +160,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
 }
 
 void Entity::Render(void){
+    // camera->view_matrix.Print();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     shader->Enable();
