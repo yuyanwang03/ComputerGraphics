@@ -153,7 +153,16 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
 }
 
 void Entity::Render(void){
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
     entityMesh.Render();
+    shader->Enable();
+    shader->SetTexture("u_texture", this->texture);
+    shader->SetMatrix44("u_model", modelMatrix);
+    shader->SetMatrix44("u_viewprojection", viewMatrix);
+    entityMesh.Render();
+    glDisable(GL_DEPTH_TEST);
+    shader->Disable();
 }
 
 void Entity::Update(float seconds_elapsed){

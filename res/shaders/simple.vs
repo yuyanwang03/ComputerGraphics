@@ -26,4 +26,6 @@ void main()
 
 	// Project the vertex using the model view projection matrix
 	gl_Position = u_viewprojection * vec4(world_position, 1.0); //output of the vertex shader
+    gl_Position = u_model * gl_Vertex;
+    
 }
