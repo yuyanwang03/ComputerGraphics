@@ -49,7 +49,7 @@ void Application::Init(void)
     
     // mesh
     entity = Entity("../res/meshes/anna.obj");
-    entity.modelMatrix.Rotate(180, Vector3(1, 0, 0));
+    entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
     entity.LoadTexture("../res/textures/anna_color_specular.tga");
     
