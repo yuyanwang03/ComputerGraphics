@@ -47,6 +47,7 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void)
 {
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     if (useQuad){ // Render Quad
         shader->Enable();
         shader->SetFloat("shaderType", shaderType);
@@ -62,9 +63,7 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    // shader->ReloadAll();
-    // camera->Orbit(0.2*seconds_elapsed, 0.0);
-    // entity.viewMatrix = camera->view_matrix;
+    camera->Orbit(25*seconds_elapsed, 0.0);
 }
 
 //keyboard press event
@@ -79,8 +78,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             useQuad = false;
             // Set camera
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->Zoom(-0.5); camera->Zoom(-0.5);
-            camera->SetPerspective(50, window_width/window_height, 0.001, 10000);
+            camera->Zoom(-0.5); camera->Zoom(-0.5); camera->Zoom(-0.5);
+            camera->SetPerspective(50, window_width/window_height, 0.01, 10000);
             // Load entity
             entity = Entity("../res/meshes/anna.obj");
             entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
@@ -106,6 +105,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         { // Set to perspective projection
             std::cout << "Perspective View" << std::endl;
             camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
+            camera->Zoom(-0.5); camera->Zoom(-0.5); camera->Zoom(-0.5);
             camera->SetPerspective(45, window_width/window_height, 0.01, 100);
             break;
         }
