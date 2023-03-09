@@ -141,6 +141,9 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
     }
 }
 
+void Entity::Render(void){
+    return NULL;
+}
 
 void Entity::Update(float seconds_elapsed){
     modelMatrix.Rotate(seconds_elapsed*PI/180*10, Vector3(0,1,0));

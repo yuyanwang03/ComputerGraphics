@@ -8,4 +8,6 @@ void main()
 	vec3 color = normalize(v_world_normal);
 
 	gl_FragColor = vec4( color, 1.0 );
+    vec4 texture = texture2D(u_texture, v_uv);
+    gl_FragColor = texture;
 }

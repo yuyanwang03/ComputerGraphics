@@ -43,6 +43,7 @@ public:
     
     void Render(Image* framebuffer, Camera* camera, const Color& c);
     void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer);
+    void Render(void);
 };
 
 #endif /* entity_h */
