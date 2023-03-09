@@ -3,6 +3,7 @@
 
 Entity::Entity(){
     modelMatrix = Matrix44();
+    viewMatrix = Matrix44();
     entityMesh = Mesh();
     entityColor.Random();
     texture = nullptr;
@@ -54,12 +55,13 @@ void Entity::SetMesh(Mesh msh) {this->entityMesh = msh;}
 
 void Entity::LoadTexture(const char* path){
     texture = new Texture();
-    bool status = texture->Load(path);
+    bool status = this->texture->Load(path);
     if (status) {std::cout << "Texture loaded" << std::endl;}
 }
 
 void Entity::SetShader(const char* vsf, const char* psf, const char* macros){
     shader = Shader::Get(vsf, psf, macros);
+    // if (shader!=nullptr) {std::cout << "Shader loaded" << std::endl;}
 }
 
 Entity::~Entity(){
@@ -152,9 +154,15 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer){
 
 void Entity::Render(void){
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    entityMesh.Render();
     shader->Enable();
-    shader->SetTexture("u_texture", texture);
-    entityMesh.Render(GL_TRIANGLES);
+    shader->SetTexture("u_texture", this->texture);
+    shader->SetMatrix44("u_model", modelMatrix);
+    shader->SetMatrix44("u_viewprojection", viewMatrix);
+    
+    // std::cout << "shader not loaded: " << (shader == NULL) << std::endl;
+    glDisable(GL_DEPTH_TEST);
     shader->Disable();
 }
 

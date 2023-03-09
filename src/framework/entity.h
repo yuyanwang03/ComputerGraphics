@@ -21,6 +21,7 @@ public:
     };
     
     Matrix44 modelMatrix;
+    Matrix44 viewMatrix;
     Mesh entityMesh;
     Color entityColor;
     eRenderMode renderMode;
