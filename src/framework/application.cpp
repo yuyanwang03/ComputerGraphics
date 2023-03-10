@@ -50,17 +50,19 @@ void Application::Render(void)
         shader->Enable();
         shader->SetFloat("shaderType", shaderType);
         shader->SetTexture("u_texture", &shaderTexture);
+        shader->SetFloat("u_time", time);
         quad.Render(GL_TRIANGLES);
         shader->Disable();
     } else{
         entity.Render();
     }
-    
 }
 
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
+    time += seconds_elapsed;
+    // std::cout<<seconds_elapsed<<std::endl;
     camera->Orbit(25*seconds_elapsed, 0.0);
 }
 
@@ -74,6 +76,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         case SDLK_b: {useQuad = true; useTexture = true; this->shaderType = 1.5; break;} // Section 3.2
         case SDLK_c: // Section 3.3
         {
+            useQuad = true; useTexture = true;
+            shaderType = shaderType==7.5 ? 8.5 : 7.5;
             break;
         }
         case SDLK_d: // Section 3.4
