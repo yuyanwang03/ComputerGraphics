@@ -9,6 +9,7 @@
 #include "image.h"
 #include "texture.h"
 #include "shader.h"
+#include "material.h"
 
 class Entity
 {
@@ -22,17 +23,18 @@ public:
     
     Matrix44 modelMatrix;
     Mesh entityMesh;
-    Color entityColor;
-    eRenderMode renderMode;
+    Material entityMaterial;
+    /*
     Texture* texture;
     Shader* shader;
-    Camera* camera;
+    Camera* camera;*/
     
     // Constructors
     Entity();
-    Entity(Matrix44 matx, Mesh msh);
+    Entity(Matrix44 matx, Mesh msh, Material mat);
     Entity(Matrix44 matx);
     Entity(Mesh msh);
+    Entity(Material mat);
     Entity(const char* path);
     Entity(const Entity& e);
     Entity& operator = (const Entity& c); // Assign operator
@@ -42,13 +44,12 @@ public:
 
     void SetMatrix(Matrix44 matx);
     void SetMesh(Mesh msh);
+    void SetMaterial(Material mat);
+    /*
     void LoadTexture(const char* path);
     void SetShader(const char* vsf, const char* psf, const char* macros);
-    void SetCamera(Camera* cam);
-    void Update(float seconds_elapsed);
+    void SetCamera(Camera* cam);*/
     
-    void Render(Image* framebuffer, Camera* camera, const Color& c);
-    void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer);
     void Render(void);
 };
 

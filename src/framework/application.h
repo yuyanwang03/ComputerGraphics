@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "entity.h"
 #include "shader.h"
+#include "material.h"
 
 enum workingSection{
     default_section = 1,
@@ -48,6 +49,10 @@ public:
 	// CPU Global framebuffer
 	// Image framebuffer;
     Camera* camera;
+    std::vector<Entity> entities;
+    std::vector<sLight> lights;
+    Vector3 Ia;
+    
     Entity entity;
     Shader* shader;
     bool useTexture;

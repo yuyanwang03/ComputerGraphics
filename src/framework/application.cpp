@@ -23,6 +23,7 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->shaderType = 1.0;
     this->useTexture = false;
     this->useQuad = true;
+    
 }
 
 Application::~Application()
@@ -89,9 +90,16 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             // Load entity
             entity = Entity("../res/meshes/anna.obj");
             entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
+            
+            /*
+            entity.entityMaterial.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+            entity.entityMaterial.SetViewProjection(this->camera);
+            entity.entityMaterial.LoadColorTexture("../res/textures/anna_color_specular.tga");*/
+            /*
             entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
             entity.SetCamera(this->camera);
             entity.LoadTexture("../res/textures/anna_color_specular.tga");
+             */
             break;
         }
         case SDLK_1: {shaderType= useTexture ? 1.5: 1.0; break;}

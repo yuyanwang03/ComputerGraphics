@@ -22,7 +22,14 @@ public:
     float shiness;
     
     Material();
+    Material(Texture* cTexture, Texture* nTexture, Vector3 a, Vector3 d, Vector3 s, float shn);
+    Material(Vector3 a, Vector3 d, Vector3 s, float shn);
+    Material& operator = (const Material& m); // Assign operator
     
+    void LoadColorTexture(const char* path);
+    void LoadNormalTexture(const char *path);
+    void SetViewProjection(Camera* cam);
+    void SetShader(const char* vsf, const char* psf, const char* macros);
     void Enable();
     void Disable();
 };
