@@ -43,6 +43,8 @@ This will correspond to section 3.2 of the lab; it starts displaying the graysca
 
 This will correspond to section 3.3 of the lab; the windows shows some transformation on the same image as in section 3.2. The program will provide 2 different animations, and these will be switched with every click on the key character 'C'.
 
+The first animation consists of rendering different quantities of the same texture (image) on the screen depending on the time. The second animation is about making the displayed image seem to be animated with some displacement of the red and blue components of the texture (image).
+
 ### **Key character 'D'**
 
 This will correspond to section 3.4 of the lab; the entity uses a given texture. The program displays on screen an entity that is rotating.
