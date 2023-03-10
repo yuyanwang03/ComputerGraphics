@@ -109,7 +109,18 @@ This code has not been tested for windows resize. Hence, it can have some proble
 
 We are also aware that in section3_3, if the first left click is close enough to the toolbar and the second click is far enough, the user will draw on the toolbar. This is related to the fact that the toolbar has ben set to be a part of the framebuffer but not as another component of the application. But, even if the toolbar has been overwritten, the user can still access to the toolbar funcionalities by clicking at the location where the toolbar buttons are supposed to be. If it gets messy, we recomend the user to make use of the key 'c' and start over again.
 
-## Lab 2 
+## Lab 2
+
 Access the Lab 2 Branch in Github: [GitHub Lab 2](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab2)
 
+## Lab 3
 
+Access the Lab 3 Branch in Github: [GitHub Lab 3](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab3)
+
+## Lab 4
+
+Access the Lab 4 Branch in Github: [GitHub Lab 4](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab4)
+
+## Lab 5
+
+Access the Lab 5 Branch in Github: [GitHub Lab 5](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab5)
