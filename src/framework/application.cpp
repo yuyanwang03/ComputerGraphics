@@ -91,10 +91,11 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             entity = Entity("../res/meshes/anna.obj");
             entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
             
-            /*
-            entity.entityMaterial.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+            entity.SetCamera(this->camera);
+            entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
             entity.entityMaterial.SetViewProjection(this->camera);
-            entity.entityMaterial.LoadColorTexture("../res/textures/anna_color_specular.tga");*/
+            entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
+            
             /*
             entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
             entity.SetCamera(this->camera);

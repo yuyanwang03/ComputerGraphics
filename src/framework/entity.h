@@ -26,8 +26,8 @@ public:
     Material entityMaterial;
     /*
     Texture* texture;
-    Shader* shader;
-    Camera* camera;*/
+    Shader* shader;*/
+    Camera* camera;
     
     // Constructors
     Entity();
@@ -45,10 +45,10 @@ public:
     void SetMatrix(Matrix44 matx);
     void SetMesh(Mesh msh);
     void SetMaterial(Material mat);
-    /*
-    void LoadTexture(const char* path);
+    
+    void LoadColorTexture(const char* path);
     void SetShader(const char* vsf, const char* psf, const char* macros);
-    void SetCamera(Camera* cam);*/
+    void SetCamera(Camera* cam);
     
     void Render(void);
 };

@@ -36,6 +36,7 @@ void Material::LoadColorTexture(const char *path){
     colorTexture = new Texture();
     bool status = this->colorTexture->Load(path);
     if (status) {std::cout << "Color texture loaded" << std::endl;}
+    else{std::cout << "Color texture NOT loaded" << std::endl;}
 }
 
 void Material::LoadNormalTexture(const char *path){
