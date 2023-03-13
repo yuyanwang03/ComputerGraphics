@@ -19,44 +19,37 @@ Application::Application(const char* caption, int width, int height) // : animat
     this->currentSection = default_section;
 
     this->camera = new Camera(); // Pointer to avoid initialization process
-    this->shader = new Shader();
-    this->shaderType = 1.0;
-    this->useTexture = false;
-    this->useQuad = true;
     
 }
 
 Application::~Application()
 {
     if (camera) delete this->camera; // Free memory
-    if (shader) delete this->shader;
+    // if (shader) delete this->shader;
     SDL_DestroyWindow(window);
 }
 
 void Application::Init(void)
 {
     std::cout << "Initiating app..." << std::endl;
+    // Set camera
+    camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
+    camera->SetPerspective(50, window_width/window_height, 0.01, 100);
+    // Load entity
+    entity = Entity("../res/meshes/anna.obj");
+    entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
-    // Load Quad shader
-    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
-    this->shaderTexture.Load("images/fruits.png");
-    quad.CreateQuad();
+    entity.SetCamera(this->camera);
+    entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+    entity.entityMaterial.SetViewProjection(this->camera);
+    entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
     
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    if (useQuad){ // Render Quad
-        shader->Enable();
-        shader->SetFloat("shaderType", shaderType);
-        shader->SetTexture("u_texture", &shaderTexture);
-        shader->SetFloat("u_time", time);
-        quad.Render(GL_TRIANGLES);
-        shader->Disable();
-    } else{
-        entity.Render();
-    }
+    entity.Render();
 }
 
 // Called after render
@@ -73,42 +66,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-        case SDLK_a: {useQuad = true; useTexture = false; this->shaderType = 1.0; break;} // Section 3.1
-        case SDLK_b: {useQuad = true; useTexture = true; this->shaderType = 1.5; break;} // Section 3.2
-        case SDLK_c: // Section 3.3
-        {
-            useQuad = true; useTexture = true;
-            shaderType = shaderType==7.5 ? 8.5 : 7.5;
-            break;
-        }
-        case SDLK_d: // Section 3.4
-        {
-            useQuad = false;
-            // Set camera
-            camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
-            camera->SetPerspective(50, window_width/window_height, 0.01, 100);
-            // Load entity
-            entity = Entity("../res/meshes/anna.obj");
-            entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
-            
-            entity.SetCamera(this->camera);
-            entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
-            entity.entityMaterial.SetViewProjection(this->camera);
-            entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
-            
-            /*
-            entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
-            entity.SetCamera(this->camera);
-            entity.LoadTexture("../res/textures/anna_color_specular.tga");
-             */
-            break;
-        }
-        case SDLK_1: {shaderType= useTexture ? 1.5: 1.0; break;}
-        case SDLK_2: {shaderType= useTexture ? 2.5: 2.0; break;}
-        case SDLK_3: {shaderType= useTexture ? 3.5: 3.0; break;}
-        case SDLK_4: {shaderType= useTexture ? 4.5: 4.0; break;}
-        case SDLK_5: {shaderType= useTexture ? 5.5: 5.0; break;}
-        case SDLK_6: {shaderType= useTexture ? 6.5: 6.0; break;}
         case SDLK_v:
         {
             std::cout << "Change center" << std::endl;
