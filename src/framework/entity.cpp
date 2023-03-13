@@ -77,13 +77,4 @@ void Entity::Render(void){
     glDisable(GL_DEPTH_TEST);
     entityMaterial.Disable();
     
-    /*
-    shader->Enable();
-    shader->SetTexture("u_texture", this->texture);
-    shader->SetMatrix44("u_model", modelMatrix);
-    shader->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
-    entityMesh.Render();
-    glDisable(GL_DEPTH_TEST);
-    shader->Disable();
-     */
 }

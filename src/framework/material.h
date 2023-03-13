@@ -12,6 +12,10 @@ typedef struct _Light{
     Vector3 position, Id, Is;
 } sLight;
 
+typedef struct _UniformData{
+    
+} sUniformData;
+
 class Material
 {
 public:
