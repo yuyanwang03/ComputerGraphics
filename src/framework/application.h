@@ -52,6 +52,7 @@ public:
     std::vector<Entity> entities;
     std::vector<sLight> lights;
     Vector3 Ia;
+    sUniformData uData;
     
     Entity entity;
 	// Constructor and main methods

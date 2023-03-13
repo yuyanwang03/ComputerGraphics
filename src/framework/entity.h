@@ -51,6 +51,7 @@ public:
     void SetCamera(Camera* cam);
     
     void Render(void);
+    void Render(sUniformData uniformData);
 };
 
 #endif /* entity_h */

@@ -39,6 +39,8 @@ void Application::Init(void)
     entity = Entity("../res/meshes/anna.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
+    uData.model = entity.modelMatrix;
+    
     entity.SetCamera(this->camera);
     entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
     entity.entityMaterial.SetViewProjection(this->camera);
@@ -49,7 +51,10 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void)
 {
-    entity.Render();
+    uData.view_proj = camera->viewprojection_matrix;
+    
+    entity.Render(uData);
+    // entity.Render();
 }
 
 // Called after render

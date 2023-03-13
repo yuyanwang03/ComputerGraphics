@@ -188,6 +188,7 @@ class Matrix44
 		void SetIdentity();
 		void Transpose();
         void Print();
+    void Print()const;
 
 		// Get base vectors
 		Vector3 RightVector() { return Vector3(m[0],m[1],m[2]); }

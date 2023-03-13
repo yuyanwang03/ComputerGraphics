@@ -76,5 +76,14 @@ void Entity::Render(void){
     entityMesh.Render();
     glDisable(GL_DEPTH_TEST);
     entityMaterial.Disable();
-    
+}
+
+void Entity::Render(sUniformData uniformData){
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    uniformData.model = this->modelMatrix;
+    entityMaterial.Enable(uniformData);
+    entityMesh.Render();
+    glDisable(GL_DEPTH_TEST);
+    entityMaterial.Disable();
 }

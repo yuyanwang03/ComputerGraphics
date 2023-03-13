@@ -551,3 +551,14 @@ void Matrix44::Print(){
     std::cout << std::endl;
     return;
 }
+
+void Matrix44::Print()const{
+    for (int i =0; i<4; i++){
+        for (int j =0; j<4; j++){
+            std::cout << this->M[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    return;
+}

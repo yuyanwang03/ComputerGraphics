@@ -57,6 +57,21 @@ void Material::Enable(){
     shader->Enable();
 }
 
+void Material::Enable(const sUniformData& uniformData){
+    this->shader->Enable();
+    this->shader->SetTexture("u_texture", this->colorTexture);
+    this->shader->SetMatrix44("u_viewprojection", uniformData.view_proj);
+    this->shader->SetMatrix44("u_model", uniformData.model);
+    
+    /*
+    typedef struct _UniformData{
+        Matrix44 view_proj;
+        Matrix44 model;
+        Vector3 Ia;
+        std::vector<sLight> lights;
+    } sUniformData;*/
+}
+
 void Material::Disable(){
     shader->Disable();
 }
