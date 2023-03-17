@@ -14,6 +14,7 @@ typedef struct _Light{
 
 typedef struct _UniformData{
     Matrix44 view_proj = Matrix44();
+    Vector3 cameraEye = Vector3();
     Matrix44 model = Matrix44();
     Vector3 Ia = Vector3(0.0);
     sLight light;

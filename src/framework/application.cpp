@@ -35,19 +35,26 @@ void Application::Init(void)
     // Set camera
     camera->LookAt(Vector3(0,0.4,1.5), Vector3(0,0,0), Vector3::UP);
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
+    camera->Orbit(90.0, 0);
     // Load entity
     entity = Entity("../res/meshes/anna.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
+    this->Ia = Vector3(0.6, 0.7, 0.4);
     uData.Ia = this->Ia;
+    
     // Arbitrary values for light
     sLight l1;
     l1.position = Vector3(1, 1, 1);
     l1.Id = Vector3(0.5, 0.2, 0.4);
     l1.Is = Vector3(0.5, 0.8, 0.9);
     this->lights.push_back(l1);
-    // Set 1rt light
+    // Add 1rt light
     uData.light = this->lights[0];
+    entity.entityMaterial.shiness = 1.0;
+    entity.entityMaterial.Ka = Vector3(0.5, 0.5, 0.23);
+    entity.entityMaterial.Kd = Vector3(0.56, 0.45, 0.33);
+    
     uData.view_proj = camera->viewprojection_matrix;
     
     entity.SetCamera(this->camera);
@@ -61,6 +68,7 @@ void Application::Init(void)
 void Application::Render(void)
 {
     uData.view_proj = camera->viewprojection_matrix;
+    uData.cameraEye = this->camera->eye;
     
     entity.Render(uData);
     // entity.Render();
@@ -71,7 +79,7 @@ void Application::Update(float seconds_elapsed)
 {
     time += seconds_elapsed;
     // std::cout<<seconds_elapsed<<std::endl;
-    camera->Orbit(25*seconds_elapsed, 0.0);
+    // camera->Orbit(25*seconds_elapsed, 0.0);
 }
 
 //keyboard press event
