@@ -42,7 +42,7 @@ void Application::Init(void)
     uData.model = entity.modelMatrix;
     
     entity.SetCamera(this->camera);
-    entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
+    entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
     entity.entityMaterial.SetViewProjection(this->camera);
     entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
     
