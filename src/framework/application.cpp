@@ -40,10 +40,11 @@ void Application::Init(void)
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
     uData.Ia = this->Ia;
+    // Arbitrary values for light
     sLight l1;
     l1.position = Vector3(1, 1, 1);
     l1.Id = Vector3(0.5, 0.2, 0.4);
-    l1.Is = Vector3(0.5, 8, 9);
+    l1.Is = Vector3(0.5, 0.8, 0.9);
     this->lights.push_back(l1);
     // Set 1rt light
     uData.light = this->lights[0];
