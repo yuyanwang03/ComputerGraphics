@@ -16,7 +16,7 @@ typedef struct _UniformData{
     Matrix44 view_proj = Matrix44();
     Matrix44 model = Matrix44();
     Vector3 Ia = Vector3(0.0);
-    std::vector<sLight> lights;
+    sLight light;
 } sUniformData;
 
 class Material

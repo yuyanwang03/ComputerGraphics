@@ -39,11 +39,19 @@ void Application::Init(void)
     entity = Entity("../res/meshes/anna.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
-    uData.model = entity.modelMatrix;
+    uData.Ia = this->Ia;
+    sLight l1;
+    l1.position = Vector3(1, 1, 1);
+    l1.Id = Vector3(0.5, 0.2, 0.4);
+    l1.Is = Vector3(0.5, 8, 9);
+    this->lights.push_back(l1);
+    // Set 1rt light
+    uData.light = this->lights[0];
+    uData.view_proj = camera->viewprojection_matrix;
     
     entity.SetCamera(this->camera);
     entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
-    entity.entityMaterial.SetViewProjection(this->camera);
+    // entity.entityMaterial.SetViewProjection(this->camera);
     entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
     
 }
