@@ -18,17 +18,18 @@ void main()
 {	
 	v_uv = gl_MultiTexCoord0.xy;
     
-    vec3 world_normal = (u_model * vec4( gl_Normal.xyz, 0.0)).xyz;
-    // v_world_normal = world_normal;
-    
 	// Convert local position to world space
 	vec3 world_position = (u_model * vec4( gl_Vertex.xyz, 1.0)).xyz;
-    vec3 L = u_lightPosition-world_position;
-    vec3 R = reflect(-L, world_normal);
-    vec3 V = u_eye;
+    
+    vec3 N = normalize((u_model * vec4( gl_Normal.xyz, 0.0)).xyz);
+    // v_world_normal = world_normal; // N
+    vec3 L = normalize(u_lightPosition-world_position);
+    vec3 R = normalize(reflect(-L, N));
+    vec3 V = normalize(u_eye);
+    
     //
     
-    vec3 temp = u_Ka*u_Ia + (clamp(dot(L, world_normal), 0.0, 1.0))*u_Kd*u_Id + u_Ks*(clamp(pow(dot(R,V), u_alfa),0.0, 1.0))*u_Is;
+    vec3 temp = u_Ka*u_Ia + (clamp(dot(L, N), 0.0, 1.0))*u_Kd*u_Id + u_Ks*(clamp(pow(dot(R,V), u_alfa),0.0, 1.0))*u_Is;
     v_Ip = temp;
     
 	// Project the vertex using the model view projection matrix
