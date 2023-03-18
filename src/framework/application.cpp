@@ -45,7 +45,7 @@ void Application::Init(void)
     
     // Arbitrary values for light
     sLight l1;
-    l1.position = Vector3(1, 1, 1);
+    l1.position = Vector3(-3, 2, -1);
     l1.Id = Vector3(0.5, 0.2, 0.4);
     l1.Is = Vector3(0.5, 0.8, 0.9);
     this->lights.push_back(l1);
