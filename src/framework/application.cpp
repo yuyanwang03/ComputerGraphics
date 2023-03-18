@@ -58,7 +58,11 @@ void Application::Init(void)
     uData.view_proj = camera->viewprojection_matrix;
     
     entity.SetCamera(this->camera);
-    entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
+    // Gouraud
+    // entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
+    // Phong
+    entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
+    
     // entity.entityMaterial.SetViewProjection(this->camera);
     entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
     
