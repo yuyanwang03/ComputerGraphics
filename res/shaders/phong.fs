@@ -11,7 +11,7 @@ varying vec2 v_uv;
 
 void main()
 {
-    
+    // Check correctness of the formula
     vec3 Ip = u_Ka*u_Ia + (clamp(dot(L, N), 0.0, 1.0))*u_Kd*u_Id + u_Ks*(clamp(pow(dot(R,V), u_alfa),0.0, 1.0))*u_Is;
     gl_FragColor = vec4(Ip, 1.0);
 }
