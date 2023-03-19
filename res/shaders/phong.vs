@@ -8,7 +8,7 @@ uniform float u_alfa;
 
 // Variables to pass to the fragment shader
 varying vec2 v_uv;
-varying vec3 v_world_position, v_world_normal, N, L, R, V;
+varying vec3 v_world_position, v_world_normal;
 
 //here create uniforms for all the data we need here
 
@@ -21,11 +21,6 @@ void main()
 	v_uv = gl_MultiTexCoord0.xy;
     v_world_position = world_position;
     v_world_normal = world_normal;
-    // Pass normalized vectors for computation???
-    N = normalize((u_model * vec4( gl_Normal.xyz, 0.0)).xyz);
-    L = normalize(u_lightPosition-world_position);
-    R = normalize(reflect(-L, N));
-    V = normalize(u_eye-world_position);
     
 	// Project the vertex using the model view projection matrix
 	gl_Position = u_viewprojection * vec4(world_position, 1.0); // Output of the vertex shader

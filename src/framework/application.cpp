@@ -40,7 +40,7 @@ void Application::Init(void)
     entity = Entity("../res/meshes/lee.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
-    this->Ia = Vector3(0.2, 0.2, 0.2);
+    this->Ia = Vector3(0.1, 0.1, 0.1);
     uData.Ia = this->Ia;
     
     // Arbitrary values for light
@@ -62,9 +62,9 @@ void Application::Init(void)
     
     entity.SetCamera(this->camera);
     // Gouraud
-    entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
+    // entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
     // Phong
-    // entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
+    entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
     
     // entity.entityMaterial.SetViewProjection(this->camera);
     entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
