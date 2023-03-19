@@ -25,7 +25,7 @@ void main()
     N = normalize((u_model * vec4( gl_Normal.xyz, 0.0)).xyz);
     L = normalize(u_lightPosition-world_position);
     R = normalize(reflect(-L, N));
-    V = normalize(u_eye);
+    V = normalize(u_eye-world_position);
     
 	// Project the vertex using the model view projection matrix
 	gl_Position = u_viewprojection * vec4(world_position, 1.0); // Output of the vertex shader

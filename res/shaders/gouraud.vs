@@ -25,7 +25,7 @@ void main()
     // v_world_normal = world_normal; // N
     vec3 L = normalize(u_lightPosition-world_position);
     vec3 R = normalize(reflect(-L, N));
-    vec3 V = normalize(u_eye);
+    vec3 V = normalize(u_eye-world_position);
     
     //
     

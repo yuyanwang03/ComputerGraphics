@@ -37,34 +37,37 @@ void Application::Init(void)
     camera->SetPerspective(50, window_width/window_height, 0.01, 100);
     camera->Orbit(90.0, 0);
     // Load entity
-    entity = Entity("../res/meshes/anna.obj");
+    entity = Entity("../res/meshes/lee.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
-    this->Ia = Vector3(0.6, 0.7, 0.4);
+    this->Ia = Vector3(0.2, 0.2, 0.2);
     uData.Ia = this->Ia;
     
     // Arbitrary values for light
     sLight l1;
+    // l1.position = Vector3(20.0, 20.0, 10.0);
     l1.position = Vector3(-3, 2, -1);
-    l1.Id = Vector3(0.5, 0.2, 0.4);
-    l1.Is = Vector3(0.5, 0.8, 0.9);
+    l1.Id = Vector3(0.5, 0.5, 0.5);
+    l1.Is = Vector3(0.5, 0.5, 0.5);
     this->lights.push_back(l1);
     // Add 1rt light
     uData.light = this->lights[0];
     entity.entityMaterial.shiness = 1.0;
-    entity.entityMaterial.Ka = Vector3(0.5, 0.5, 0.23);
-    entity.entityMaterial.Kd = Vector3(0.56, 0.45, 0.33);
+    entity.entityMaterial.Ka = Vector3(1.0, 1.0, 1.0);
+    entity.entityMaterial.Kd = Vector3(1.0, 1.0, 1.0);
+    entity.entityMaterial.Ks = Vector3(0.8, 0.8, 0.8);
+    entity.entityMaterial.shiness = 15;
     
     uData.view_proj = camera->viewprojection_matrix;
     
     entity.SetCamera(this->camera);
     // Gouraud
-    // entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
+    entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
     // Phong
-    entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
+    // entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
     
     // entity.entityMaterial.SetViewProjection(this->camera);
-    entity.LoadColorTexture("../res/textures/anna_color_specular.tga");
+    entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
     
 }
 
@@ -75,7 +78,6 @@ void Application::Render(void)
     uData.cameraEye = this->camera->eye;
     
     entity.Render(uData);
-    // entity.Render();
 }
 
 // Called after render
