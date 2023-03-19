@@ -51,6 +51,10 @@ void Entity::LoadColorTexture(const char* path){
     entityMaterial.LoadColorTexture(path);
 }
 
+void Entity::LoadNormalTexture(const char* path){
+    entityMaterial.LoadNormalTexture(path);
+}
+
 void Entity::SetShader(const char* vsf, const char* psf, const char* macros){
     entityMaterial.SetShader(vsf, psf, macros);
     // if (shader!=nullptr) {std::cout << "Shader loaded" << std::endl;}

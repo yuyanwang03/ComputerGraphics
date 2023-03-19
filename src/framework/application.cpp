@@ -64,10 +64,13 @@ void Application::Init(void)
     // Gouraud
     // entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
     // Phong
-    entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
+    // entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
+    // Phong texture
+    entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
     
     // entity.entityMaterial.SetViewProjection(this->camera);
     entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
+    entity.LoadNormalTexture("../res/textures/lee_normal.tga");
     
 }
 

@@ -47,6 +47,7 @@ public:
     void SetMaterial(Material mat);
     
     void LoadColorTexture(const char* path);
+    void LoadNormalTexture(const char* path);
     void SetShader(const char* vsf, const char* psf, const char* macros);
     void SetCamera(Camera* cam);
     
