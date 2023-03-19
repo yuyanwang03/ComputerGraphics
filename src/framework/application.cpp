@@ -40,7 +40,7 @@ void Application::Init(void)
     entity = Entity("../res/meshes/lee.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
     
-    this->Ia = Vector3(0.1, 0.1, 0.1);
+    this->Ia = Vector3(0.2, 0.2, 0.2);
     uData.Ia = this->Ia;
     
     // Arbitrary values for light
@@ -52,11 +52,10 @@ void Application::Init(void)
     this->lights.push_back(l1);
     // Add 1rt light
     uData.light = this->lights[0];
-    entity.entityMaterial.shiness = 1.0;
     entity.entityMaterial.Ka = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Kd = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Ks = Vector3(0.8, 0.8, 0.8);
-    entity.entityMaterial.shiness = 15;
+    entity.entityMaterial.shiness = 10.0;
     
     uData.view_proj = camera->viewprojection_matrix;
     
