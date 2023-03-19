@@ -12,13 +12,16 @@ varying vec2 v_uv;
 
 void main()
 {
-    
+    // Get normal vector from texture
     vec3 N = texture2D(u_normalTexture, v_uv).xyz;
-    // N = vec3( vec2(2.0)*N.xy - vec2(1.0), N.z);
+    // Apply necessary transformations
+    N = (u_model*vec4(N * 2.0 - vec3(1.0), 0.0)).xyz;
     
-    N = (vec4(N * 2.0 - vec3(1.0), 0.0)*u_model).xyz;
-    // N = (vec4( vec2(2.0)*N.xy - vec2(1.0), N.z, 0.0) * u_model).xyz;
-    // N = (vec4(N*0.5 + vec3(1.0), 0.0)*u_model).xyz;
+    // Apply mix factor (optional)
+    /*
+    float mix_factor = 0.3;
+    N.xyz = mix(v_world_normal, N.xyz, mix_factor);
+    */
     
     vec3 L = normalize(u_lightPosition - v_world_position);
     vec3 R = normalize(reflect(-L, N));

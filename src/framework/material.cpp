@@ -60,7 +60,7 @@ void Material::Enable(){
 void Material::Enable(const sUniformData& uniformData){
     this->shader->Enable();
     this->shader->SetTexture("u_colorTexture", this->colorTexture);
-    // this->shader->SetTexture("u_normalTexture", this->normalTexture);
+    this->shader->SetTexture("u_normalTexture", this->normalTexture);
     this->shader->SetMatrix44("u_viewprojection", uniformData.view_proj);
     this->shader->SetMatrix44("u_model", uniformData.model);
     this->shader->SetVector3("u_eye", uniformData.cameraEye);
