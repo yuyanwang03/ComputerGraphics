@@ -4,7 +4,7 @@ uniform mat4 u_viewprojection;
 uniform sampler2D u_colorTexture;
 uniform sampler2D u_normalTexture;
 uniform vec3 u_Ia, u_Id, u_Is, u_lightPosition, u_Ka, u_Kd, u_Ks, u_eye;
-uniform float u_alfa;
+uniform float u_alfa, u_addAmbient;
 
 // Variables to pass to the fragment shader
 varying vec2 v_uv;
@@ -27,9 +27,10 @@ void main()
     vec3 R = reflect(-L, N); // R is already normalized
     vec3 V = normalize(u_eye-world_position);
     
-    //
+    vec3 temp = (clamp(dot(L, N), 0.0, 1.0))*u_Kd*u_Id + u_Ks*(clamp(pow(dot(R,V), u_alfa),0.0, 1.0))*u_Is;
     
-    vec3 temp = u_Ka*u_Ia + (clamp(dot(L, N), 0.0, 1.0))*u_Kd*u_Id + u_Ks*(clamp(pow(dot(R,V), u_alfa),0.0, 1.0))*u_Is;
+    if (u_addAmbient==1.0) {temp += u_Ka*u_Ia;}
+    
     v_Ip = temp;
     
 	// Project the vertex using the model view projection matrix

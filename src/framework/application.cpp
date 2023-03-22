@@ -44,37 +44,34 @@ void Application::Init(void)
     entity.entityMaterial.Kd = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Ks = Vector3(0.8, 0.8, 0.8);
     entity.entityMaterial.shiness = 10.0;
+    
     // Set value for Ia and add it to the data structure
     this->Ia = Vector3(0.2, 0.2, 0.2);
     uData.Ia = this->Ia;
+    
     // Create arbitrary instances of light and add them to the vector of lights of the app
     sLight l1, l2;
     l1.position = Vector3(-3, 2, -1);
     l1.Id = Vector3(0.5, 0.5, 0.5);
     l1.Is = Vector3(0.5, 0.5, 0.5);
-    l2.position = Vector3(0, 2, -1);
-    l2.Id = Vector3(0, 0.5, 0.5);
-    l2.Is = Vector3(0, 0.5, 0.5);
+    l2.position = Vector3(5, 2, -1);
+    l2.Id = Vector3(0.8, 0.5, 0);
+    l2.Is = Vector3(0.8, 0.5, 0);
     this->lights.push_back(l1);
     this->lights.push_back(l2);
     // Add lights to the data structure
     uData.lights = this->lights;
     uData.numLights = 1; // Use only 1 light by default
+    
     // Add view_projection matrix to the data structure
     uData.view_proj = camera->viewprojection_matrix;
-    /*entity.SetCamera(this->camera);*/
     
-    
-    // Gouraud
-    // entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
-    // Phong
-    // entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
-    // Phong texture
+    // Set Phong as default illumination type
     entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
-    // Multipass
-    // entity.SetShader("shaders/multipass.vs", "shaders/multipass.fs", "");
     
-    /* entity.entityMaterial.SetViewProjection(this->camera);*/
+    // Set flags
+    this->flags = Vector3(0.0, 0.0, 0.0);
+    uData.flags = this->flags;
     
     // Load textures
     entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
@@ -91,7 +88,6 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-    time += seconds_elapsed;
     // camera->Orbit(25*seconds_elapsed, 0.0);
     entity.modelMatrix.Rotate(seconds_elapsed, Vector3(0,1,0));
 }
@@ -122,6 +118,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         }
         case SDLK_g: { entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", ""); break; }
         case SDLK_p: { entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", ""); break; }
+        case SDLK_1: { uData.numLights = 1; break; }
+        case SDLK_2: { uData.numLights = 2; break; }
         case SDLK_v:
         {
             std::cout << "Change center" << std::endl;

@@ -60,11 +60,6 @@ void Entity::SetShader(const char* vsf, const char* psf, const char* macros){
     // if (shader!=nullptr) {std::cout << "Shader loaded" << std::endl;}
 }
 
-/*
-void Entity::SetCamera(Camera* cam){
-    this->camera = cam;
-}*/
-
 Entity::~Entity(){
     // if (modelMatrix) delete modelMatrix;
     // if (entityMesh) delete entityMesh;

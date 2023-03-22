@@ -48,10 +48,6 @@ void Material::LoadNormalTexture(const char *path){
 void Material::SetShader(const char* vsf, const char* psf, const char* macros){
     shader = Shader::Get(vsf, psf, macros);
 }
-/*
-void Material::SetViewProjection(Camera* cam){
-    shader->SetMatrix44("u_viewprojection", cam->viewprojection_matrix);
-}*/
 
 void Material::Enable(){
     shader->Enable();

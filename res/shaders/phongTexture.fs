@@ -28,8 +28,10 @@ void main()
         // Apply necessary transformations
         N = (u_model*vec4(N * 2.0 - vec3(1.0), 0.0)).xyz;
         // Apply mix factor (optional)
+        /*
         float mix_factor = 0.3;
         N.xyz = mix(v_world_normal, N.xyz, mix_factor);
+        */
     }
     
     vec3 L = normalize(u_lightPosition - v_world_position);
