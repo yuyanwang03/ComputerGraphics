@@ -31,55 +31,41 @@ Access the Lab 4 Branch in Github: [GitHub Lab 4](https://github.com/yuyanwang03
 
 Access the Lab 5 Branch in Github: [GitHub Lab 5](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab5)
 
-Just after running the program, the user should see a windows displaying a transition of colors with blue at the left side and red at the right side. This is mainly the effect asked for section 3.1.a in this lab.
+Just after running the program, the user should see a windows displaying a entity in gray rotating at the center of the windows. The default number of lights is 1 and its color is white (white light) and the illumination type is Phong. The displayed entity does not use any texture by default.
 
 Following we will explain in what consists the User Interface.
 
-### **Key character 'A'**
-
-This will correspond to section 3.1 of the lab; it starts displaying the one that is 3.1.a's formula. The user will be able to switch between the drawing formulas by pressing key numbers [1,6].
-
-### **Key character 'B'**
-
-This will correspond to section 3.2 of the lab; it starts displaying the grayscale image. The user will be able to switch between the image effects by pressing key numbers [1,6].
-
 ### **Key character 'C'**
 
-This will correspond to section 3.3 of the lab; the windows shows some transformation on the same image as in section 3.2. The program will provide 2 different animations, and these will be switched with every click on the key character 'C'.
+The program will toggle the usage of the color texture. That is, the entity will be displayed with some skintone (with color texture) or in gray (without color texture). This will be achieved by modifying the vectors Kd and Ka.
 
-The first animation consists of rendering different quantities of the same texture (image) on the screen depending on the time. The second animation is about making the displayed image seem to be animated with some displacement of the red and blue components of the texture (image).
+### **Key character 'S'**
 
-### **Key character 'D'**
+The program will toggle the usage of the specular texture. In other words, the program will modify the vector Ks and apply its changes to the rendered mesh. This is related with the alpha component of each of the rgb colors.
 
-This will correspond to section 3.4 of the lab; the entity uses a given texture. The program displays on screen an entity that is rotating.
+### **Key character 'N'**
+
+The program will toggle the usage of the normal texture. The user should see bumps on the skin when applying the normal texture; otherwise, he/she should see a smoother skin. 
+
+### **Key character 'G'**
+
+The illumination type will be switched to Gouraud. Keep in mind that the program do not allow gouraud toggle the usage of any texture.
+
+### **Key character 'P'**
+
+The illumination type will be switched to Phong.
 
 ### **Key character '1'**
 
-Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
+The program will use 1 light. This light is mainly white.
 
 ### **Key character '2'**
 
-Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
-
-### **Key character '3'**
-
-Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
-
-### **Key character '4'**
-
-Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
-
-### **Key character '5'**
-
-Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
-
-### **Key character '6'**
-
-Changes (formula || image effect) when user is in section 3.1 (A) or 3.2 (B).
+The program will use 2 lights. The second added light has a warm tone (close to orange). This is related with section 3.6, using the multipass method to compute the final color of each texture.
 
 ---
 
-Following are the shared keys funcionalities with Lab 2 and Lab 3
+Following are the shared keys funcionalities with Lab 2, Lab 3 and Lab 4
 
 ### **Mouse wheel**
 
@@ -101,17 +87,11 @@ It sets the current working section to default, which is the same as the one whe
 
 User will not visually see any change after typing this key. Mainly, this key is used to exit the "change_view" section that is accessed when typing the character 'V'. Hence, if the user does a mouse left-click and moves the mouse, the program will be displaying an rotation (more precisely orbit) around the center point.
 
-### **Key character 'N'**
-
-The current working section will be switched to "change_near", and it is used to change the value of the near_plane by '0.15'(meters). This can be done by either typing '+' to increase the value or '-' to decrease it.
-
-Note that the value of the near_plane will be at most the same as the value of the far_plane since it makes no sense to allow this value to surpass the far_plane value.
-
 ### **Key character 'F'**
 
-The current working section will be switched to "change_far", and it is used to change the value of the far_plane by '0.15'(meters). This can be done by either typing '+' to increase the value or '-' to decrease it.
+The current working section will be switching from "change_near" to "change_far" or viceversa, and it is used to change the value of the (far_plane || near_plane) by '0.15'(meters). This can be done by either typing '+' to increase the value or '-' to decrease it.
 
-Note that the value of the far_plane will be at least the same as the value of the near_plane since it makes no sense to allow this value to be less than the near_plane.
+Note that the value of the (far_plane || near_plane) will be (at least || at most) the same as the value of the (near_plane || far_plane) since it makes no sense to allow this value to be less than the near_plane.
 
 ### **Key character '+'**
 
@@ -134,7 +114,7 @@ Remember, user can make use of the key 'Q' to get back to the default working se
 The windows created when running the program will be closed; that is equivalent to the end of execution.
 
 > #### Résumé
-> List of keys that will work in this program: 'esc', 'A', 'B', 'C', 'D', '1', '2', '3', '4', '5', '6', 'F', 'N', 'Q', 'V', '+', '-'. Mouse actions: "mouse wheel", "holding left-click and moving the mouse".
+> List of keys that will work in this program: 'esc', 'C', 'S', 'N', 'G', 'P', '1', '2', 'F', 'Q', 'V', '+', '-'. Mouse actions: "mouse wheel", "holding left-click and moving the mouse".
 
 ### Remarks
 
@@ -143,27 +123,19 @@ If there are some file path issues in your computer (which does not happen in ou
 ```c++
 void Application::Init(void)
 {
-    std::cout << "Initiating app..." << std::endl;
-    // Load Quad shader
-    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
-    this->shaderTexture.Load("images/fruits.png");
-    quad.CreateQuad();
-    
+    ...
+    // Set Phong as default illumination type
+    entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
+    ...
+    // Load textures
+    entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
+    entity.LoadNormalTexture("../res/textures/lee_normal.tga");
 }
 
 void Application::OnKeyPressed(SDL_KeyboardEvent event){
     ...
-    case SDLK_d: // Section 3.4
-        {
-            ...
-            // Load entity
-            entity = Entity("../res/meshes/anna.obj");
-            entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
-            entity.SetShader("shaders/simple.vs", "shaders/simple.fs", "");
-            entity.SetCamera(this->camera);
-            entity.LoadTexture("../res/textures/anna_color_specular.tga");
-            break;
-        }
+    case SDLK_g: { entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", ""); break; }
+    case SDLK_p: { entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", ""); break; }
     ...
 }
 ```
