@@ -27,6 +27,6 @@ Access the Lab 3 Branch in Github: [GitHub Lab 3](https://github.com/yuyanwang03
 
 Access the Lab 4 Branch in Github: [GitHub Lab 4](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab4)
 
-## Lab 5 *
+## Lab 5
 
 Access the Lab 5 Branch in Github: [GitHub Lab 5](https://github.com/yuyanwang03/ComputerGraphics/tree/Lab5)
