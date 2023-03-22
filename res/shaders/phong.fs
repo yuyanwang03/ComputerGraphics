@@ -14,7 +14,7 @@ void main()
     
     vec3 N = normalize(v_world_normal);
     vec3 L = normalize(u_lightPosition - v_world_position);
-    vec3 R = normalize(reflect(-L, N));
+    vec3 R = reflect(-L, N); // R is already normalized
     vec3 V = normalize(u_eye - v_world_position);
     
     // Check correctness of the formula

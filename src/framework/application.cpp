@@ -44,14 +44,23 @@ void Application::Init(void)
     uData.Ia = this->Ia;
     
     // Arbitrary values for light
-    sLight l1;
+    sLight l1, l2;
     // l1.position = Vector3(20.0, 20.0, 10.0);
     l1.position = Vector3(-3, 2, -1);
     l1.Id = Vector3(0.5, 0.5, 0.5);
     l1.Is = Vector3(0.5, 0.5, 0.5);
+    
+    l2.position = Vector3(5, 2, -1);
+    l2.Id = Vector3(0, 0.5, 0.5);
+    l2.Is = Vector3(0, 0.5, 0.5);
+    
     this->lights.push_back(l1);
+    this->lights.push_back(l2);
+    
     // Add 1rt light
-    uData.light = this->lights[0];
+    uData.lights = this->lights;
+    uData.numLights = (int) this->lights.size();
+    
     entity.entityMaterial.Ka = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Kd = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Ks = Vector3(0.8, 0.8, 0.8);
@@ -65,7 +74,9 @@ void Application::Init(void)
     // Phong
     // entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
     // Phong texture
-    entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
+    // entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
+    // Multipass
+    entity.SetShader("shaders/multipass.vs", "shaders/multipass.fs", "");
     
     // entity.entityMaterial.SetViewProjection(this->camera);
     entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
@@ -88,6 +99,7 @@ void Application::Update(float seconds_elapsed)
     time += seconds_elapsed;
     // std::cout<<seconds_elapsed<<std::endl;
     // camera->Orbit(25*seconds_elapsed, 0.0);
+    entity.modelMatrix.Rotate(seconds_elapsed, Vector3(0,1,0));
 }
 
 //keyboard press event

@@ -86,8 +86,12 @@ void Entity::Render(sUniformData uniformData){
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     uniformData.model = this->modelMatrix;
-    entityMaterial.Enable(uniformData);
-    entityMesh.Render();
+    for (int i = 0; i<uniformData.numLights; i++){
+        if (i==0) { glDisable(GL_BLEND); }
+        else { glEnable(GL_BLEND); glBlendFunc(GL_ONE, GL_ONE); }
+        entityMaterial.Enable(uniformData, i);
+        entityMesh.Render();
+    }
     glDisable(GL_DEPTH_TEST);
     entityMaterial.Disable();
 }

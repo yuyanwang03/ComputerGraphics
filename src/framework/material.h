@@ -17,7 +17,8 @@ typedef struct _UniformData{
     Vector3 cameraEye = Vector3();
     Matrix44 model = Matrix44();
     Vector3 Ia = Vector3(0.0);
-    sLight light;
+    std::vector<sLight> lights;
+    int numLights = 0;
 } sUniformData;
 
 class Material
@@ -40,6 +41,7 @@ public:
     void SetShader(const char* vsf, const char* psf, const char* macros);
     void Enable();
     void Enable(const sUniformData& uniformData);
+    void Enable(const sUniformData& uniformData, int light_index);
     void Disable();
 };
 

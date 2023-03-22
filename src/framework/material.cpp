@@ -64,14 +64,33 @@ void Material::Enable(const sUniformData& uniformData){
     this->shader->SetMatrix44("u_viewprojection", uniformData.view_proj);
     this->shader->SetMatrix44("u_model", uniformData.model);
     this->shader->SetVector3("u_eye", uniformData.cameraEye);
-    this->shader->SetVector3("u_lightPosition", uniformData.light.position);
+    this->shader->SetVector3("u_lightPosition", uniformData.lights[0].position);
     this->shader->SetVector3("u_Ia", uniformData.Ia);
-    this->shader->SetVector3("u_Id", uniformData.light.Id);
-    this->shader->SetVector3("u_Is", uniformData.light.Is);
+    this->shader->SetVector3("u_Id", uniformData.lights[0].Id);
+    this->shader->SetVector3("u_Is", uniformData.lights[0].Is);
     this->shader->SetVector3("u_Ka", Ka);
     this->shader->SetVector3("u_Kd", Kd);
     this->shader->SetVector3("u_Ks", Ks);
     this->shader->SetFloat("u_alfa", shiness);
+}
+
+// For each light
+void Material::Enable(const sUniformData& uniformData, int light_index){
+    this->shader->Enable();
+    this->shader->SetTexture("u_colorTexture", this->colorTexture);
+    this->shader->SetTexture("u_normalTexture", this->normalTexture);
+    this->shader->SetMatrix44("u_viewprojection", uniformData.view_proj);
+    this->shader->SetMatrix44("u_model", uniformData.model);
+    this->shader->SetVector3("u_eye", uniformData.cameraEye);
+    this->shader->SetVector3("u_lightPosition", uniformData.lights[light_index].position);
+    this->shader->SetVector3("u_Ia", uniformData.Ia);
+    this->shader->SetVector3("u_Id", uniformData.lights[light_index].Id);
+    this->shader->SetVector3("u_Is", uniformData.lights[light_index].Is);
+    this->shader->SetVector3("u_Ka", Ka);
+    this->shader->SetVector3("u_Kd", Kd);
+    this->shader->SetVector3("u_Ks", Ks);
+    this->shader->SetFloat("u_alfa", shiness);
+    this->shader->SetFloat("u_addAmbient", light_index==0 ? 1.0 : 0.0);
 }
 
 void Material::Disable(){
