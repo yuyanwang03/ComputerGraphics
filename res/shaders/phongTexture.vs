@@ -4,7 +4,7 @@ uniform mat4 u_viewprojection;
 uniform sampler2D u_colorTexture;
 uniform sampler2D u_normalTexture;
 uniform vec3 u_Ia, u_Id, u_Is, u_lightPosition, u_Ka, u_Ks, u_eye, u_flags;
-uniform float u_alfa;
+uniform float u_alfa, u_addAmbient;
 
 // Variables to pass to the fragment shader
 varying vec2 v_uv;

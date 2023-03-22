@@ -59,8 +59,7 @@ void Application::Init(void)
     this->lights.push_back(l2);
     // Add lights to the data structure
     uData.lights = this->lights;
-    uData.numLights = (int) this->lights.size();
-    uData.numLights = 1;
+    uData.numLights = 1; // Use only 1 light by default
     // Add view_projection matrix to the data structure
     uData.view_proj = camera->viewprojection_matrix;
     /*entity.SetCamera(this->camera);*/
@@ -121,6 +120,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             uData.flags = flags;
             break;
         }
+        case SDLK_g: { entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", ""); break; }
+        case SDLK_p: { entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", ""); break; }
         case SDLK_v:
         {
             std::cout << "Change center" << std::endl;
