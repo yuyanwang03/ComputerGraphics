@@ -48,10 +48,10 @@ void Material::LoadNormalTexture(const char *path){
 void Material::SetShader(const char* vsf, const char* psf, const char* macros){
     shader = Shader::Get(vsf, psf, macros);
 }
-
+/*
 void Material::SetViewProjection(Camera* cam){
     shader->SetMatrix44("u_viewprojection", cam->viewprojection_matrix);
-}
+}*/
 
 void Material::Enable(){
     shader->Enable();
@@ -71,6 +71,7 @@ void Material::Enable(const sUniformData& uniformData){
     this->shader->SetVector3("u_Ka", Ka);
     this->shader->SetVector3("u_Kd", Kd);
     this->shader->SetVector3("u_Ks", Ks);
+    this->shader->SetVector3("u_flags", uniformData.flags);
     this->shader->SetFloat("u_alfa", shiness);
 }
 
@@ -89,6 +90,7 @@ void Material::Enable(const sUniformData& uniformData, int light_index){
     this->shader->SetVector3("u_Ka", Ka);
     this->shader->SetVector3("u_Kd", Kd);
     this->shader->SetVector3("u_Ks", Ks);
+    this->shader->SetVector3("u_flags", uniformData.flags);
     this->shader->SetFloat("u_alfa", shiness);
     this->shader->SetFloat("u_addAmbient", light_index==0 ? 1.0 : 0.0);
 }

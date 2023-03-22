@@ -53,6 +53,7 @@ public:
     std::vector<sLight> lights;
     Vector3 Ia;
     sUniformData uData;
+    Vector3 flags;
     
     Entity entity;
 	// Constructor and main methods

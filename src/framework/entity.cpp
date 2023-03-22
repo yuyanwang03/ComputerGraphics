@@ -60,9 +60,10 @@ void Entity::SetShader(const char* vsf, const char* psf, const char* macros){
     // if (shader!=nullptr) {std::cout << "Shader loaded" << std::endl;}
 }
 
+/*
 void Entity::SetCamera(Camera* cam){
     this->camera = cam;
-}
+}*/
 
 Entity::~Entity(){
     // if (modelMatrix) delete modelMatrix;
@@ -76,7 +77,7 @@ void Entity::Render(void){
     entityMaterial.Enable();
     entityMaterial.shader->SetTexture("u_texture", entityMaterial.colorTexture);
     entityMaterial.shader->SetMatrix44("u_model", modelMatrix);
-    entityMaterial.shader->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
+    // entityMaterial.shader->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
     entityMesh.Render();
     glDisable(GL_DEPTH_TEST);
     entityMaterial.Disable();

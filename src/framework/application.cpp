@@ -39,46 +39,45 @@ void Application::Init(void)
     // Load entity
     entity = Entity("../res/meshes/lee.obj");
     entity.modelMatrix.Rotate(160, Vector3(0, 1, 0));
-    
-    this->Ia = Vector3(0.2, 0.2, 0.2);
-    uData.Ia = this->Ia;
-    
-    // Arbitrary values for light
-    sLight l1, l2;
-    // l1.position = Vector3(20.0, 20.0, 10.0);
-    l1.position = Vector3(-3, 2, -1);
-    l1.Id = Vector3(0.5, 0.5, 0.5);
-    l1.Is = Vector3(0.5, 0.5, 0.5);
-    
-    l2.position = Vector3(5, 2, -1);
-    l2.Id = Vector3(0, 0.5, 0.5);
-    l2.Is = Vector3(0, 0.5, 0.5);
-    
-    this->lights.push_back(l1);
-    this->lights.push_back(l2);
-    
-    // Add 1rt light
-    uData.lights = this->lights;
-    uData.numLights = (int) this->lights.size();
-    
+    // Set default values for entity
     entity.entityMaterial.Ka = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Kd = Vector3(1.0, 1.0, 1.0);
     entity.entityMaterial.Ks = Vector3(0.8, 0.8, 0.8);
     entity.entityMaterial.shiness = 10.0;
-    
+    // Set value for Ia and add it to the data structure
+    this->Ia = Vector3(0.2, 0.2, 0.2);
+    uData.Ia = this->Ia;
+    // Create arbitrary instances of light and add them to the vector of lights of the app
+    sLight l1, l2;
+    l1.position = Vector3(-3, 2, -1);
+    l1.Id = Vector3(0.5, 0.5, 0.5);
+    l1.Is = Vector3(0.5, 0.5, 0.5);
+    l2.position = Vector3(0, 2, -1);
+    l2.Id = Vector3(0, 0.5, 0.5);
+    l2.Is = Vector3(0, 0.5, 0.5);
+    this->lights.push_back(l1);
+    this->lights.push_back(l2);
+    // Add lights to the data structure
+    uData.lights = this->lights;
+    uData.numLights = (int) this->lights.size();
+    uData.numLights = 1;
+    // Add view_projection matrix to the data structure
     uData.view_proj = camera->viewprojection_matrix;
+    /*entity.SetCamera(this->camera);*/
     
-    entity.SetCamera(this->camera);
+    
     // Gouraud
     // entity.SetShader("shaders/gouraud.vs", "shaders/gouraud.fs", "");
     // Phong
     // entity.SetShader("shaders/phong.vs", "shaders/phong.fs", "");
     // Phong texture
-    // entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
+    entity.SetShader("shaders/phongTexture.vs", "shaders/phongTexture.fs", "");
     // Multipass
-    entity.SetShader("shaders/multipass.vs", "shaders/multipass.fs", "");
+    // entity.SetShader("shaders/multipass.vs", "shaders/multipass.fs", "");
     
-    // entity.entityMaterial.SetViewProjection(this->camera);
+    /* entity.entityMaterial.SetViewProjection(this->camera);*/
+    
+    // Load textures
     entity.LoadColorTexture("../res/textures/lee_color_specular.tga");
     entity.LoadNormalTexture("../res/textures/lee_normal.tga");
     
@@ -87,9 +86,6 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void)
 {
-    uData.view_proj = camera->viewprojection_matrix;
-    uData.cameraEye = this->camera->eye;
-    
     entity.Render(uData);
 }
 
@@ -97,7 +93,6 @@ void Application::Render(void)
 void Application::Update(float seconds_elapsed)
 {
     time += seconds_elapsed;
-    // std::cout<<seconds_elapsed<<std::endl;
     // camera->Orbit(25*seconds_elapsed, 0.0);
     entity.modelMatrix.Rotate(seconds_elapsed, Vector3(0,1,0));
 }
@@ -108,6 +103,24 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     // KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
     switch(event.keysym.sym) {
         case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
+        case SDLK_c: // Toggle the color texture
+        {
+            this->flags.x = flags.x == 1.0 ? 0.0 : 1.0;
+            uData.flags = flags;
+            break;
+        }
+        case SDLK_s: // Toggle the specular texture
+        {
+            this->flags.y = flags.y== 1.0 ? 0.0 : 1.0;
+            uData.flags = flags;
+            break;
+        }
+        case SDLK_n: // Toggle the normal texture
+        {
+            this->flags.z = flags.z == 1.0 ? 0.0 : 1.0;
+            uData.flags = flags;
+            break;
+        }
         case SDLK_v:
         {
             std::cout << "Change center" << std::endl;
@@ -115,8 +128,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             break;
         }
         case SDLK_q: {currentSection = default_section; break;}
-        case SDLK_n: {currentSection = change_near; break;}
-        case SDLK_f: {currentSection = change_far; break;}
+        case SDLK_f: {currentSection =  (currentSection == change_far)? change_near : change_far; break;}
         case SDLK_PLUS:
         { // Increase values for near_plane, far_plane or fov
             if (currentSection==change_far) {camera->far_plane += 0.15;}
@@ -124,6 +136,9 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             else if (camera->type==Camera::PERSPECTIVE) {camera->fov += 5; camera->fov = std::min((int)camera->fov, 180);}
             else {break;}
             camera->UpdateProjectionMatrix();
+            // Update the data that is related with the camera
+            uData.view_proj = camera->viewprojection_matrix;
+            uData.cameraEye = this->camera->eye;
             std::cout << "Increased value" << std::endl;
             break;
         }
@@ -134,6 +149,9 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             else if (camera->type==Camera::PERSPECTIVE) {camera->fov -= 5; camera->fov = std::max((int)camera->fov, 0);}
             else {break;}
             camera->UpdateProjectionMatrix();
+            // Update the data that is related with the camera
+            uData.view_proj = camera->viewprojection_matrix;
+            uData.cameraEye = this->camera->eye;
             std::cout << "Decreased value" << std::endl;
             break;
         }
@@ -167,6 +185,9 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event) // Orbiting
             camera->UpdateViewMatrix();
         }
         else {camera->Orbit(mouse_delta.x, mouse_delta.y);}
+        // Update the data that is related with the camera
+        uData.view_proj = camera->viewprojection_matrix;
+        uData.cameraEye = this->camera->eye;
     }
 }
 
@@ -175,6 +196,9 @@ void Application::OnWheel(SDL_MouseWheelEvent event)
     // Zoom in; Zoom out
 	float dy = event.preciseY;
     camera->Zoom(dy);
+    // Update the data that is related with the camera
+    uData.view_proj = camera->viewprojection_matrix;
+    uData.cameraEye = this->camera->eye;
 }
 
 void Application::OnFileChanged(const char* filename)

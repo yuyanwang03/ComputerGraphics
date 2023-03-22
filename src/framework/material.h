@@ -19,6 +19,7 @@ typedef struct _UniformData{
     Vector3 Ia = Vector3(0.0);
     std::vector<sLight> lights;
     int numLights = 0;
+    Vector3 flags = Vector3(1.0, 0.0, 0.0);
 } sUniformData;
 
 class Material
@@ -37,7 +38,7 @@ public:
     
     void LoadColorTexture(const char* path);
     void LoadNormalTexture(const char *path);
-    void SetViewProjection(Camera* cam);
+    /*void SetViewProjection(Camera* cam);*/
     void SetShader(const char* vsf, const char* psf, const char* macros);
     void Enable();
     void Enable(const sUniformData& uniformData);

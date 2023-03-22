@@ -24,7 +24,7 @@ void main()
     vec3 N = normalize((u_model * vec4( gl_Normal.xyz, 0.0)).xyz);
     // v_world_normal = world_normal; // N
     vec3 L = normalize(u_lightPosition-world_position);
-    vec3 R = normalize(reflect(-L, N));
+    vec3 R = reflect(-L, N); // R is already normalized
     vec3 V = normalize(u_eye-world_position);
     
     //

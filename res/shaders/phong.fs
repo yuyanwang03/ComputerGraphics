@@ -1,7 +1,7 @@
 // They are baricentric interpolated by pixel according to the distance to every vertex
 uniform sampler2D u_colorTexture;
 uniform sampler2D u_normalTexture;
-uniform vec3 u_Ia, u_Id, u_Is, u_lightPosition, u_Ka, u_Kd, u_Ks, u_eye;
+uniform vec3 u_Ia, u_Id, u_Is, u_lightPosition, u_Ka, u_Kd, u_Ks, u_eye, u_flags;
 uniform float u_alfa;
 
 // This variables comes from the vertex shader
