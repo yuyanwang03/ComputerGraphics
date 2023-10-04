@@ -59,6 +59,8 @@ If this process leads to cmake errors, run this command an try again:
 sudo xcode-select --reset
 ```
 
+If you still have some issues regarding the CMakefiles that are included in the libraries directories, it is mainly because these very folders are empty. You can download the files that are suppsed to be in these folders and move to that directory and then run the command 'cmake -G "Xcode" ..' inside the build folder. For other possible errors, address to StackOverflow.
+
 ## Linux
 
 Install *cmake* and needed libraries using this command:
